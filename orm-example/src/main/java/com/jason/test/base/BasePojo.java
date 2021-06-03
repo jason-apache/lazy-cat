@@ -1,0 +1,34 @@
+package com.jason.test.base;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * @author: mahao
+ * @date: 2021/3/3 18:02
+ */
+public abstract class BasePojo implements Serializable {
+
+    private static final long serialVersionUID = 2612504805890870242L;
+
+    public abstract Serializable getId();
+
+    @Override
+    public boolean equals(Object that) {
+        if (null == that) {
+            return false;
+        }
+        if (that.getClass() != getClass()) {
+            return false;
+        }
+        if (null == ((BasePojo) that).getId()) {
+            return false;
+        }
+        return Objects.equals(this.getId(), ((BasePojo) that).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return null == getId() ? 0 : getId().hashCode() * 31;
+    }
+}
