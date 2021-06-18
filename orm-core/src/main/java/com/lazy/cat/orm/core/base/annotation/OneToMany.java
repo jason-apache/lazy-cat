@@ -54,8 +54,8 @@ public @interface OneToMany {
 
     /**
      * 映射对象是否参与新增
-     * @see com.lazy.kitty.jdbc.base.service.BaseService#save
-     * @see com.lazy.kitty.jdbc.base.service.BaseService#insert
+     * @see com.lazy.cat.orm.core.base.service.BaseService#save
+     * @see com.lazy.cat.orm.core.base.service.BaseService#insert
      * eg：
      *      user携带一个userDirList调用save或者insert方法，并指定cascade为true
      *      执行userDirList中id不为空的对象修改操作，id为空的对象新增操作

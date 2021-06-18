@@ -20,7 +20,7 @@ public @interface Table {
 
     /**
      * 指定库，支持占位符参数 ${schema}
-     * @see com.lazy.kitty.jdbc.core.JdbcConfig#getDbSchema()
+     * @see com.lazy.cat.orm.core.jdbc.JdbcConfig#getDbSchema()
      */
     String schema() default "";
 }
