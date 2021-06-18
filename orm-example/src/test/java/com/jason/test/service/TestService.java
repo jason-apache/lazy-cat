@@ -5,11 +5,9 @@ import com.jason.test.pojo.User;
 import com.jason.test.pojo.UserCopy;
 import com.lazy.cat.orm.core.base.service.BaseService;
 import com.lazy.cat.orm.core.base.util.Caster;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,7 +17,6 @@ import java.util.Collection;
  * @date: 2021/4/14 21:06
  */
 @SpringBootTest(classes = TestConfiguration.class)
-@RunWith(SpringRunner.class)
 public class TestService {
 
     @Autowired

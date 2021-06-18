@@ -24,15 +24,13 @@ import com.lazy.cat.orm.core.jdbc.mapping.TableInfo;
 import com.lazy.cat.orm.core.jdbc.param.SimpleUpdateParam;
 import com.lazy.cat.orm.core.jdbc.provider.SqlParamProvider;
 import com.lazy.cat.orm.core.jdbc.util.TableChainBuildHelper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +44,6 @@ import java.util.stream.Collectors;
  * @date: 2021/3/7 17:25
  */
 @SpringBootTest(classes = TestConfiguration.class)
-@RunWith(SpringRunner.class)
 public class TestRepository {
 
     @Autowired
