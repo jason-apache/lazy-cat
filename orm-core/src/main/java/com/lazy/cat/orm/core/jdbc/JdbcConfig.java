@@ -10,7 +10,7 @@ import java.util.Map;
  * @author: mahao
  * @date: 2021/3/14 12:10
  */
-@ConfigurationProperties(prefix = "lazy-cat.jdbc")
+@ConfigurationProperties(prefix = "cool.lazy-cat.jdbc")
 public class JdbcConfig {
 
     private boolean uppercase;

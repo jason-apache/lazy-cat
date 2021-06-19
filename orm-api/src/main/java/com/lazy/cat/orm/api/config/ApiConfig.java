@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author: mahao
  * @date: 2021/3/14 11:59
  */
-@ConfigurationProperties(prefix = "lazy-cat.servlet")
+@ConfigurationProperties(prefix = "cool.lazy-cat.servlet")
 public class ApiConfig {
 
     private String entrustPath = "lazy-cat";

@@ -14,9 +14,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.lazy-cat</groupId>
-            <artifactId>orm-api</artifactId>
-            <version>1.0</version>
+            <groupId>cool.lazy-cat</groupId>
+            <artifactId>orm-api-spring-boot-starter</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

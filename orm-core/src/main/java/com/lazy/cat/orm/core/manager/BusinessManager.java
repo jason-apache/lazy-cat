@@ -18,13 +18,6 @@ import java.util.Map;
  */
 public class BusinessManager implements Manager {
 
-    @Autowired
-    protected PojoManager pojoManager;
-    @Autowired
-    protected ServiceManager serviceManager;
-    @Autowired
-    protected RepositoryManager repositoryManager;
-
     private final Map<Class<?>, BusinessSubject> subjectMap = new HashMap<>(Constant.DEFAULT_CONTAINER_SIZE);
 
     @Autowired

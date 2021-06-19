@@ -21,14 +21,14 @@ public interface BaseService<P> extends FullAutomaticMapping {
      * @param searchParam 查询参数
      * @return 结果集
      */
-    List<P> selectByParam(SearchParam searchParam);
+    Collection<P> selectByParam(SearchParam searchParam);
 
     /**
      * 根据构建的查询参数查询，泛型重载
      * @param searchParam 查询参数
      * @return 结果集
      */
-    <T> List<T> selectByParam(Class<T> pojoType, SearchParam searchParam);
+    <T> Collection<T> selectByParam(Class<T> pojoType, SearchParam searchParam);
 
     /**
      * 根据构建的查询参数分页查询
@@ -49,7 +49,7 @@ public interface BaseService<P> extends FullAutomaticMapping {
      * @param queryInfo　API查询参数
      * @return 结果集
      */
-    List<P> select(QueryInfo queryInfo);
+    Collection<P> select(QueryInfo queryInfo);
 
     /**
      * 根据API查询参数分页查询

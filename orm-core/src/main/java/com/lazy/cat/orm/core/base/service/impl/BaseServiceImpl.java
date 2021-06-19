@@ -34,12 +34,12 @@ public class BaseServiceImpl<P> extends AbstractService<P> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<P> selectByParam(SearchParam searchParam) {
-        return (List<P>) this.selectByParam(tryGetPojoType(), searchParam);
+    public Collection<P> selectByParam(SearchParam searchParam) {
+        return (Collection<P>) this.selectByParam(tryGetPojoType(), searchParam);
     }
 
     @Override
-    public <T> List<T> selectByParam(Class<T> pojoType, SearchParam searchParam) {
+    public <T> Collection<T> selectByParam(Class<T> pojoType, SearchParam searchParam) {
         return super.getRepository(pojoType).query(searchParam);
     }
 
@@ -56,9 +56,9 @@ public class BaseServiceImpl<P> extends AbstractService<P> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<P> select(QueryInfo queryInfo) {
+    public Collection<P> select(QueryInfo queryInfo) {
         super.initCondition(queryInfo);
-        return (List<P>) super.getRepository(tryGetPojoType()).selectByInfo(tryGetPojoType(), queryInfo, null);
+        return (Collection<P>) super.getRepository(tryGetPojoType()).selectByInfo(tryGetPojoType(), queryInfo, null);
     }
 
     @Override

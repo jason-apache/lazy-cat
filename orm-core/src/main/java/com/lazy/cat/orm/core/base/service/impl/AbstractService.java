@@ -19,6 +19,7 @@ import com.lazy.cat.orm.core.manager.subject.BusinessSubject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,6 +33,7 @@ import java.util.Map;
 public abstract class AbstractService<P> extends AbstractFullAutomaticMapping<P> implements BaseService<P> {
 
     @Autowired
+    @Lazy
     protected BusinessManager businessManager;
     @Autowired
     protected PojoTableManager pojoTableManager;
