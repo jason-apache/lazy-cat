@@ -7,7 +7,7 @@
                        org.springframework.boot:spring-boot-starter-jdbc
     
     api: 
-         api自动映射，目前的处理方式较为偏激，后续等待优化 @com.lazy.cat.orm.api.web.entrust.controller.UnKnowApiEntrustController
+         api自动映射，目前的处理方式较为偏激，后续等待优化 @cool.lazy.cat.orm.api.web.entrust.controller.UnKnowApiEntrustController
          依赖于core，对数据库基础操作进行抽象，避免重复工作，试图打造出一个快速开发脚手架.
          dependencies: 
                       org.springframework.boot:spring-boot-starter-web

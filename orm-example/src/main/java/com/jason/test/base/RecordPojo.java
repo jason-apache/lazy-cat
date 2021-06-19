@@ -2,9 +2,9 @@ package com.jason.test.base;
 
 import com.jason.test.convert.BooleanTypeConverter;
 import com.jason.test.convert.OracleLocalDateTimeConverter;
-import com.lazy.cat.orm.core.base.annotation.Column;
-import com.lazy.cat.orm.core.base.annotation.LogicDelete;
-import com.lazy.cat.orm.core.jdbc.condition.ConditionType;
+import cool.lazy.cat.orm.core.base.annotation.Column;
+import cool.lazy.cat.orm.core.base.annotation.LogicDelete;
+import cool.lazy.cat.orm.core.jdbc.condition.ConditionType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

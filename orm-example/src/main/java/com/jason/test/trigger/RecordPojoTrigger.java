@@ -1,7 +1,7 @@
 package com.jason.test.trigger;
 
 import com.jason.test.base.RecordPojo;
-import com.lazy.cat.orm.core.jdbc.component.trigger.Trigger;
+import cool.lazy.cat.orm.core.jdbc.component.trigger.Trigger;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

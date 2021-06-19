@@ -3,7 +3,7 @@ package com.jason.test.service.impl;
 
 import com.jason.test.pojo.User;
 import com.jason.test.service.UserService;
-import com.lazy.cat.orm.core.base.service.impl.BaseServiceImpl;
+import cool.lazy.cat.orm.core.base.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

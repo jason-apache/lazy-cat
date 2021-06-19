@@ -1,8 +1,8 @@
 package com.jason.test.convert;
 
-import com.lazy.cat.orm.core.jdbc.component.convert.TypeConverter;
-import com.lazy.cat.orm.core.jdbc.dialect.Dialect;
-import com.lazy.cat.orm.core.jdbc.mapping.TableFieldInfo;
+import cool.lazy.cat.orm.core.jdbc.component.convert.TypeConverter;
+import cool.lazy.cat.orm.core.jdbc.dialect.Dialect;
+import cool.lazy.cat.orm.core.jdbc.mapping.TableFieldInfo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

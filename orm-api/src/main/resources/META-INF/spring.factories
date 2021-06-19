@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.lazy.cat.orm.core.LazyCatAutoConfiguration,com.lazy.cat.orm.api.LazyCatWebAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cool.lazy.cat.orm.core.LazyCatAutoConfiguration,cool.lazy.cat.orm.api.LazyCatWebAutoConfiguration

@@ -1,7 +1,7 @@
 package com.jason.test.service;
 
 import com.jason.test.pojo.User;
-import com.lazy.cat.orm.core.base.service.BaseService;
+import cool.lazy.cat.orm.core.base.service.BaseService;
 
 /**
  * @author: mahao

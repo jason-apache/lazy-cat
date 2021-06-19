@@ -1,7 +1,7 @@
 package com.jason.test;
 
 
-import com.lazy.cat.orm.core.manager.scan.annotation.PojoScan;
+import cool.lazy.cat.orm.core.manager.scan.annotation.PojoScan;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;

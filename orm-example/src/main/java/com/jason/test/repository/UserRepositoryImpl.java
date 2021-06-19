@@ -2,7 +2,7 @@ package com.jason.test.repository;
 
 
 import com.jason.test.pojo.User;
-import com.lazy.cat.orm.core.base.repository.impl.BaseRepositoryImpl;
+import cool.lazy.cat.orm.core.base.repository.impl.BaseRepositoryImpl;
 import org.springframework.stereotype.Repository;
 
 /**

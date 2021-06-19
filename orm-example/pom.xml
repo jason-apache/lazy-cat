@@ -16,7 +16,7 @@
         <dependency>
             <groupId>cool.lazy-cat</groupId>
             <artifactId>orm-api-spring-boot-starter</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.0.Final</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

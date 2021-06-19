@@ -6,7 +6,7 @@
 
     <groupId>cool.lazy-cat</groupId>
     <artifactId>orm-api-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0.Final</version>
 
     <name>orm api mapping</name>
     <description>orm framework</description>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>cool.lazy-cat</groupId>
             <artifactId>orm-core-spring-boot-starter</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.0.Final</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

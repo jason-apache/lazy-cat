@@ -1,9 +1,9 @@
 package com.jason.test.validator;
 
 
-import com.lazy.cat.orm.core.jdbc.component.validator.Validator;
-import com.lazy.cat.orm.core.jdbc.exception.ValidationFailedException;
-import com.lazy.cat.orm.core.jdbc.mapping.Column;
+import cool.lazy.cat.orm.core.jdbc.component.validator.Validator;
+import cool.lazy.cat.orm.core.jdbc.exception.ValidationFailedException;
+import cool.lazy.cat.orm.core.jdbc.mapping.Column;
 
 /**
  * @author: mahao

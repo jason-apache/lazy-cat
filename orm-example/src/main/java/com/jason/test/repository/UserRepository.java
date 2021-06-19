@@ -2,7 +2,7 @@ package com.jason.test.repository;
 
 
 import com.jason.test.pojo.User;
-import com.lazy.cat.orm.core.base.repository.BaseRepository;
+import cool.lazy.cat.orm.core.base.repository.BaseRepository;
 
 /**
  * @author: mahao

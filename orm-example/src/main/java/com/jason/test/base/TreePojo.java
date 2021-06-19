@@ -1,6 +1,6 @@
 package com.jason.test.base;
 
-import com.lazy.cat.orm.core.base.annotation.Column;
+import cool.lazy.cat.orm.core.base.annotation.Column;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

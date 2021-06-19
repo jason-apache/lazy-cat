@@ -6,7 +6,7 @@
 
     <groupId>cool.lazy-cat</groupId>
     <artifactId>orm-core-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0.Final</version>
 
     <name>orm core</name>
     <description>orm framework</description>
