@@ -17,32 +17,39 @@ import java.util.List;
 public interface BaseService<P> extends FullAutomaticMapping {
 
     /**
+     * 构造一个指定实体的基础查询参数
+     * @param pojoType 实体类型
+     * @return 查询参数
+     */
+    <T> SearchParam<T> buildSearchParam(Class<T> pojoType);
+
+    /**
      * 根据构建的查询参数查询
      * @param searchParam 查询参数
      * @return 结果集
      */
-    Collection<P> selectByParam(SearchParam searchParam);
+    Collection<P> selectByParam(SearchParam<P> searchParam);
 
     /**
      * 根据构建的查询参数查询，泛型重载
      * @param searchParam 查询参数
      * @return 结果集
      */
-    <T> Collection<T> selectByParam(Class<T> pojoType, SearchParam searchParam);
+    <T> Collection<T> selectByParam(Class<T> pojoType, SearchParam<T> searchParam);
 
     /**
      * 根据构建的查询参数分页查询
      * @param searchParam 查询参数
      * @return 带分页的结果集
      */
-    PageResult<P> selectPageByParam(SearchParam searchParam);
+    PageResult<P> selectPageByParam(SearchParam<P> searchParam);
 
     /**
      * 根据构建的查询参数分页查询，泛型重载
      * @param searchParam 查询参数
      * @return 带分页的结果集
      */
-    <T> PageResult<T> selectPageByParam(Class<T> pojoType, SearchParam searchParam);
+    <T> PageResult<T> selectPageByParam(Class<T> pojoType, SearchParam<T> searchParam);
 
     /**
      * 根据API查询参数查询

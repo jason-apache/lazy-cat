@@ -5,6 +5,7 @@ import com.lazy.cat.orm.core.base.AbstractFullAutomaticMapping;
 import com.lazy.cat.orm.core.base.bo.PageResult;
 import com.lazy.cat.orm.core.base.bo.QueryInfo;
 import com.lazy.cat.orm.core.base.repository.BaseRepository;
+import com.lazy.cat.orm.core.base.util.Caster;
 import com.lazy.cat.orm.core.base.util.Ignorer;
 import com.lazy.cat.orm.core.context.FullAutoMappingContext;
 import com.lazy.cat.orm.core.jdbc.OrderBy;
@@ -55,23 +56,23 @@ public abstract class AbstractRepository<P> extends AbstractFullAutomaticMapping
         return pojoType == null ? FullAutoMappingContext.getPojoType() : pojoType;
     }
 
-    protected <T> List<T> queryByInfo(Class<?> pojoType, QueryInfo queryInfo, Ignorer ignorer) {
-        return this.query(new SimpleSearchParam(pojoTableManager.getByPojoType(pojoType).getTableInfo()).setPojoType(pojoType)
+    protected <T> List<T> queryByInfo(QueryInfo queryInfo) {
+        return this.query(new SimpleSearchParam<T>(pojoTableManager.getByPojoType(getPojoType()).getTableInfo()).setPojoType(Caster.cast(getPojoType()))
                 .setParams(queryInfo.getParams() == null ? Collections.emptyMap() : queryInfo.getParams())
-                .setOrderBy(OrderBy.buildOrderBy(queryInfo.isAsc(), queryInfo.getOrderFields())).setIgnorer(ignorer));
+                .setOrderBy(OrderBy.buildOrderBy(queryInfo.isAsc(), queryInfo.getOrderFields())).setIgnorer(Ignorer.build(queryInfo.getIgnoreFields())));
     }
 
-    protected <T> List<T> query(Class<?> pojoType, Condition condition, Ignorer ignorer) {
+    protected <T> List<T> query(Class<T> pojoType, Condition condition, Ignorer ignorer) {
         return this.query(pojoType, condition, null, ignorer);
     }
 
-    protected <T> List<T> query(Class<?> pojoType, Condition condition, OrderBy orderBy, Ignorer ignorer) {
-        return this.query(new SimpleSearchParam(pojoTableManager.getByPojoType(pojoType).getTableInfo()).setPojoType(pojoType)
+    protected <T> List<T> query(Class<T> pojoType, Condition condition, OrderBy orderBy, Ignorer ignorer) {
+        return this.query(new SimpleSearchParam<T>(pojoTableManager.getByPojoType(pojoType).getTableInfo()).setPojoType(pojoType)
                 .setCondition(condition == null ? Condition.EMPTY_CONDITION : condition).setOrderBy(orderBy).setIgnorer(ignorer));
     }
 
     @Override
-    public <T> List<T> query(SearchParam searchParam) {
+    public <T> List<T> query(SearchParam<T> searchParam) {
         // 构建查询语句
         SearchSqlParamIndexHolder paramIndexHolder = (SearchSqlParamIndexHolder) sqlParamProvider.getSelectSql(searchParam);
         String sql = paramIndexHolder.getSql();
@@ -81,23 +82,23 @@ public abstract class AbstractRepository<P> extends AbstractFullAutomaticMapping
         return jdbcTemplate.query(sql, paramIndexHolder.getParam(), resultSetExtractorProvider.provider(chainHolder, paramIndexHolder, 1000));
     }
 
-    protected <T> PageResult<T> queryPage(Class<?> pojoType, QueryInfo queryInfo, Ignorer ignorer) {
-        return this.queryPage(new SimpleSearchParam(pojoTableManager.getByPojoType(pojoType).getTableInfo()).setPojoType(pojoType)
+    protected <T> PageResult<T> queryPage(QueryInfo queryInfo) {
+        return this.queryPage(new SimpleSearchParam<T>(pojoTableManager.getByPojoType(getPojoType()).getTableInfo()).setPojoType(Caster.cast(getPojoType()))
                 .setParams(queryInfo.getParams() == null ? Collections.emptyMap() : queryInfo.getParams()).setIndex(queryInfo.getIndex()).setPageSize(queryInfo.getPageSize())
-                .setOrderBy(OrderBy.buildOrderBy(queryInfo.isAsc(), queryInfo.getOrderFields())).setIgnorer(ignorer));
+                .setOrderBy(OrderBy.buildOrderBy(queryInfo.isAsc(), queryInfo.getOrderFields())).setIgnorer(Ignorer.build(queryInfo.getIgnoreFields())));
     }
 
-    protected <T> PageResult<T> queryPage(Class<?> pojoType, Condition condition, int index, int pageSize, Ignorer ignorer) {
+    protected <T> PageResult<T> queryPage(Class<T> pojoType, Condition condition, int index, int pageSize, Ignorer ignorer) {
         return this.queryPage(pojoType, condition, index, pageSize, null, ignorer);
     }
 
-    protected <T> PageResult<T> queryPage(Class<?> pojoType, Condition condition, int index, int pageSize, OrderBy orderBy, Ignorer ignorer) {
-        return this.queryPage(new SimpleSearchParam(pojoTableManager.getByPojoType(pojoType).getTableInfo()).setIndex(index).setPojoType(pojoType)
+    protected <T> PageResult<T> queryPage(Class<T> pojoType, Condition condition, int index, int pageSize, OrderBy orderBy, Ignorer ignorer) {
+        return this.queryPage(new SimpleSearchParam<T>(pojoTableManager.getByPojoType(pojoType).getTableInfo()).setIndex(index).setPojoType(pojoType)
                 .setCondition(condition == null ? Condition.EMPTY_CONDITION : condition).setPageSize(pageSize).setOrderBy(orderBy).setIgnorer(ignorer));
     }
 
     @Override
-    public  <T> PageResult<T> queryPage(SearchParam searchParam) {
+    public  <T> PageResult<T> queryPage(SearchParam<T> searchParam) {
         PageResult<T> pageResult = new PageResult<>();
         // 构建count查询语句
         SqlParamHolder countSqlHolder = sqlParamProvider.getCountSql(searchParam);

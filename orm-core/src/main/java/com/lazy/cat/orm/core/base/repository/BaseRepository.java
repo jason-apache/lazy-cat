@@ -28,43 +28,27 @@ public interface BaseRepository<P> extends FullAutomaticMapping {
     NamedParameterJdbcTemplate getJdbcTemplate();
 
     /**
-     * 根据构建的查询参数分页查询
-     * @param searchParam 查询参数
-     * @param <T> 泛型类型
-     * @return 带分页的结果集
-     */
-    <T> PageResult<T> queryPage(SearchParam searchParam);
-
-    /**
      * 根据构建的查询参数查询
      * @param searchParam 查询参数
      * @param <T> 泛型类型
      * @return 结果集
      */
-    <T> List<T> query(SearchParam searchParam);
+    <T> List<T> query(SearchParam<T> searchParam);
+
+    /**
+     * 根据构建的查询参数分页查询
+     * @param searchParam 查询参数
+     * @param <T> 泛型类型
+     * @return 带分页的结果集
+     */
+    <T> PageResult<T> queryPage(SearchParam<T> searchParam);
 
     /**
      * 此方法为API预留
      * @param queryInfo API查询参数
      * @return 带分页的结果集
      */
-    default List<P> selectByInfo(QueryInfo queryInfo) {
-        return this.selectByInfo(queryInfo, Ignorer.EMPTY_IGNORE);
-    }
-
-    /**
-     * 此方法为API预留
-     * @param queryInfo API查询参数
-     * @param ignorer 忽略查询字段
-     * @return 结果集
-     */
-    List<P> selectByInfo(QueryInfo queryInfo, Ignorer ignorer);
-
-    default <T> List<T> selectByInfo(Class<T> pojoType, QueryInfo queryInfo) {
-        return this.selectByInfo(pojoType, queryInfo, Ignorer.EMPTY_IGNORE);
-    }
-
-    <T> List<T> selectByInfo(Class<T> pojoType, QueryInfo queryInfo, Ignorer ignorer);
+    List<P> selectByInfo(QueryInfo queryInfo);
 
     /**
      * 条件查询单条数据
@@ -146,17 +130,7 @@ public interface BaseRepository<P> extends FullAutomaticMapping {
      * @param queryInfo API查询参数
      * @return 带分页的结果集
      */
-    default PageResult<P> selectPage(QueryInfo queryInfo) {
-        return this.selectPage(queryInfo, Ignorer.EMPTY_IGNORE);
-    }
-
-    /**
-     * 分页查询，此方法为API预留
-     * @param queryInfo API查询参数
-     * @param ignorer 忽略查询字段
-     * @return 带分页的结果集
-     */
-    PageResult<P> selectPage(QueryInfo queryInfo, Ignorer ignorer);
+    PageResult<P> selectPage(QueryInfo queryInfo);
 
     /**
      * 条件分页查询
@@ -199,12 +173,6 @@ public interface BaseRepository<P> extends FullAutomaticMapping {
      * @return 带分页的结果集
      */
     PageResult<P> selectPage(Condition condition, int index, int pageSize, OrderBy orderBy, Ignorer ignorer);
-
-    default <T> PageResult<T> selectPage(Class<T> pojoType, QueryInfo queryInfo) {
-        return this.selectPage(pojoType, queryInfo, Ignorer.EMPTY_IGNORE);
-    }
-
-    <T> PageResult<T> selectPage(Class<T> pojoType, QueryInfo queryInfo, Ignorer ignorer);
 
     default <T> PageResult<T> selectPage(Class<T> pojoType, Condition condition, int index, int pageSize) {
         return this.selectPage(pojoType, condition, index, pageSize, Ignorer.EMPTY_IGNORE);

@@ -2,6 +2,8 @@ package com.lazy.cat.orm.core.base.repository.impl;
 
 import com.lazy.cat.orm.core.base.bo.PageResult;
 import com.lazy.cat.orm.core.base.bo.QueryInfo;
+import com.lazy.cat.orm.core.base.repository.BaseRepository;
+import com.lazy.cat.orm.core.base.util.Caster;
 import com.lazy.cat.orm.core.base.util.CollectionUtil;
 import com.lazy.cat.orm.core.base.util.Ignorer;
 import com.lazy.cat.orm.core.jdbc.JdbcConstant;
@@ -27,11 +29,11 @@ import java.util.List;
  * @author: mahao
  * @date: 2021/3/4 22:00
  */
-public class BaseRepositoryImpl<P> extends AbstractRepository<P> {
+public class BaseRepositoryImpl<P> extends AbstractRepository<P> implements BaseRepository<P> {
 
     @Override
-    public List<P> selectByInfo(QueryInfo queryInfo, Ignorer ignorer) {
-        return super.queryByInfo(getPojoType(), queryInfo, ignorer);
+    public List<P> selectByInfo(QueryInfo queryInfo) {
+        return Caster.cast(super.queryByInfo(queryInfo));
     }
 
     @Override
@@ -41,18 +43,13 @@ public class BaseRepositoryImpl<P> extends AbstractRepository<P> {
 
     @Override
     public List<P> select(Condition condition, OrderBy orderBy, Ignorer ignorer) {
-        return super.query(getPojoType(), condition, orderBy, ignorer);
+        return Caster.cast(super.query(getPojoType(), condition, orderBy, ignorer));
     }
 
     @Override
     public P selectSingle(Condition condition, Ignorer ignorer) {
         List<P> result = this.select(condition, ignorer);
         return DataAccessUtils.nullableSingleResult(result);
-    }
-
-    @Override
-    public <T> List<T> selectByInfo(Class<T> pojoType, QueryInfo queryInfo, Ignorer ignorer) {
-        return super.queryByInfo(pojoType, queryInfo, ignorer);
     }
 
     @Override
@@ -72,8 +69,8 @@ public class BaseRepositoryImpl<P> extends AbstractRepository<P> {
     }
 
     @Override
-    public PageResult<P> selectPage(QueryInfo queryInfo, Ignorer ignorer) {
-        return super.queryPage(getPojoType(), queryInfo, ignorer);
+    public PageResult<P> selectPage(QueryInfo queryInfo) {
+        return Caster.cast(super.queryPage(queryInfo));
     }
 
     @Override
@@ -83,12 +80,7 @@ public class BaseRepositoryImpl<P> extends AbstractRepository<P> {
 
     @Override
     public PageResult<P> selectPage(Condition condition, int index, int pageSize, OrderBy orderBy, Ignorer ignorer) {
-        return super.queryPage(getPojoType(), condition, index, pageSize, orderBy, ignorer);
-    }
-
-    @Override
-    public <T> PageResult<T> selectPage(Class<T> pojoType, QueryInfo queryInfo, Ignorer ignorer) {
-        return super.queryPage(pojoType, queryInfo, ignorer);
+        return Caster.cast(super.queryPage(getPojoType(), condition, index, pageSize, orderBy, ignorer));
     }
 
     @Override
@@ -114,7 +106,7 @@ public class BaseRepositoryImpl<P> extends AbstractRepository<P> {
         if (holder.getFlatChain().size() > JdbcConstant.TABLE_CHAIN_WARN_COUNT) {
             logger.warn("级联查询表已超过：" + JdbcConstant.TABLE_CHAIN_WARN_COUNT + "\t请注意对不需要的字段、对象忽略查询#" + pojoType.getName());
         }
-        SimpleSearchParam sqlSearchParam = new SimpleSearchParam(pojoTableManager.getByPojoType(pojoType).getTableInfo());
+        SimpleSearchParam<T> sqlSearchParam = new SimpleSearchParam<T>(pojoTableManager.getByPojoType(pojoType).getTableInfo());
         sqlSearchParam.setPojoType(pojoType).setCondition(condition == null ? Condition.EMPTY_CONDITION : condition).setOrderBy(orderBy)
                 .setIgnorer(ignorer).setNestedChain(holder.getNestedChain()).setFlatChain(holder.getFlatChain());
         return super.query(sqlSearchParam);

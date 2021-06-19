@@ -14,9 +14,9 @@ import java.util.Map;
  * @author: mahao
  * @date: 2021/3/23 10:02
  */
-public class SimpleSearchParam implements SearchParam {
+public class SimpleSearchParam<T> implements SearchParam<T> {
 
-    private Class<?> pojoType;
+    private Class<T> pojoType;
     private TableInfo tableInfo;
     private Condition condition;
     private Map<String, Object> params;
@@ -31,7 +31,7 @@ public class SimpleSearchParam implements SearchParam {
         this.tableInfo = tableInfo;
     }
 
-    public SimpleSearchParam(Class<?> pojoType, TableInfo tableInfo, Condition condition, int index, int pageSize, Ignorer ignorer, OrderBy orderBy, List<TableChain> nestedChain, List<TableChain> flatChain) {
+    public SimpleSearchParam(Class<T> pojoType, TableInfo tableInfo, Condition condition, int index, int pageSize, Ignorer ignorer, OrderBy orderBy, List<TableChain> nestedChain, List<TableChain> flatChain) {
         this.pojoType = pojoType;
         this.tableInfo = tableInfo;
         this.condition = condition;
@@ -43,7 +43,7 @@ public class SimpleSearchParam implements SearchParam {
         this.flatChain = flatChain;
     }
 
-    public SimpleSearchParam(Class<?> pojoType, TableInfo tableInfo, Map<String, Object> params, int index, int pageSize, Ignorer ignorer, OrderBy orderBy, List<TableChain> nestedChain, List<TableChain> flatChain) {
+    public SimpleSearchParam(Class<T> pojoType, TableInfo tableInfo, Map<String, Object> params, int index, int pageSize, Ignorer ignorer, OrderBy orderBy, List<TableChain> nestedChain, List<TableChain> flatChain) {
         this.pojoType = pojoType;
         this.tableInfo = tableInfo;
         this.params = params;
@@ -61,11 +61,12 @@ public class SimpleSearchParam implements SearchParam {
     }
 
     @Override
-    public Class<?> getPojoType() {
+    public Class<T> getPojoType() {
         return pojoType;
     }
 
-    public SimpleSearchParam setPojoType(Class<?> pojoType) {
+    @Override
+    public SimpleSearchParam<T> setPojoType(Class<T> pojoType) {
         this.pojoType = pojoType;
         return this;
     }
@@ -75,7 +76,8 @@ public class SimpleSearchParam implements SearchParam {
         return tableInfo;
     }
 
-    public SimpleSearchParam setTableInfo(TableInfo tableInfo) {
+    @Override
+    public SimpleSearchParam<T> setTableInfo(TableInfo tableInfo) {
         this.tableInfo = tableInfo;
         return this;
     }
@@ -85,7 +87,8 @@ public class SimpleSearchParam implements SearchParam {
         return condition;
     }
 
-    public SimpleSearchParam setCondition(Condition condition) {
+    @Override
+    public SimpleSearchParam<T> setCondition(Condition condition) {
         this.condition = condition;
         return this;
     }
@@ -95,7 +98,8 @@ public class SimpleSearchParam implements SearchParam {
         return params;
     }
 
-    public SimpleSearchParam setParams(Map<String, Object> params) {
+    @Override
+    public SimpleSearchParam<T> setParams(Map<String, Object> params) {
         this.params = params;
         return this;
     }
@@ -105,7 +109,8 @@ public class SimpleSearchParam implements SearchParam {
         return index;
     }
 
-    public SimpleSearchParam setIndex(int index) {
+    @Override
+    public SimpleSearchParam<T> setIndex(int index) {
         this.index = index;
         return this;
     }
@@ -115,7 +120,8 @@ public class SimpleSearchParam implements SearchParam {
         return pageSize;
     }
 
-    public SimpleSearchParam setPageSize(int pageSize) {
+    @Override
+    public SimpleSearchParam<T> setPageSize(int pageSize) {
         this.pageSize = pageSize;
         return this;
     }
@@ -125,7 +131,8 @@ public class SimpleSearchParam implements SearchParam {
         return ignorer;
     }
 
-    public SimpleSearchParam setIgnorer(Ignorer ignorer) {
+    @Override
+    public SimpleSearchParam<T> setIgnorer(Ignorer ignorer) {
         this.ignorer = ignorer;
         return this;
     }
@@ -135,7 +142,8 @@ public class SimpleSearchParam implements SearchParam {
         return orderBy;
     }
 
-    public SimpleSearchParam setOrderBy(OrderBy orderBy) {
+    @Override
+    public SimpleSearchParam<T> setOrderBy(OrderBy orderBy) {
         this.orderBy = orderBy;
         return this;
     }
@@ -148,7 +156,8 @@ public class SimpleSearchParam implements SearchParam {
         return nestedChain;
     }
 
-    public SimpleSearchParam setNestedChain(List<TableChain> nestedChain) {
+    @Override
+    public SimpleSearchParam<T> setNestedChain(List<TableChain> nestedChain) {
         this.nestedChain = nestedChain;
         return this;
     }
@@ -161,7 +170,8 @@ public class SimpleSearchParam implements SearchParam {
         return flatChain;
     }
 
-    public SimpleSearchParam setFlatChain(List<TableChain> flatChain) {
+    @Override
+    public SimpleSearchParam<T> setFlatChain(List<TableChain> flatChain) {
         this.flatChain = flatChain;
         return this;
     }

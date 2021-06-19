@@ -4,11 +4,15 @@ import com.jason.test.TestConfiguration;
 import com.jason.test.pojo.Office;
 import com.jason.test.pojo.User;
 import com.jason.test.pojo.UserCopy;
+import com.jason.test.pojo.UserDir;
 import com.lazy.cat.orm.core.base.bo.PageResult;
+import com.lazy.cat.orm.core.base.bo.QueryInfo;
 import com.lazy.cat.orm.core.base.repository.BaseRepository;
+import com.lazy.cat.orm.core.base.service.BaseService;
 import com.lazy.cat.orm.core.base.util.Caster;
 import com.lazy.cat.orm.core.base.util.CollectionUtil;
 import com.lazy.cat.orm.core.base.util.Ignorer;
+import com.lazy.cat.orm.core.context.FullAutoMappingContext;
 import com.lazy.cat.orm.core.jdbc.IgnoreModel;
 import com.lazy.cat.orm.core.jdbc.OrderBy;
 import com.lazy.cat.orm.core.jdbc.analyzer.ConditionAnalyzer;
@@ -60,6 +64,54 @@ public class TestRepository {
     protected SqlParamProvider sqlParamProvider;
     @Autowired
     protected PojoTableManager pojoTableManager;
+    @Autowired
+    protected BaseService<User> baseService;
+
+    @Test
+    public void testQueryPage() {
+        // 一对多查询时忽略多的一方的查询，否则分页将失效
+        PageResult<User> userPageResult = baseRepository.queryPage(baseService.buildSearchParam(User.class)
+                .setPageSize(150).setIgnorer(Ignorer.build("userDirList", "ftpDirList")));
+        PageResult<UserDir> userDirPageResult = baseRepository.queryPage(baseService.buildSearchParam(UserDir.class).setPageSize(5));
+    }
+
+    @Test
+    public void testQuery() {
+        List<User> userList = baseRepository.query(baseService.buildSearchParam(User.class));
+        List<UserDir> userDirs = baseRepository.query(baseService.buildSearchParam(UserDir.class));
+    }
+
+    @Test
+    public void testSelectByInfo() {
+        FullAutoMappingContext.setPojoType(User.class);
+        List<Object> objects = baseRepository.selectByInfo(new QueryInfo());
+        FullAutoMappingContext.setPojoType(UserDir.class);
+        List<Object> objects1 = baseRepository.selectByInfo(new QueryInfo());
+    }
+
+    @Test
+    public void testSelectSingle1() {
+        User user = baseRepository.selectSingle(User.class, Condition.eq("id", 1));
+    }
+
+    @Test
+    public void testSelect() {
+        List<User> userList = baseRepository.select(User.class, Condition.eq("sex", "女"));
+        List<UserDir> userDirs = baseRepository.select(UserDir.class, Condition.notNull("id"));
+    }
+
+    @Test
+    public void testSelectPage() {
+        FullAutoMappingContext.setPojoType(User.class);
+        PageResult<Object> objectPageResult = baseRepository.selectPage(new QueryInfo().setPageSize(150)
+                .setIgnoreFields(new String[]{"userDirList", "ftpDirList"}));
+        FullAutoMappingContext.setPojoType(UserDir.class);
+        PageResult<Object> objectPageResult1 = baseRepository.selectPage(new QueryInfo());
+        // 一对多查询时忽略多的一方的查询，否则分页将失效
+        PageResult<User> userPageResult = baseRepository.selectPage(User.class, Condition.EMPTY_CONDITION,
+                0, 150, Ignorer.build("userDirList", "ftpDirList"));
+        PageResult<UserDir> userDirPageResult = baseRepository.selectPage(UserDir.class, Condition.EMPTY_CONDITION, 0, 5, Ignorer.build());
+    }
 
     @Test
     public void testGetFiledInfo() {

@@ -2,6 +2,7 @@ package com.lazy.cat.orm.core.base.service.impl;
 
 import com.lazy.cat.orm.core.base.bo.PageResult;
 import com.lazy.cat.orm.core.base.bo.QueryInfo;
+import com.lazy.cat.orm.core.base.service.BaseService;
 import com.lazy.cat.orm.core.base.util.BeanFieldUtil;
 import com.lazy.cat.orm.core.base.util.Caster;
 import com.lazy.cat.orm.core.base.util.CollectionUtil;
@@ -30,27 +31,25 @@ import java.util.stream.Collectors;
  * @date: 2021/3/3 17:28
  */
 @Transactional
-public class BaseServiceImpl<P> extends AbstractService<P> {
+public class BaseServiceImpl<P> extends AbstractService<P> implements BaseService<P> {
 
     @Override
-    @SuppressWarnings("unchecked")
-    public Collection<P> selectByParam(SearchParam searchParam) {
-        return (Collection<P>) this.selectByParam(tryGetPojoType(), searchParam);
+    public Collection<P> selectByParam(SearchParam<P> searchParam) {
+        return this.selectByParam(Caster.cast(tryGetPojoType()), searchParam);
     }
 
     @Override
-    public <T> Collection<T> selectByParam(Class<T> pojoType, SearchParam searchParam) {
+    public <T> Collection<T> selectByParam(Class<T> pojoType, SearchParam<T> searchParam) {
         return super.getRepository(pojoType).query(searchParam);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public PageResult<P> selectPageByParam(SearchParam searchParam) {
-        return (PageResult<P>) this.selectPageByParam(tryGetPojoType(), searchParam);
+    public PageResult<P> selectPageByParam(SearchParam<P> searchParam) {
+        return this.selectPageByParam(Caster.cast(tryGetPojoType()), searchParam);
     }
 
     @Override
-    public <T> PageResult<T> selectPageByParam(Class<T> pojoType, SearchParam searchParam) {
+    public <T> PageResult<T> selectPageByParam(Class<T> pojoType, SearchParam<T> searchParam) {
         return super.getRepository(pojoType).queryPage(searchParam);
     }
 
@@ -58,14 +57,14 @@ public class BaseServiceImpl<P> extends AbstractService<P> {
     @SuppressWarnings("unchecked")
     public Collection<P> select(QueryInfo queryInfo) {
         super.initCondition(queryInfo);
-        return (Collection<P>) super.getRepository(tryGetPojoType()).selectByInfo(tryGetPojoType(), queryInfo, null);
+        return (Collection<P>) super.getRepository(tryGetPojoType()).selectByInfo(queryInfo);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public PageResult<P> selectPage(QueryInfo queryInfo) {
         super.initCondition(queryInfo);
-        return (PageResult<P>) super.getRepository(tryGetPojoType()).selectPage(tryGetPojoType(), queryInfo, null);
+        return (PageResult<P>) super.getRepository(tryGetPojoType()).selectPage(queryInfo);
     }
 
     @Override

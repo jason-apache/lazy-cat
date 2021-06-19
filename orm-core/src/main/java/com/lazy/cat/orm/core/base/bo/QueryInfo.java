@@ -29,6 +29,10 @@ public class QueryInfo implements Serializable {
      * @see com.lazy.cat.orm.core.base.annotation.Column#queryFilter()
      */
     private Map<String, Object> params;
+    /**
+     * 忽略指定字段查询
+     */
+    private String[] ignoreFields;
 
     public boolean hasPaging() {
         return pageSize > 0;
@@ -76,6 +80,15 @@ public class QueryInfo implements Serializable {
 
     public QueryInfo setParams(Map<String, Object> params) {
         this.params = params;
+        return this;
+    }
+
+    public String[] getIgnoreFields() {
+        return ignoreFields;
+    }
+
+    public QueryInfo setIgnoreFields(String[] ignoreFields) {
+        this.ignoreFields = ignoreFields;
         return this;
     }
 }

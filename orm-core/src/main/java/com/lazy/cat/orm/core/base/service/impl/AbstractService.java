@@ -14,6 +14,8 @@ import com.lazy.cat.orm.core.jdbc.mapping.LogicDeleteField;
 import com.lazy.cat.orm.core.jdbc.mapping.On;
 import com.lazy.cat.orm.core.jdbc.mapping.TableChain;
 import com.lazy.cat.orm.core.jdbc.mapping.TableInfo;
+import com.lazy.cat.orm.core.jdbc.param.SearchParam;
+import com.lazy.cat.orm.core.jdbc.param.SimpleSearchParam;
 import com.lazy.cat.orm.core.manager.BusinessManager;
 import com.lazy.cat.orm.core.manager.subject.BusinessSubject;
 import org.apache.commons.logging.Log;
@@ -116,6 +118,15 @@ public abstract class AbstractService<P> extends AbstractFullAutomaticMapping<P>
             return Condition.eq(logicDeleteField.getJavaFieldName(), logicDeleteField.getNormalValue());
         }
         return null;
+    }
+
+    @Override
+    public <T> SearchParam<T> buildSearchParam(Class<T> pojoType) {
+        TableInfo tableInfo = pojoTableManager.getByPojoType(pojoType).getTableInfo();
+        SimpleSearchParam<T> searchParam = new SimpleSearchParam<T>(tableInfo).setPojoType(pojoType);
+        Condition condition = this.initCondition(pojoType);
+        searchParam.setCondition(condition == null ? Condition.EMPTY_CONDITION : condition);
+        return searchParam;
     }
 
     /**

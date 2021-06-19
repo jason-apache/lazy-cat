@@ -37,13 +37,13 @@ public class DefaultConditionAnalyzer implements ConditionAnalyzer {
 
     @Override
     public SearchSqlParamHolder analysis(SearchParam searchParam) {
+        if (Condition.EMPTY_CONDITION == searchParam.getCondition() || (null == searchParam.getCondition() && null == searchParam.getParams())) {
+            return new SearchSqlParamHolder(new StringBuilder(), Collections.emptyMap());
+        }
         StringBuilder sql = new StringBuilder();
         Map<String, Object> params;
         if (searchParam.getCondition() != null) {
             params = new HashMap<>();
-            if (Condition.EMPTY_CONDITION == searchParam.getCondition()) {
-                return new SearchSqlParamHolder(sql, Collections.emptyMap());
-            }
             this.analysis(searchParam.getPojoType(), sql, searchParam.getNestedChain(), searchParam.getCondition(), params,
                     true, Ignorer.getFields(searchParam.getIgnorer()), true, null);
         } else {
