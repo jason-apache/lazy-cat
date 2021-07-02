@@ -33,7 +33,7 @@ public class FullAutoMappingApiConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new EntrustRequestInterceptor(apiPojoSubjectProvider)).order(0)
+        registry.addInterceptor(new EntrustRequestInterceptor(apiPojoSubjectProvider)).order(ApiConstant.INTERCEPTOR_BASE_ORDER)
                 .addPathPatterns(ApiConstant.PATH_SYMBOL + entrustEntry + "/**");
     }
 }
