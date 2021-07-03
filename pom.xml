@@ -14,6 +14,30 @@
         <module>security</module>
     </modules>
 
+    <name>lazy-cat-parent</name>
+    <description>parent project</description>
+    <url>https://github.com/jason-apache/lazy-cat</url>
+
+    <developers>
+        <developer>
+            <name>jason</name>
+            <email>2628452503@qq.com</email>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/jason-apache/lazy-cat.git</connection>
+        <developerConnection>scm:git:https://github.com/jason-apache/lazy-cat.git</developerConnection>
+        <url>https://github.com/apache/maven/tree/master</url>
+    </scm>
+
     <properties>
         <spring.version>2.4.5</spring.version>
         <!--项目编译JDK版本-->
