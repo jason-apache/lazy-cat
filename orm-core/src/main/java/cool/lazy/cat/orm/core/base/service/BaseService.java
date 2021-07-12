@@ -31,11 +31,11 @@ public interface BaseService<P> extends FullAutomaticMapping {
     Collection<P> selectByParam(SearchParam<P> searchParam);
 
     /**
-     * 根据构建的查询参数查询，泛型重载
+     * 查询方法泛型重载
      * @param searchParam 查询参数
      * @return 结果集
      */
-    <T> Collection<T> selectByParam(Class<T> pojoType, SearchParam<T> searchParam);
+    <T> Collection<T> selectObjByParam(SearchParam<T> searchParam);
 
     /**
      * 根据构建的查询参数分页查询
@@ -45,11 +45,11 @@ public interface BaseService<P> extends FullAutomaticMapping {
     PageResult<P> selectPageByParam(SearchParam<P> searchParam);
 
     /**
-     * 根据构建的查询参数分页查询，泛型重载
+     * 查询方法泛型重载
      * @param searchParam 查询参数
-     * @return 带分页的结果集
+     * @return 结果集
      */
-    <T> PageResult<T> selectPageByParam(Class<T> pojoType, SearchParam<T> searchParam);
+    <T> PageResult<T> selectPageObjByParam(SearchParam<T> searchParam);
 
     /**
      * 根据API查询参数查询
@@ -64,6 +64,24 @@ public interface BaseService<P> extends FullAutomaticMapping {
      * @return 带分页的结果集
      */
     PageResult<P> selectPage(QueryInfo queryInfo);
+
+    /**
+     * 查询单条数据
+     * 如果结果集为空，则抛出 EmptyResultDataAccessException异常
+     * 如果结果集大于1条，则抛出 IncorrectResultSizeDataAccessException异常
+     * @param searchParam 查询参数
+     * @return 单条数据
+     */
+    P selectSingle(SearchParam<P> searchParam);
+
+    /**
+     * 查询单条数据 泛型重载
+     * 如果结果集为空，则抛出 EmptyResultDataAccessException异常
+     * 如果结果集大于1条，则抛出 IncorrectResultSizeDataAccessException异常
+     * @param searchParam 查询参数
+     * @return 单条数据
+     */
+    <T> T selectSingleObj(SearchParam<T> searchParam);
 
     /**
      * 根据主键查询

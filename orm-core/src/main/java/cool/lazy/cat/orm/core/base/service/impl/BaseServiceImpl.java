@@ -35,22 +35,28 @@ public class BaseServiceImpl<P> extends AbstractService<P> implements BaseServic
 
     @Override
     public Collection<P> selectByParam(SearchParam<P> searchParam) {
-        return this.selectByParam(Caster.cast(tryGetPojoType()), searchParam);
+        return selectObjByParam(searchParam);
     }
 
     @Override
-    public <T> Collection<T> selectByParam(Class<T> pojoType, SearchParam<T> searchParam) {
-        return super.getRepository(pojoType).query(searchParam);
+    public <T> Collection<T> selectObjByParam(SearchParam<T> searchParam) {
+        if (null == searchParam.getPojoType()) {
+            searchParam.setPojoType(Caster.cast(tryGetPojoType()));
+        }
+        return super.getRepository(searchParam.getPojoType()).query(searchParam);
     }
 
     @Override
     public PageResult<P> selectPageByParam(SearchParam<P> searchParam) {
-        return this.selectPageByParam(Caster.cast(tryGetPojoType()), searchParam);
+        return selectPageObjByParam(searchParam);
     }
 
     @Override
-    public <T> PageResult<T> selectPageByParam(Class<T> pojoType, SearchParam<T> searchParam) {
-        return super.getRepository(pojoType).queryPage(searchParam);
+    public <T> PageResult<T> selectPageObjByParam(SearchParam<T> searchParam) {
+        if (null == searchParam.getPojoType()) {
+            searchParam.setPojoType(Caster.cast(tryGetPojoType()));
+        }
+        return super.getRepository(searchParam.getPojoType()).queryPage(searchParam);
     }
 
     @Override
@@ -65,6 +71,19 @@ public class BaseServiceImpl<P> extends AbstractService<P> implements BaseServic
     public PageResult<P> selectPage(QueryInfo queryInfo) {
         super.initCondition(queryInfo);
         return (PageResult<P>) super.getRepository(tryGetPojoType()).selectPage(queryInfo);
+    }
+
+    @Override
+    public P selectSingle(SearchParam<P> searchParam) {
+        return this.selectSingleObj(searchParam);
+    }
+
+    @Override
+    public <T> T selectSingleObj(SearchParam<T> searchParam) {
+        if (null == searchParam.getPojoType()) {
+            searchParam.setPojoType(Caster.cast(tryGetPojoType()));
+        }
+        return super.getRepository(searchParam.getPojoType()).selectSingle(searchParam.getPojoType(), searchParam.getCondition(), searchParam.getIgnorer());
     }
 
     @Override
