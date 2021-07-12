@@ -4,6 +4,7 @@ import cool.lazy.cat.orm.api.exception.ExistNameSpaceException;
 import cool.lazy.cat.orm.api.exception.SamePathApiException;
 import cool.lazy.cat.orm.api.manager.subject.ApiPojoSubject;
 import cool.lazy.cat.orm.api.util.PathGenerator;
+import cool.lazy.cat.orm.api.web.EntryInfo;
 import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
 import cool.lazy.cat.orm.core.manager.Manager;
 import cool.lazy.cat.orm.core.manager.PojoManager;
@@ -49,13 +50,13 @@ public class ApiPojoManager implements Manager {
             if (null == subject.getApiPojoAnnotation()) {
                 continue;
             }
-            String allCombinations = this.combination(subject.getNameSpace(), subject.getEntryMethodList());
+            String allCombinations = this.combination(subject.getNameSpace(), subject.getEntryInfoList());
             for (ApiPojoSubject contrast : apiPojoSubjectList) {
                 if (null == contrast.getApiPojoAnnotation() || contrast == subject) {
                     continue;
                 }
-                List<ApiPojoSubject.EntryMethod> entryMethodList = contrast.getEntryMethodList();
-                for (ApiPojoSubject.EntryMethod entryMethod : entryMethodList) {
+                List<EntryInfo> entryMethodList = contrast.getEntryInfoList();
+                for (EntryInfo entryMethod : entryMethodList) {
                     if (allCombinations.contains(PathGenerator.path(contrast.getNameSpace(), entryMethod.getPath(), entryMethod.getMethod()))) {
                         throw new SamePathApiException("重复的api映射：代理类" + subject.getPojoType().getName() + "\t-->\t" + contrast.getPojoType().getName()
                                 + "\tmappingApi：" + contrast.getNameSpace() + entryMethod.getPath() + "/" + entryMethod.getMethod());
@@ -65,9 +66,9 @@ public class ApiPojoManager implements Manager {
         }
     }
 
-    private String combination(String nameSpace, List<ApiPojoSubject.EntryMethod> entryMethodList) {
+    private String combination(String nameSpace, List<EntryInfo> entryMethodList) {
         StringBuilder sb = new StringBuilder();
-        for (ApiPojoSubject.EntryMethod entryMethod : entryMethodList) {
+        for (EntryInfo entryMethod : entryMethodList) {
             sb.append(PathGenerator.path(nameSpace, entryMethod.getPath(), entryMethod.getMethod())).append("|");
         }
         return sb.toString();

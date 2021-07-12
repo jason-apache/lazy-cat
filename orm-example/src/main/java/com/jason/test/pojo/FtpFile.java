@@ -3,7 +3,12 @@ package com.jason.test.pojo;
 import com.jason.test.base.BasePojo;
 import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
 import cool.lazy.cat.orm.api.web.annotation.Entry;
-import cool.lazy.cat.orm.api.web.constant.ApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.QueryApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.QueryPageApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.RemoveApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.RemoveCascadeApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.SaveApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.SaveCascadeApiEntry;
 import cool.lazy.cat.orm.core.base.annotation.Column;
 import cool.lazy.cat.orm.core.base.annotation.Id;
 import cool.lazy.cat.orm.core.base.annotation.ManyToOne;
@@ -23,12 +28,12 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @ApiPojo(entry = {
-        @Entry(path = "/example/selectPage/", mappingApi = ApiEntry.QUERY_PAGE),
-        @Entry(path = "/example/select/", mappingApi = ApiEntry.QUERY),
-        @Entry(path = "/example/save/", mappingApi = ApiEntry.SAVE),
-        @Entry(path = "/example/saveForce/", mappingApi = ApiEntry.SAVE_CASCADE),
-        @Entry(path = "/example/delete/", mappingApi = ApiEntry.REMOVE),
-        @Entry(path = "/example/deleteForce/", mappingApi = ApiEntry.REMOVE_CASCADE)
+        @Entry(path = "/example/selectPage/", api = QueryPageApiEntry.class),
+        @Entry(path = "/example/select/", api = QueryApiEntry.class),
+        @Entry(path = "/example/save/", api = SaveApiEntry.class),
+        @Entry(path = "/example/saveForce/", api = SaveCascadeApiEntry.class),
+        @Entry(path = "/example/delete/", api = RemoveApiEntry.class),
+        @Entry(path = "/example/deleteForce/", api = RemoveCascadeApiEntry.class)
 })
 @Pojo
 public class FtpFile extends BasePojo {

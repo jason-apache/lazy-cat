@@ -4,7 +4,7 @@ package com.jason.test.pojo;
 import com.jason.test.base.BasePojo;
 import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
 import cool.lazy.cat.orm.api.web.annotation.Entry;
-import cool.lazy.cat.orm.api.web.constant.ApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.RemoveByIdsApiEntry;
 import cool.lazy.cat.orm.core.base.annotation.Column;
 import cool.lazy.cat.orm.core.base.annotation.Id;
 import cool.lazy.cat.orm.core.base.annotation.Pojo;
@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Pojo
 @ApiPojo(entry = {
-        @Entry(path = "/example/deleteByIds/", mappingApi = ApiEntry.REMOVE_BY_IDS)
+        @Entry(path = "/example/deleteByIds/", api = RemoveByIdsApiEntry.class)
 })
 public class Sex extends BasePojo {
 

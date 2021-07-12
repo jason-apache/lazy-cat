@@ -1,6 +1,7 @@
 package cool.lazy.cat.orm.api.web.annotation;
 
-import org.springframework.web.bind.annotation.RequestMethod;
+import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
+import org.springframework.http.HttpMethod;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -21,12 +22,12 @@ public @interface Entry {
     String path();
 
     /**
-     * 需要转发的目标路径
+     * api方法, 必须是一个ApiMethodEntry的实现类
      */
-    String mappingApi();
+    Class<? extends ApiMethodEntry> api();
 
     /**
      * http请求方式
      */
-    RequestMethod method() default RequestMethod.POST;
+    HttpMethod method() default HttpMethod.POST;
 }

@@ -40,7 +40,7 @@ public class TestService {
     @Test
     public void testSelectByParam() {
         Collection<User> users = baseService.selectByParam(baseService.buildSearchParam(User.class));
-        Collection<UserDir> userDirs = baseService.selectByParam(UserDir.class, baseService.buildSearchParam(UserDir.class));
+        Collection<UserDir> userDirs = baseService.selectObjByParam(baseService.buildSearchParam(UserDir.class));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class TestService {
         // 一对多查询时忽略多的一方的查询，否则分页将失效
         PageResult<User> userPageResult = baseService.selectPageByParam(baseService.buildSearchParam(User.class)
                 .setPageSize(150).setIgnorer(Ignorer.build("userDirList", "ftpDirList")));
-        PageResult<UserDir> userDirPageResult = baseService.selectPageByParam(UserDir.class, baseService.buildSearchParam(UserDir.class).setPageSize(5));
+        PageResult<UserDir> userDirPageResult = baseService.selectPageObjByParam(baseService.buildSearchParam(UserDir.class).setPageSize(5));
     }
 
     @Test

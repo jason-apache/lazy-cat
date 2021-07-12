@@ -2,7 +2,7 @@ package cool.lazy.cat.orm.api.util;
 
 import cool.lazy.cat.orm.api.web.constant.ApiConstant;
 import cool.lazy.cat.orm.core.base.util.StringUtil;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpMethod;
 
 /**
  * @author: mahao
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 public class PathGenerator {
 
-    public static String path(String nameSpace, String path, RequestMethod type) {
-        return nameSpace + path + ApiConstant.PATH_SYMBOL + ":" + type;
+    public static String path(String nameSpace, String path, HttpMethod type) {
+        return nameSpace + path + ApiConstant.PATH_SYMBOL + ":" + type.name();
     }
 
     public static String format(String path) {
