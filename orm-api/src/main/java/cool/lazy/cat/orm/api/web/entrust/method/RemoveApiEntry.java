@@ -1,7 +1,11 @@
 package cool.lazy.cat.orm.api.web.entrust.method;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.lazy.cat.orm.api.web.entrust.EntrustApi;
+import cool.lazy.cat.orm.core.context.FullAutoMappingContext;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -10,8 +14,12 @@ import java.util.List;
  */
 public class RemoveApiEntry extends AbstractApiMethodEntry implements ApiMethodEntry {
 
-    public RemoveApiEntry(EntrustApi api) {
-        super(api, "remove", List.class);
+    public RemoveApiEntry(EntrustApi api, ObjectMapper objectMapper) {
+        super(api, objectMapper, "remove", List.class);
     }
 
+    @Override
+    public Object[] buildParameters(HttpServletRequest request, HttpServletResponse response) {
+        return new Object[]{super.readJsonObj(request, objectMapper.getTypeFactory().constructParametricType(List.class, FullAutoMappingContext.getPojoType()))};
+    }
 }

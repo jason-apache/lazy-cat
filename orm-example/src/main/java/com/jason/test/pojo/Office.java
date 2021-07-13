@@ -52,6 +52,7 @@ public class Office extends TreePojo {
     private String parentId;
     private Office parent;
     private List<Office> childrenList;
+    private List<User> userList;
 
     @Override
     @Id(idGenerator = UUIdGenerator.class)
@@ -77,7 +78,7 @@ public class Office extends TreePojo {
     }
 
     @Override
-    @ManyToOne(condition = @On(foreignFiled = "parentId", targetFiled = "id"), insertable = false, updatable = false)
+    @ManyToOne(condition = @On(foreignFiled = "parentId", targetFiled = "id"), insertable = true, updatable = false)
     public Office getParent() {
         return parent;
     }
@@ -85,5 +86,10 @@ public class Office extends TreePojo {
     @OneToMany(condition = @On(foreignFiled = "id", targetFiled = "parentId"), deletable = true)
     public List<Office> getChildrenList() {
         return childrenList;
+    }
+
+    @OneToMany(condition = @On(foreignFiled = "id", targetFiled = "department"), deletable = true)
+    public List<User> getUserList() {
+        return userList;
     }
 }

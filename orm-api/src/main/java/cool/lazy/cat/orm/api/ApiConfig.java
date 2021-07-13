@@ -11,23 +11,23 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "cool.lazy-cat.servlet")
 public class ApiConfig {
 
-    private String entrustPathNode = "api";
+    private String apiPath = "lazy-cat";
 
-    public String getEntrustPathNode() {
-        return entrustPathNode;
+    public String getApiPath() {
+        return apiPath;
     }
 
-    public ApiConfig setEntrustPathNode(String entrustPathNode) {
-        if (null == entrustPathNode || StringUtil.isBlank(entrustPathNode)) {
-            throw new IllegalArgumentException("entrustPathNode不能为空");
+    public ApiConfig setApiPath(String apiPath) {
+        if (null == apiPath || StringUtil.isEmpty(apiPath)) {
+            throw new IllegalArgumentException("apiPath不能为空");
         }
-        char prefix = entrustPathNode.charAt(0);
-        char suffix = entrustPathNode.charAt(entrustPathNode.length() -1);
-        if (entrustPathNode.contains("*") || prefix == ApiConstant.PATH_SYMBOL || prefix == '\\'
+        char prefix = apiPath.charAt(0);
+        char suffix = apiPath.charAt(apiPath.length() -1);
+        if (apiPath.contains("*") || prefix == ApiConstant.PATH_SYMBOL || prefix == '\\'
                 || suffix == ApiConstant.PATH_SYMBOL || suffix == '\\') {
-            throw new IllegalArgumentException("entrustPathNode首尾不能包含路径或通配符");
+            throw new IllegalArgumentException("apiPath首尾不能包含路径或通配符");
         }
-        this.entrustPathNode = entrustPathNode;
+        this.apiPath = apiPath;
         return this;
     }
 }

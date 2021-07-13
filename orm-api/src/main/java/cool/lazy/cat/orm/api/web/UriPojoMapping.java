@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class UriPojoMapping {
 
-    private final static Map<String, Map<HttpMethod,EntryInfo>> POJO_MAPPING = new HashMap<>(Constant.DEFAULT_CONTAINER_SIZE);
+    private final static Map<String, Map<HttpMethod, EntryInfo>> POJO_MAPPING = new HashMap<>(Constant.DEFAULT_CONTAINER_SIZE);
     protected final Log logger = LogFactory.getLog(getClass());
 
     @Autowired

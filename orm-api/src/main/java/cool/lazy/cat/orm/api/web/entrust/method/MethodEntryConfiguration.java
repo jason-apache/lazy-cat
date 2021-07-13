@@ -1,6 +1,8 @@
 package cool.lazy.cat.orm.api.web.entrust.method;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.lazy.cat.orm.api.web.entrust.EntrustApi;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -10,37 +12,37 @@ import org.springframework.context.annotation.Bean;
 public class MethodEntryConfiguration {
 
     @Bean
-    public QueryApiEntry queryApiEntry(EntrustApi api) {
-        return new QueryApiEntry(api);
+    public QueryApiEntry queryApiEntry(@Qualifier(value = "entrustApi") EntrustApi api, ObjectMapper objectMapper) {
+        return new QueryApiEntry(api, objectMapper);
     }
 
     @Bean
-    public QueryPageApiEntry queryPageApiEntry(EntrustApi api) {
-        return new QueryPageApiEntry(api);
+    public QueryPageApiEntry queryPageApiEntry(@Qualifier(value = "entrustApi") EntrustApi api, ObjectMapper objectMapper) {
+        return new QueryPageApiEntry(api, objectMapper);
     }
 
     @Bean
-    public RemoveApiEntry removeApiEntry(EntrustApi api) {
-        return new RemoveApiEntry(api);
+    public RemoveApiEntry removeApiEntry(@Qualifier(value = "entrustApi") EntrustApi api, ObjectMapper objectMapper) {
+        return new RemoveApiEntry(api, objectMapper);
     }
 
     @Bean
-    public RemoveByIdsApiEntry removeByIdsApiEntry(EntrustApi api) {
-        return new RemoveByIdsApiEntry(api);
+    public RemoveByIdsApiEntry removeByIdsApiEntry(@Qualifier(value = "entrustApi") EntrustApi api, ObjectMapper objectMapper) {
+        return new RemoveByIdsApiEntry(api, objectMapper);
     }
 
     @Bean
-    public RemoveCascadeApiEntry removeCascadeApiEntry(EntrustApi api) {
-        return new RemoveCascadeApiEntry(api);
+    public RemoveCascadeApiEntry removeCascadeApiEntry(@Qualifier(value = "entrustApi") EntrustApi api, ObjectMapper objectMapper) {
+        return new RemoveCascadeApiEntry(api, objectMapper);
     }
 
     @Bean
-    public SaveApiEntry saveApiEntry(EntrustApi api) {
-        return new SaveApiEntry(api);
+    public SaveApiEntry saveApiEntry(@Qualifier(value = "entrustApi") EntrustApi api, ObjectMapper objectMapper) {
+        return new SaveApiEntry(api, objectMapper);
     }
 
     @Bean
-    public SaveCascadeApiEntry saveCascadeApiEntry(EntrustApi api) {
-        return new SaveCascadeApiEntry(api);
+    public SaveCascadeApiEntry saveCascadeApiEntry(@Qualifier(value = "entrustApi") EntrustApi api, ObjectMapper objectMapper) {
+        return new SaveCascadeApiEntry(api, objectMapper);
     }
 }

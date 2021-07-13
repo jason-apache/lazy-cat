@@ -1,6 +1,5 @@
 package cool.lazy.cat.orm.api.web.entrust.executor;
 
-import cool.lazy.cat.orm.api.web.entrust.executor.holder.ResponseDataWriterHolder;
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public class DefaultApiMethodExecutor extends AbstractApiMethodExecutor implements ApiMethodExecutor {
 
-    protected DefaultApiMethodExecutor(ApiMethodParameterInjector apiMethodParameterInjector, ResponseDataWriterHolder responseDataWriterHolder, List<ApiMethodEntry> apiMethodEntryList) {
-        super(apiMethodParameterInjector, responseDataWriterHolder, apiMethodEntryList);
+    public DefaultApiMethodExecutor(List<ApiMethodEntry> apiMethodEntryList) {
+        super(apiMethodEntryList);
     }
 }

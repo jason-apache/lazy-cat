@@ -1,30 +1,32 @@
 package cool.lazy.cat.orm.api.web;
 
 import cool.lazy.cat.orm.api.ApiConfig;
-import cool.lazy.cat.orm.api.web.constant.ApiConstant;
-import cool.lazy.cat.orm.api.web.entrust.EntrustApi;
+import cool.lazy.cat.orm.api.web.entrust.BasicEntrustController;
 import cool.lazy.cat.orm.api.web.entrust.EntrustApiImpl;
-import cool.lazy.cat.orm.api.web.entrust.executor.ExecutorConfiguration;
+import cool.lazy.cat.orm.api.web.entrust.EntrustController;
+import cool.lazy.cat.orm.api.web.entrust.executor.ApiMethodExecutor;
+import cool.lazy.cat.orm.api.web.entrust.executor.DefaultApiMethodExecutor;
+import cool.lazy.cat.orm.api.web.entrust.executor.holder.DefaultExecutorHolder;
 import cool.lazy.cat.orm.api.web.entrust.executor.holder.ExecutorHolder;
-import cool.lazy.cat.orm.api.web.entrust.filter.EntrustFilter;
+import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
 import cool.lazy.cat.orm.api.web.entrust.method.MethodEntryConfiguration;
 import cool.lazy.cat.orm.api.web.entrust.provider.ApiEntryInfoProvider;
 import cool.lazy.cat.orm.api.web.entrust.provider.DefaultApiEntryInfoProvider;
 import cool.lazy.cat.orm.core.manager.BusinessManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+
+import java.util.List;
 
 /**
  * @author: mahao
  * @date: 2021/4/21 19:56
  */
-@Import(value = {ExecutorConfiguration.class, MethodEntryConfiguration.class})
+@Import(value = {MethodEntryConfiguration.class})
 public class ApiAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(value = EntrustApi.class)
     public EntrustApiImpl entrustApi(BusinessManager businessManager) {
         return new EntrustApiImpl(businessManager);
     }
@@ -41,11 +43,20 @@ public class ApiAutoConfiguration {
     }
 
     @Bean
-    public FilterRegistrationBean<EntrustFilter> entrustFilterFilterRegistrationBean(ApiEntryInfoProvider apiEntryInfoProvider, ExecutorHolder executorHolder, ApiConfig apiConfig) {
-        FilterRegistrationBean<EntrustFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new EntrustFilter(apiEntryInfoProvider, executorHolder, apiConfig.getEntrustPathNode()));
-        registrationBean.addUrlPatterns(ApiConstant.PATH_SYMBOL + apiConfig.getEntrustPathNode() + "/*");
-        registrationBean.setOrder(ApiConstant.FILTER_BASE_ORDER);
-        return registrationBean;
+    @ConditionalOnMissingBean(value = ApiMethodExecutor.class)
+    public DefaultApiMethodExecutor defaultApiMethodExecutor(List<ApiMethodEntry> apiMethodEntryList) {
+        return new DefaultApiMethodExecutor(apiMethodEntryList);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(value = ExecutorHolder.class)
+    public DefaultExecutorHolder defaultExecutorHolder(ApiMethodExecutor apiMethodExecutor) {
+        return new DefaultExecutorHolder(apiMethodExecutor);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(value = EntrustController.class)
+    public BasicEntrustController basicEntrustController(ApiEntryInfoProvider apiEntryInfoProvider, ExecutorHolder executorHolder, ApiConfig apiConfig) {
+        return new BasicEntrustController(apiEntryInfoProvider, executorHolder, apiConfig.getApiPath());
     }
 }

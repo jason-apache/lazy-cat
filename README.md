@@ -7,7 +7,7 @@
                        org.springframework.boot:spring-boot-starter-jdbc
     
     api: 
-         api自动映射，访问指定的api uri，自动转发至业务接口@cool.lazy.cat.orm.api.web.entrust.filter.EntrustFilter
+         api自动映射，访问指定的api uri，自动转发至业务接口@cool.lazy.cat.orm.api.web.entrust.BasicEntrustController
          依赖于core，对数据库基础操作进行抽象，避免重复工作，试图打造出一个快速开发脚手架.
          dependencies: 
                       org.springframework.boot:spring-boot-starter-web
@@ -16,6 +16,6 @@
 # 快速开始
     启动类增加 @PojoScan注解，扫描指定包下被@Pojo注解标注的类
     你需要阅读这些注解：
-        com.lazy.cat.orm.core.base.annotation.*
-        com.lazy.cat.orm.api.web.annotation.*
+        cool.lazy.cat.orm.core.base.annotation.*
+        cool.lazy.cat.orm.api.web.annotation.*
     并参考example项目中的测试类

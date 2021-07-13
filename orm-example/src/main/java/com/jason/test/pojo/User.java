@@ -1,6 +1,7 @@
 package com.jason.test.pojo;
 
 
+import com.jason.test.api.TestApiEntry;
 import com.jason.test.base.RecordPojo;
 import com.jason.test.trigger.RecordPojoTrigger;
 import com.jason.test.validator.RegexValidator;
@@ -42,7 +43,8 @@ import java.util.List;
         @Entry(path = "/example/save/", api = SaveApiEntry.class),
         @Entry(path = "/example/saveForce/", api = SaveCascadeApiEntry.class),
         @Entry(path = "/example/delete/", api = RemoveApiEntry.class),
-        @Entry(path = "/example/deleteForce/", api = RemoveCascadeApiEntry.class)
+        @Entry(path = "/example/deleteForce/", api = RemoveCascadeApiEntry.class),
+        @Entry(path = "/example/test/", api = TestApiEntry.class)
 })
 @Pojo(trigger = @Trigger(type = RecordPojoTrigger.class))
 public class User extends RecordPojo {

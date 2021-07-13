@@ -1,7 +1,11 @@
 package cool.lazy.cat.orm.api.web.entrust.method;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.lazy.cat.orm.api.web.entrust.EntrustApi;
 import cool.lazy.cat.orm.core.base.bo.QueryInfo;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author: mahao
@@ -9,8 +13,12 @@ import cool.lazy.cat.orm.core.base.bo.QueryInfo;
  */
 public class QueryPageApiEntry extends AbstractApiMethodEntry implements ApiMethodEntry {
 
-    public QueryPageApiEntry(EntrustApi api) {
-        super(api, "queryPage", QueryInfo.class);
+    public QueryPageApiEntry(EntrustApi api, ObjectMapper objectMapper) {
+        super(api, objectMapper, "queryPage", QueryInfo.class);
     }
 
+    @Override
+    public Object[] buildParameters(HttpServletRequest request, HttpServletResponse response) {
+        return new Object[]{super.readJsonObj(request, objectMapper.getTypeFactory().constructType(QueryInfo.class))};
+    }
 }

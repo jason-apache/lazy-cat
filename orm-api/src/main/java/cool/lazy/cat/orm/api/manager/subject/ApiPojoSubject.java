@@ -5,6 +5,7 @@ import cool.lazy.cat.orm.api.util.PathGenerator;
 import cool.lazy.cat.orm.api.web.EntryInfo;
 import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
 import cool.lazy.cat.orm.api.web.annotation.Entry;
+import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
 import cool.lazy.cat.orm.core.base.util.StringUtil;
 import cool.lazy.cat.orm.core.manager.subject.Subject;
 
@@ -34,6 +35,9 @@ public class ApiPojoSubject implements Subject {
                 this.nameSpace = PathGenerator.format(StringUtil.upper2Lower(name));
             }
             for (Entry entry : apiPojoAnnotation.entry()) {
+                if (entry.api() == ApiMethodEntry.class) {
+                    throw new IllegalArgumentException("不是一个ApiMethodEntry实现类：" + entry.api().getName());
+                }
                 EntryInfo entryMethod = new EntryInfo(this, PathGenerator.format(entry.path()), entry.api(), entry.method());
                 boolean exist = entryInfoList.stream().anyMatch(e -> e.equals(entryMethod));
                 if (exist) {

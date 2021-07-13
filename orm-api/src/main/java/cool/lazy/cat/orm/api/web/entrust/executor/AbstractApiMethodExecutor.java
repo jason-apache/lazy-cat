@@ -1,9 +1,9 @@
 package cool.lazy.cat.orm.api.web.entrust.executor;
 
 import cool.lazy.cat.orm.api.exception.ReflectInvocationException;
+import cool.lazy.cat.orm.api.exception.UnKnowTargetApiMethodEntryException;
 import cool.lazy.cat.orm.api.web.EntryInfo;
 import cool.lazy.cat.orm.api.web.entrust.EntrustApi;
-import cool.lazy.cat.orm.api.web.entrust.executor.holder.ResponseDataWriterHolder;
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
 import cool.lazy.cat.orm.api.web.entrust.method.MethodInfo;
 
@@ -21,20 +21,16 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractApiMethodExecutor implements ApiMethodExecutor {
 
-    protected final ApiMethodParameterInjector apiMethodParameterInjector;
-    protected final Map<Class<? extends ApiMethodEntry>, ApiMethodEntry> apiMethodEntryList;
-    protected final ResponseDataWriterHolder responseDataWriterHolder;
+    protected final Map<Class<? extends ApiMethodEntry>, ApiMethodEntry> apiMethodEntryMap;
 
-    protected AbstractApiMethodExecutor(ApiMethodParameterInjector apiMethodParameterInjector, ResponseDataWriterHolder responseDataWriterHolder, List<ApiMethodEntry> apiMethodEntryList) {
-        this.apiMethodParameterInjector = apiMethodParameterInjector;
-        this.responseDataWriterHolder = responseDataWriterHolder;
-        this.apiMethodEntryList = apiMethodEntryList.stream().collect(Collectors.toMap(ApiMethodEntry::getClass, Function.identity()));
+    protected AbstractApiMethodExecutor(List<ApiMethodEntry> apiMethodEntryList) {
+        this.apiMethodEntryMap = apiMethodEntryList.stream().collect(Collectors.toMap(ApiMethodEntry::getClass, Function.identity()));
     }
 
     protected Object call(HttpServletRequest request, HttpServletResponse response, ApiMethodEntry methodEntry) {
         EntrustApi apiBean = methodEntry.getApiBean();
         MethodInfo businessMethod = methodEntry.getBusinessMethod();
-        Object[] args = apiMethodParameterInjector.inject(request, response, businessMethod);
+        Object[] args = methodEntry.buildParameters(request, response);
         try {
             return businessMethod.getMethod().invoke(apiBean, args);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -43,9 +39,12 @@ public abstract class AbstractApiMethodExecutor implements ApiMethodExecutor {
     }
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response, EntryInfo entryInfo) {
-        ApiMethodEntry methodEntry = apiMethodEntryList.get(entryInfo.getApi());
-        Object result = this.call(request, response, methodEntry);
-        responseDataWriterHolder.doResponse(result, response, methodEntry);
+    public Object execute(HttpServletRequest request, HttpServletResponse response, EntryInfo entryInfo) {
+        ApiMethodEntry methodEntry = apiMethodEntryMap.get(entryInfo.getApi());
+        if (null == methodEntry) {
+            throw new UnKnowTargetApiMethodEntryException("无法获取api方法, 请检查该bean是否在IOC容器中 " + entryInfo.getApiPojoSubject().getPojoType().getName()
+                + "#" + entryInfo.getApi().getName());
+        }
+        return this.call(request, response, methodEntry);
     }
 }

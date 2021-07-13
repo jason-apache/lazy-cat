@@ -3,8 +3,6 @@ package cool.lazy.cat.orm.api.web.entrust;
 import cool.lazy.cat.orm.core.base.bo.QueryInfo;
 import cool.lazy.cat.orm.core.base.bo.WebResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -13,7 +11,7 @@ import java.util.List;
  */
 public interface BusinessMethod {
 
-    WebResponse query(QueryInfo queryInfo, HttpServletRequest request, HttpServletResponse response, String name);
+    WebResponse query(QueryInfo queryInfo);
 
     WebResponse queryPage(QueryInfo queryInfo);
 

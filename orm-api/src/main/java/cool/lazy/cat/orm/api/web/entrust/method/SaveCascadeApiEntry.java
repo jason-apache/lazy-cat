@@ -1,7 +1,11 @@
 package cool.lazy.cat.orm.api.web.entrust.method;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.lazy.cat.orm.api.web.entrust.EntrustApi;
+import cool.lazy.cat.orm.core.context.FullAutoMappingContext;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -10,8 +14,12 @@ import java.util.List;
  */
 public class SaveCascadeApiEntry extends AbstractApiMethodEntry implements ApiMethodEntry {
 
-    public SaveCascadeApiEntry(EntrustApi api) {
-        super(api, "saveCascade", List.class);
+    public SaveCascadeApiEntry(EntrustApi api, ObjectMapper objectMapper) {
+        super(api, objectMapper, "saveCascade", List.class);
     }
 
+    @Override
+    public Object[] buildParameters(HttpServletRequest request, HttpServletResponse response) {
+        return new Object[]{super.readJsonObj(request, objectMapper.getTypeFactory().constructParametricType(List.class, FullAutoMappingContext.getPojoType()))};
+    }
 }

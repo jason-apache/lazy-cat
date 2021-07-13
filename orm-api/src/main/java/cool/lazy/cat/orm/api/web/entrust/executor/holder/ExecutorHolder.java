@@ -11,5 +11,5 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ExecutorHolder {
 
-    void execute(HttpServletRequest request, HttpServletResponse response, EntryInfo entryInfo);
+    Object execute(HttpServletRequest request, HttpServletResponse response, EntryInfo entryInfo);
 }

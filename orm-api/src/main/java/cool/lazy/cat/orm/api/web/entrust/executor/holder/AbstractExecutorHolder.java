@@ -19,9 +19,9 @@ public abstract class AbstractExecutorHolder implements ExecutorHolder {
     }
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response, EntryInfo entryInfo) {
+    public Object execute(HttpServletRequest request, HttpServletResponse response, EntryInfo entryInfo) {
         this.preExecute(request, response, entryInfo);
-        this.apiMethodExecutor.execute(request, response, entryInfo);
+        return this.apiMethodExecutor.execute(request, response, entryInfo);
     }
 
     protected abstract void preExecute(HttpServletRequest request, HttpServletResponse response, EntryInfo entryInfo);
