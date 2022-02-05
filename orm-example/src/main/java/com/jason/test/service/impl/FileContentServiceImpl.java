@@ -1,6 +1,6 @@
 package com.jason.test.service.impl;
 
-import com.jason.test.pojo.FileContent;
+import com.jason.test.pojo.mysql.FileContent;
 import com.jason.test.service.FileContentService;
 import cool.lazy.cat.orm.core.base.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
@@ -11,11 +11,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FileContentServiceImpl extends BaseServiceImpl<FileContent> implements FileContentService {
-
-    @Override
-    public FileContent insert(FileContent pojo, boolean cascade) {
-        return super.insert(pojo, cascade);
-    }
 
     @Override
     public FileContent update(FileContent pojo, boolean cascade, boolean ignoreNull) {

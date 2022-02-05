@@ -1,9 +1,10 @@
 package cool.lazy.cat.orm.core.jdbc.analyzer;
 
 
-import cool.lazy.cat.orm.core.jdbc.condition.Condition;
-import cool.lazy.cat.orm.core.jdbc.holder.SqlParamHolder;
-import cool.lazy.cat.orm.core.jdbc.param.SearchParam;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldAccessor;
+import cool.lazy.cat.orm.core.jdbc.sql.condition.SqlCondition;
+import cool.lazy.cat.orm.core.jdbc.sql.string.keyword.WhereSqlString;
+import cool.lazy.cat.orm.core.jdbc.sql.type.SqlType;
 
 /**
  * @author: mahao
@@ -13,17 +14,9 @@ import cool.lazy.cat.orm.core.jdbc.param.SearchParam;
 public interface ConditionAnalyzer {
 
     /**
-     * 解析查询参数，条件可能使用Condition，也可能使用map
-     * @param searchParam 查询参数
+     * 解析查询条件
+     * @param sqlCondition 查询参数
      * @return 解析结果
      */
-    SqlParamHolder analysis(SearchParam searchParam);
-
-    /**
-     * 解析修改、删除参数
-     * @param pojoType pojo类型
-     * @param condition 条件
-     * @return 解析结果
-     */
-    SqlParamHolder analysis(Class<?> pojoType, Condition condition);
+    WhereSqlString<?> analysis(Class<? extends SqlType> type, Class<?> pojoType, FieldAccessor fieldAccessor, SqlCondition sqlCondition);
 }

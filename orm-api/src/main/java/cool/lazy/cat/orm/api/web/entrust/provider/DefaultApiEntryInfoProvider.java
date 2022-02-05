@@ -21,6 +21,7 @@ public class DefaultApiEntryInfoProvider implements ApiEntryInfoProvider {
 
     @Override
     public EntryInfo provider(String uri, HttpMethod method) {
+        // 从全局api映射中匹配
         Map<HttpMethod, EntryInfo> mappingByUri = uriPojoMapping.getByUri(uri);
         if (null == mappingByUri) {
             return null;

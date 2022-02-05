@@ -1,14 +1,11 @@
 package cool.lazy.cat.orm.api.web.entrust.method;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.lazy.cat.orm.api.exception.CannotLoadApiMethodException;
-import cool.lazy.cat.orm.api.exception.JsonReadException;
 import cool.lazy.cat.orm.api.web.entrust.EntrustApi;
+import cool.lazy.cat.orm.api.web.entrust.MethodInfo;
+import cool.lazy.cat.orm.api.web.entrust.MethodInfoImpl;
 import org.springframework.core.MethodParameter;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
@@ -19,11 +16,9 @@ public abstract class AbstractApiMethodEntry implements ApiMethodEntry {
 
     protected final EntrustApi api;
     protected final MethodInfo methodInfo;
-    protected final ObjectMapper objectMapper;
 
-    public AbstractApiMethodEntry(EntrustApi api, ObjectMapper objectMapper, String methodName, Class<?>... parameterTypes) {
+    public AbstractApiMethodEntry(EntrustApi api, String methodName, Class<?>... parameterTypes) {
         this.api = api;
-        this.objectMapper = objectMapper;
         Method method = this.loadMethod(methodName, parameterTypes);
         this.methodInfo = this.buildMethodInfo(method);
     }
@@ -44,7 +39,7 @@ public abstract class AbstractApiMethodEntry implements ApiMethodEntry {
         for (int i = 0; i < parameterTypes.length; i++) {
             methodParameters[i] = new MethodParameter(method, i);
         }
-        return new MethodInfo(method, methodParameters);
+        return new MethodInfoImpl(method, methodParameters);
     }
 
     @Override
@@ -57,11 +52,4 @@ public abstract class AbstractApiMethodEntry implements ApiMethodEntry {
         return this.methodInfo;
     }
 
-    protected Object readJsonObj(HttpServletRequest request, JavaType javaType) {
-        try {
-            return this.objectMapper.readValue(request.getInputStream(), javaType);
-        } catch (IOException e) {
-            throw new JsonReadException("json解析异常", e);
-        }
-    }
 }

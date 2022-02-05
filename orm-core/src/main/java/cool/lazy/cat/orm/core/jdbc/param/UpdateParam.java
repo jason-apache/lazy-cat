@@ -1,41 +1,35 @@
 package cool.lazy.cat.orm.core.jdbc.param;
 
 
-import cool.lazy.cat.orm.core.jdbc.condition.Condition;
+import cool.lazy.cat.orm.core.jdbc.sql.condition.SqlCondition;
+
+import java.util.Set;
 
 /**
  * @author: mahao
  * @date: 2021/4/14 10:52
+ * 更新操作基础参数
  */
-public interface UpdateParam {
-
-    /**
-     * 需要更新的pojo类型
-     * @return pojo类型
-     */
-    Class<?> getPojoType();
-
-    /**
-     * 更新条件
-     * @return 更新条件
-     */
-    Condition getCondition();
+public interface UpdateParam extends DataHolderParam, Param {
 
     /**
      * 是否忽略空值的字段
      * @return 是否忽略空值
      */
-    boolean getIgnoreNull();
+    boolean ignoreNullField();
 
     /**
-     * 忽略更新的字段
-     * @return 忽略更新的字段
+     * @return 忽略更新字段
      */
-    String[] getIgnoreFields();
+    Set<String> getUpdateFields();
 
     /**
-     * 需要更新的数据，可以是一个对象，也可以是一个对象集合
-     * @return 数据
+     * @param condition 更新条件
      */
-    Object getData();
+    void setCondition(SqlCondition condition);
+
+    /**
+     * @param pojoType 更新pojo类型
+     */
+    void setPojoType(Class<?> pojoType);
 }

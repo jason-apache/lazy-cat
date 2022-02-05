@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.base.annotation;
 
 import cool.lazy.cat.orm.core.jdbc.component.id.IdGenerator;
-import cool.lazy.cat.orm.core.jdbc.provider.impl.DefaultIdProvider;
+import cool.lazy.cat.orm.core.jdbc.provider.impl.DefaultIdGeneratorProvider;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -23,12 +23,12 @@ public @interface Id {
      * 指定一个id生成器类型
      * 它可以是一个spring bean，应用程序将尝试从IOC容器中获取
      * 也可以是一个普通java对象，调用newInstance()完成初始化
-     * @see DefaultIdProvider#provider
+     * @see DefaultIdGeneratorProvider#provider
      */
     Class<? extends IdGenerator> idGenerator();
 
     /**
-     * 序列，不是必须参数。
+     * @return 附加参数
      */
-    Sequence sequence() default @Sequence(name = "");
+    Parameter[] parameters() default {};
 }

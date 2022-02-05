@@ -1,11 +1,13 @@
 package cool.lazy.cat.orm.api.web.entrust;
 
-import cool.lazy.cat.orm.core.base.bo.QueryInfo;
-import cool.lazy.cat.orm.core.base.bo.WebResponse;
+import cool.lazy.cat.orm.api.service.CommonApiService;
+import cool.lazy.cat.orm.api.web.FullAutoMappingContext;
+import cool.lazy.cat.orm.api.web.bo.QueryInfo;
+import cool.lazy.cat.orm.api.web.bo.WebResponse;
 import cool.lazy.cat.orm.core.base.util.Caster;
-import cool.lazy.cat.orm.core.context.FullAutoMappingContext;
-import cool.lazy.cat.orm.core.manager.BusinessManager;
+import cool.lazy.cat.orm.core.manager.ServiceManager;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,39 +16,48 @@ import java.util.List;
  */
 public class EntrustApiImpl extends AbstractEntrustApi implements EntrustApi, BusinessMethod {
 
-    public EntrustApiImpl(BusinessManager businessManager) {
-        super(businessManager);
+    protected final CommonApiService commonApiService;
+
+    public EntrustApiImpl(ServiceManager serviceManager, CommonApiService commonApiService) {
+        super(serviceManager);
+        this.commonApiService = commonApiService;
     }
 
     @Override
     public WebResponse query(QueryInfo queryInfo) {
-        return WebResponse.success(getService().select(queryInfo));
+        return WebResponse.success(commonApiService.select(queryInfo));
     }
 
     @Override
     public WebResponse queryPage(QueryInfo queryInfo) {
-        return WebResponse.success(getService().selectPage(queryInfo));
+        return WebResponse.success(commonApiService.selectPage(queryInfo));
     }
 
     @Override
+    @SuppressWarnings("all")
     public WebResponse save(List<Object> dataList) {
-        return WebResponse.success(getService().batchSave(Caster.cast(dataList), false));
+        getService().save((Collection) Caster.cast(dataList), false);
+        return WebResponse.success(dataList);
     }
 
     @Override
+    @SuppressWarnings("all")
     public WebResponse saveCascade(List<Object> dataList) {
-        return WebResponse.success(getService().batchSave(Caster.cast(dataList), true));
+        getService().save((Collection) Caster.cast(dataList), true);
+        return WebResponse.success(dataList);
     }
 
     @Override
+    @SuppressWarnings("all")
     public WebResponse remove(List<Object> dataList) {
-        getService().batchDeleteByInfer(Caster.cast(dataList), false);
+        getService().deleteByInfer((Collection) Caster.cast(dataList), false);
         return WebResponse.success(null);
     }
 
     @Override
+    @SuppressWarnings("all")
     public WebResponse removeCascade(List<Object> dataList) {
-        getService().batchDeleteByInfer(Caster.cast(dataList), true);
+        getService().deleteByInfer((Collection) Caster.cast(dataList), true);
         return WebResponse.success(null);
     }
 

@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date: 2021/3/3 17:20
  */
 @SpringBootApplication
-@PojoScan({"com.jason.test.pojo"})
+@PojoScan({"com.jason.test.pojo.**"})
 public class ApplicationRun {
 
     public static void main(String[] args) {

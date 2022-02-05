@@ -1,6 +1,8 @@
 package cool.lazy.cat.orm.core.jdbc.component.id;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -11,16 +13,19 @@ import java.util.UUID;
 public class UUIdGenerator implements IdGenerator {
 
     @Override
-    public Object[] generator(Object ...args) {
-        Object instance = args[0];
-        if (instance instanceof Collection) {
-            Collection<?> instanceRef = (Collection<?>) instance;
-            Object[] ids = new Object[instanceRef.size()];
-            for (int i = 0; i < ids.length; i++) {
-                ids[i] = UUID.randomUUID().toString().replaceAll("-", "");
+    public List<Object> generator(List<Object> instances) {
+        if (instances.size() == 1) {
+            return Collections.singletonList(this.generator());
+        } else {
+            List<Object> ids = new ArrayList<>(instances.size());
+            for (int i = 0; i < instances.size(); i++) {
+                ids.add(this.generator());
             }
             return ids;
         }
-        return new Object[]{UUID.randomUUID().toString().replaceAll("-", "")};
+    }
+
+    protected Object generator() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }

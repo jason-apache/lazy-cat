@@ -1,16 +1,16 @@
 package cool.lazy.cat.orm.core.base.annotation;
 
-import cool.lazy.cat.orm.core.jdbc.JdbcConfig;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author: mahao
  * @date: 2021/3/8 12:42
  * 映射对象与数据库表映射关系
  */
+@Target({})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Table {
@@ -21,8 +21,12 @@ public @interface Table {
     String tableName() default "";
 
     /**
-     * 指定库，支持占位符参数 ${schema}
-     * @see JdbcConfig#getDbSchema()
+     * 指定库
      */
     String schema() default "";
+
+    /**
+     * @return 附加参数
+     */
+    Parameter[] parameter() default {};
 }

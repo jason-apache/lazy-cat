@@ -1,6 +1,6 @@
 package com.jason.test.service.impl;
 
-import com.jason.test.pojo.FtpDir;
+import com.jason.test.pojo.mysql.FtpDir;
 import com.jason.test.service.FtpDirService;
 import cool.lazy.cat.orm.core.base.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
@@ -11,11 +11,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FtpDirServiceImpl extends BaseServiceImpl<FtpDir> implements FtpDirService {
-
-    @Override
-    public FtpDir insert(FtpDir pojo, boolean cascade) {
-        return super.insert(pojo, cascade);
-    }
 
     @Override
     public FtpDir update(FtpDir pojo, boolean cascade, boolean ignoreNull) {

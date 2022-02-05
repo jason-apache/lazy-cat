@@ -1,33 +1,26 @@
 package cool.lazy.cat.orm.core.jdbc.param;
 
 
-import cool.lazy.cat.orm.core.base.util.Ignorer;
+import cool.lazy.cat.orm.core.jdbc.Ignorer;
 import cool.lazy.cat.orm.core.jdbc.OrderBy;
-import cool.lazy.cat.orm.core.jdbc.condition.Condition;
-import cool.lazy.cat.orm.core.jdbc.mapping.TableChain;
 import cool.lazy.cat.orm.core.jdbc.mapping.TableInfo;
-import cool.lazy.cat.orm.core.jdbc.manager.PojoTableManager;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldAccessor;
+import cool.lazy.cat.orm.core.jdbc.sql.condition.SqlCondition;
+import cool.lazy.cat.orm.core.manager.PojoTableManager;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
 
 /**
  * @author: mahao
  * @date: 2021/3/24 12:57
+ * 查询基础参数
  */
-public interface SearchParam<T> {
-
-    /**
-     * 需要查询的pojo类型
-     * @return pojo类型
-     */
-    Class<T> getPojoType();
+public interface SearchParam<T> extends Param {
 
     SearchParam<T> setPojoType(Class<T> pojoType);
 
     /**
      * pojo类型的表信息
-     * 在不清楚表对象的构造时，应调用PojoTableManager
      * @see PojoTableManager#getByPojoType
      * @return 表信息
      */
@@ -36,20 +29,16 @@ public interface SearchParam<T> {
     SearchParam<T> setTableInfo(TableInfo tableInfo);
 
     /**
-     * 查询条件
-     * @return 条件
+     * 添加一个条件
+     * @param condition 查询条件
      */
-    Condition getCondition();
-
-    SearchParam<T> setCondition(Condition condition);
+    SearchParam<T> addCondition(SqlCondition condition);
 
     /**
-     * 查询参数，专供API使用，非API查询请使用Condition查询
-     * @return 查询参数
+     * 覆盖查询条件
+     * @param condition 查询条件
      */
-    Map<String, Object> getParams();
-
-    SearchParam<T> setParams(Map<String, Object> params);
+    SearchParam<T> setCondition(SqlCondition condition);
 
     /**
      * 供分页使用，数据行起始位置
@@ -79,7 +68,9 @@ public interface SearchParam<T> {
      * 是否需要分页
      * @return 是否需要分页
      */
-    boolean needPaging();
+    default boolean needPaging() {
+        return getPageSize() > 0;
+    }
 
     /**
      * 排序字段
@@ -90,22 +81,20 @@ public interface SearchParam<T> {
     SearchParam<T> setOrderBy(OrderBy orderBy);
 
     /**
-     * 构建的嵌套的表链关系
-     * 在不清楚TableChain的构造时，应从tableInfo对象中获取
-     * @see TableInfo#getNestedChain()
-     * @return 嵌套的链式调用关系
+     * @return 字段访问器
      */
-    List<TableChain> getNestedChain();
+    FieldAccessor getFieldAccessor();
 
-    SearchParam<T> setNestedChain(List<TableChain> nestedChain);
+    SearchParam<T> setFieldAccessor(FieldAccessor fieldAccessor);
+
+    SearchParam<T> setSearchScope(Collection<String> searchScope);
 
     /**
-     * 构建的平铺的表链关系（由转换嵌套的表链关系得来）
-     * 在不清楚TableChain的构造时，应从tableInfo对象中获取
-     * @see TableInfo#getFlatChain()
-     * @return 平铺的链式调用关系
+     * @return 指定容器大小 映射对象的结果集将使用此参数
      */
-    List<TableChain> getFlatChain();
+    default int getContainerSize() {
+        return 50;
+    }
 
-    SearchParam<T> setFlatChain(List<TableChain> flatChain);
+    SearchParam<T> setContainerSize(int containerSize);
 }

@@ -1,15 +1,23 @@
 package cool.lazy.cat.orm.core.jdbc.component.id;
 
-import cool.lazy.cat.orm.core.base.util.BeanFieldUtil;
-import cool.lazy.cat.orm.core.jdbc.dialect.Dialect;
-import cool.lazy.cat.orm.core.jdbc.dialect.DialectRegister;
+import cool.lazy.cat.orm.core.base.constant.Constant;
+import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationHolder;
+import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
+import cool.lazy.cat.orm.core.jdbc.adapter.DynamicNameAdapter;
 import cool.lazy.cat.orm.core.jdbc.exception.SequenceNotFoundException;
-import cool.lazy.cat.orm.core.jdbc.manager.PojoTableManager;
-import cool.lazy.cat.orm.core.jdbc.mapping.IdStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.IdField;
+import cool.lazy.cat.orm.core.jdbc.sql.ObjectName;
+import cool.lazy.cat.orm.core.jdbc.sql.dialect.Dialect;
+import cool.lazy.cat.orm.core.jdbc.sql.string.DynamicNameSqlString;
+import cool.lazy.cat.orm.core.jdbc.sql.string.SqlString;
+import cool.lazy.cat.orm.core.jdbc.sql.type.Insert;
+import cool.lazy.cat.orm.core.jdbc.util.SqlStringJoinerHelper;
+import cool.lazy.cat.orm.core.manager.PojoTableManager;
+import org.springframework.jdbc.core.JdbcOperations;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: mahao
@@ -18,43 +26,48 @@ import java.util.Collection;
  */
 public class SequenceIdGenerator implements IdGenerator {
 
-    @Autowired
-    protected PojoTableManager pojoTableManager;
-    @Autowired
-    protected JdbcTemplate jdbcTemplate;
-    protected Dialect dialect;
+    protected final PojoTableManager pojoTableManager;
+    protected final DynamicNameAdapter dynamicNameAdapter;
 
-    @Autowired
-    private void initDialect(DialectRegister dialectRegister) {
-        // 注册一个当前项目使用的数据库方言
-        this.dialect = dialectRegister.getDialect();
+    public SequenceIdGenerator(PojoTableManager pojoTableManager, DynamicNameAdapter dynamicNameAdapter) {
+        this.pojoTableManager = pojoTableManager;
+        this.dynamicNameAdapter = dynamicNameAdapter;
     }
 
     @Override
-    public Object[] generator(Object... args) {
-        Class<?> pojoType = BeanFieldUtil.getTypeFromObj(args[0]);
-        IdStrategy id = pojoTableManager.getByPojoType(pojoType).getTableInfo().getId();
-        if (!id.havingSequence()) {
+    public List<Object> generator(List<Object> instances) {
+        Class<?> pojoType = CollectionUtil.getTypeFromObj(instances);
+        IdField id = pojoTableManager.getByPojoType(pojoType).getTableInfo().getId();
+        if (null == id.getParameterValue(Constant.SEQUENCE_NAME)) {
             throw new SequenceNotFoundException("pojo主键未定义序列：#" + pojoType.getName());
         }
-        return generator(args[0], id);
+        return generator(instances, id);
     }
 
     /**
      * 根据数据库方言生成序列查询语句，执行查询
-     * @param data 原始数据集
+     * @param instances 参数
      * @param id id生成策略
      * @return 序列id结果集
      */
-    protected Object[] generator(Object data, IdStrategy id) {
-        if (data instanceof Collection) {
-            Collection<?> dataRef = (Collection<?>) data;
-            Object[] ids = new Object[dataRef.size()];
-            for (int i = 0; i < ids.length; i++) {
-                ids[i] = jdbcTemplate.queryForObject(dialect.selectSequenceNextValueSql(id.getSequenceInfo().getSchema(), id.getSequenceInfo().getName()), id.getJavaType());
+    protected List<Object> generator(List<Object> instances, IdField id) {
+        JdbcOperationHolder jdbcOperationHolder = JdbcOperationSupport.getAndCheck();
+        JdbcOperations jdbcOperations = jdbcOperationHolder.getJdbcOperations();
+        Dialect dialect = jdbcOperationHolder.getDialect();
+        List<Object> ids = new ArrayList<>(instances.size());
+        Class<?> pojoType = CollectionUtil.getTypeFromObj(instances);
+        for (int i = 0; i < instances.size(); i++) {
+            List<SqlString> sqlStrings = dialect.selectSequenceNextValueSql(pojoType ,id.getParameterValue(Constant.SEQUENCE_SCHEMA), id.getParameterValue(Constant.SEQUENCE_NAME));
+            for (SqlString sqlString : sqlStrings) {
+                if (sqlString instanceof DynamicNameSqlString) {
+                    DynamicNameSqlString dynamicNameSql = (DynamicNameSqlString) sqlString;
+                    ObjectName objectName = dynamicNameAdapter.adapt(Insert.class, dynamicNameSql.getPojoType(), dynamicNameSql.getSchema(), dynamicNameSql.getName());
+                    dynamicNameSql.setSchema(objectName.getSchema());
+                    dynamicNameSql.setName(objectName.getName());
+                }
             }
-            return ids;
+            ids.add(jdbcOperations.queryForObject(SqlStringJoinerHelper.join(sqlStrings, jdbcOperationHolder.getDialect().getDefaultCharacterCase()), id.getJavaType()));
         }
-        return new Object[]{jdbcTemplate.queryForObject(dialect.selectSequenceNextValueSql(id.getSequenceInfo().getSchema(), id.getSequenceInfo().getName()), id.getJavaType())};
+        return ids;
     }
 }

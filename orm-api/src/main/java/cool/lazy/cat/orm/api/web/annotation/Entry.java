@@ -1,6 +1,7 @@
 package cool.lazy.cat.orm.api.web.annotation;
 
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
+import cool.lazy.cat.orm.core.base.annotation.Parameter;
 import org.springframework.http.HttpMethod;
 
 import java.lang.annotation.Documented;
@@ -29,5 +30,10 @@ public @interface Entry {
     /**
      * http请求方式
      */
-    HttpMethod method() default HttpMethod.POST;
+    HttpMethod[] methods() default HttpMethod.POST;
+
+    /**
+     * @return 附加参数
+     */
+    Parameter[] parameters() default {};
 }

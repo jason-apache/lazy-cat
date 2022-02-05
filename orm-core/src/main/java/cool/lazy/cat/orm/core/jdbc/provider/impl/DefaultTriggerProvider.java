@@ -6,11 +6,9 @@ import cool.lazy.cat.orm.core.jdbc.component.trigger.Trigger;
 import cool.lazy.cat.orm.core.jdbc.provider.TriggerProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author: mahao
@@ -18,11 +16,13 @@ import java.util.stream.Collectors;
  */
 public class DefaultTriggerProvider implements TriggerProvider {
 
-    protected Map<Class<? extends Trigger>, Trigger> triggerMap = new HashMap<>();
+    protected final Map<Class<? extends Trigger>, Trigger> triggerMap = new ConcurrentHashMap<>();
 
     @Autowired(required = false)
     private void initTriggerMap(List<Trigger> triggerList) {
-        this.triggerMap = triggerList.stream().collect(Collectors.toMap(Trigger::getClass, Function.identity()));
+        for (Trigger trigger : triggerList) {
+            this.triggerMap.put(trigger.getClass(), trigger);
+        }
     }
 
     @Override
@@ -32,8 +32,7 @@ public class DefaultTriggerProvider implements TriggerProvider {
             try {
                 trigger = triggerType.newInstance();
             } catch (IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-                throw new InitFailedException("初始化trigger失败！");
+                throw new InitFailedException("初始化trigger失败！", e);
             }
             triggerMap.put(triggerType, trigger);
         }

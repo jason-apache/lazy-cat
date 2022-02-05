@@ -1,72 +1,22 @@
 package cool.lazy.cat.orm.core.jdbc.mapping;
 
-
 import cool.lazy.cat.orm.core.jdbc.component.validator.Validator;
+import cool.lazy.cat.orm.core.jdbc.mapping.parameter.ParameterizationInfo;
 
 /**
  * @author: mahao
- * @date: 2021/3/31 16:41
- * 验证器信息
+ * @date: 2021/10/18 11:45
+ * 校验器
  */
-public class ValidatorInfo {
+public interface ValidatorInfo extends ParameterizationInfo {
 
     /**
-     * 验证器类型
+     * @return 校验器类型
      */
-    private Class<? extends Validator> validator;
+    Class<? extends Validator> getValidator();
+
     /**
-     * 非空字段
+     * @return 校验字段内容是否不能为空
      */
-    private boolean notNull;
-    /**
-     * 验证内容
-     */
-    private String[] validateContent;
-    /**
-     * 错误信息
-     */
-    private String[] errorMsg;
-
-    public ValidatorInfo(cool.lazy.cat.orm.core.base.annotation.Validator validator) {
-        this.validator = validator.type();
-        this.notNull = validator.notNull();
-        this.validateContent = validator.validateContent();
-        this.errorMsg = validator.errorMsg();
-    }
-
-    public Class<? extends Validator> getValidator() {
-        return validator;
-    }
-
-    public ValidatorInfo setValidator(Class<? extends Validator> validator) {
-        this.validator = validator;
-        return this;
-    }
-
-    public boolean isNotNull() {
-        return notNull;
-    }
-
-    public ValidatorInfo setNotNull(boolean notNull) {
-        this.notNull = notNull;
-        return this;
-    }
-
-    public String[] getValidateContent() {
-        return validateContent;
-    }
-
-    public ValidatorInfo setValidateContent(String[] validateContent) {
-        this.validateContent = validateContent;
-        return this;
-    }
-
-    public String[] getErrorMsg() {
-        return errorMsg;
-    }
-
-    public ValidatorInfo setErrorMsg(String[] errorMsg) {
-        this.errorMsg = errorMsg;
-        return this;
-    }
+    boolean isNotNull();
 }

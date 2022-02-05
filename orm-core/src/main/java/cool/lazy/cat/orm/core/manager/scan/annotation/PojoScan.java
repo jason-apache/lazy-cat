@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.manager.scan.annotation;
 
 
-import cool.lazy.cat.orm.core.manager.scan.PojoScanner;
+import cool.lazy.cat.orm.core.manager.scan.PojoClassScanner;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.Documented;
@@ -17,13 +17,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import(PojoScanner.class)
+@Import(PojoClassScanner.class)
 public @interface PojoScan {
 
     /**
      * 扫描包名（包含子包），pojo类需要标注@Pojo
-     * @see com.lazy.kitty.jdbc.base.annotation.Pojo
-     * @see com.lazy.kitty.jdbc.manager.scan.ClassPathPojoScanner#doScanPojo
+     * @see cool.lazy.cat.orm.core.base.annotation.Pojo
+     * @see cool.lazy.cat.orm.core.manager.scan.ClassPathPojoScanner#doScanPojo
      */
     String[] value();
 }

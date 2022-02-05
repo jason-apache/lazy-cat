@@ -1,5 +1,8 @@
 package cool.lazy.cat.orm.core.jdbc.mapping;
 
+import cool.lazy.cat.orm.core.base.constant.JoinMode;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
+
 import java.util.List;
 
 /**
@@ -9,38 +12,64 @@ import java.util.List;
 public interface PojoMapping {
 
     /**
-     * pojo类型
+     * @return pojo类型
      */
     Class<?> getJavaType();
 
     /**
-     * 联查条件
+     * @return 联查条件
      */
     List<On> getJoinCondition();
 
     /**
-     * 字段属性信息
-     * @return
+     * @return 字段属性信息
      */
-    TableFieldInfo getFieldInfo();
+    PojoField getPojoField();
 
     /**
-     * 联查层级
+     * @return 联查层级
      */
     int getCascadeLevel();
 
     /**
-     * 映射对象是否参与新增
+     * @return 联查范围
+     */
+    String[] getCascadeScope();
+
+    /**
+     * @return 忽略查询字段
+     */
+    String[] getIgnoreFields();
+
+    /**
+     * @return 映射对象是否参与新增
      */
     boolean isInsertable();
 
     /**
-     * 映射对象是否参与修改
+     * @return 映射对象是否参与修改
      */
     boolean isUpdatable();
 
     /**
-     * 映射对象是否参与删除
+     * @return 映射对象是否参与删除
      */
     boolean isDeletable();
+
+    /**
+     * @return 排序
+     */
+    int sort();
+
+    /**
+     * @return 关联字段是否由映射对象赋值到源对象
+     */
+    boolean havingMappedToSource();
+
+    void setHavingMappedToSource(boolean havingMappedToSource);
+
+    /**
+     * @return 关联查询条件
+     */
+    JoinMode getJoinMode();
 }

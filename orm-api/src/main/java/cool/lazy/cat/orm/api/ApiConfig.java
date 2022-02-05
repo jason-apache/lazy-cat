@@ -1,7 +1,5 @@
 package cool.lazy.cat.orm.api;
 
-import cool.lazy.cat.orm.api.web.constant.ApiConstant;
-import cool.lazy.cat.orm.core.base.util.StringUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -11,23 +9,40 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "cool.lazy-cat.servlet")
 public class ApiConfig {
 
+    /**
+     * 是否开启api映射
+     */
+    private boolean enabled = true;
+    /**
+     * 是否开启映射通用api
+     */
+    private boolean enabledCommonApi = true;
+    /**
+     * api映射根路径前缀
+     */
     private String apiPath = "lazy-cat";
 
     public String getApiPath() {
         return apiPath;
     }
 
-    public ApiConfig setApiPath(String apiPath) {
-        if (null == apiPath || StringUtil.isEmpty(apiPath)) {
-            throw new IllegalArgumentException("apiPath不能为空");
-        }
-        char prefix = apiPath.charAt(0);
-        char suffix = apiPath.charAt(apiPath.length() -1);
-        if (apiPath.contains("*") || prefix == ApiConstant.PATH_SYMBOL || prefix == '\\'
-                || suffix == ApiConstant.PATH_SYMBOL || suffix == '\\') {
-            throw new IllegalArgumentException("apiPath首尾不能包含路径或通配符");
-        }
+    public void setApiPath(String apiPath) {
         this.apiPath = apiPath;
-        return this;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabledCommonApi() {
+        return enabledCommonApi;
+    }
+
+    public void setEnabledCommonApi(boolean enabledCommonApi) {
+        this.enabledCommonApi = enabledCommonApi;
     }
 }

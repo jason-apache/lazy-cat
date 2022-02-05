@@ -1,35 +1,32 @@
 package cool.lazy.cat.orm.core.jdbc.provider.impl;
 
 import cool.lazy.cat.orm.core.base.util.Caster;
-import cool.lazy.cat.orm.core.jdbc.JdbcConstant;
+import cool.lazy.cat.orm.core.base.util.ReflectUtil;
+import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationHolder;
+import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
 import cool.lazy.cat.orm.core.jdbc.analyzer.RowAggregator;
 import cool.lazy.cat.orm.core.jdbc.component.convert.TypeConverter;
-import cool.lazy.cat.orm.core.jdbc.dialect.Dialect;
-import cool.lazy.cat.orm.core.jdbc.dialect.DialectRegister;
-import cool.lazy.cat.orm.core.jdbc.dto.FlatPojoWrapper;
-import cool.lazy.cat.orm.core.jdbc.dto.TableFieldInfoIndexWrapper;
 import cool.lazy.cat.orm.core.jdbc.exception.RowMappingException;
 import cool.lazy.cat.orm.core.jdbc.exception.TypeConvertException;
-import cool.lazy.cat.orm.core.jdbc.holder.SearchSqlParamIndexHolder;
-import cool.lazy.cat.orm.core.jdbc.holder.SqlParamHolder;
-import cool.lazy.cat.orm.core.jdbc.holder.TableChainHolder;
-import cool.lazy.cat.orm.core.jdbc.manager.PojoTableManager;
-import cool.lazy.cat.orm.core.jdbc.mapping.TableChain;
-import cool.lazy.cat.orm.core.jdbc.mapping.TableFieldInfo;
 import cool.lazy.cat.orm.core.jdbc.mapping.TableInfo;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldAccessor;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldDescriptor;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.access.TableNode;
+import cool.lazy.cat.orm.core.jdbc.param.SearchParam;
 import cool.lazy.cat.orm.core.jdbc.provider.ResultSetExtractorProvider;
-import cool.lazy.cat.orm.core.jdbc.provider.TypeConverterProvider;
+import cool.lazy.cat.orm.core.jdbc.provider.SpecialColumnProvider;
+import cool.lazy.cat.orm.core.jdbc.sql.SqlParameterMapping;
+import cool.lazy.cat.orm.core.jdbc.sql.dialect.Dialect;
+import cool.lazy.cat.orm.core.manager.PojoTableManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.JdbcUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -38,164 +35,101 @@ import java.util.List;
  */
 public class FastMappingResultSetExtractorProvider implements ResultSetExtractorProvider {
 
-    @Autowired
-    protected RowAggregator rowAggregator;
-    @Autowired
-    protected PojoTableManager pojoTableManager;
-    @Autowired
-    protected TypeConverterProvider typeConverterProvider;
-    protected Dialect dialect;
+    protected final RowAggregator rowAggregator;
+    protected final PojoTableManager pojoTableManager;
+    protected final SpecialColumnProvider specialColumnProvider;
     protected final Log logger = LogFactory.getLog(getClass());
 
-    @Autowired
-    private void initDialect(DialectRegister register) {
-        this.dialect = register.getDialect();
+    public FastMappingResultSetExtractorProvider(RowAggregator rowAggregator, PojoTableManager pojoTableManager, SpecialColumnProvider specialColumnProvider) {
+        this.rowAggregator = rowAggregator;
+        this.pojoTableManager = pojoTableManager;
+        this.specialColumnProvider = specialColumnProvider;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> ResultSetExtractor<List<T>> provider(TableChainHolder tableChainHolder, SqlParamHolder sqlParamHolder, int initialCapacity) {
-        SearchSqlParamIndexHolder searchSqlParamIndexHolder = (SearchSqlParamIndexHolder) sqlParamHolder;
+    public <T> ResultSetExtractor<List<T>> provider(SqlParameterMapping sqlParameterMapping) {
         return resultSet -> {
-            long rowMappingTime = 0;
-            long start;
             int rowNum = 0;
-            List<Object> result = new ArrayList<>(JdbcConstant.DEFAULT_CONTAINER_SIZE);
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            int maxColumn = metaData.getColumnCount();
-            TableInfo tableInfo = tableChainHolder.getTableInfo();
+            JdbcOperationHolder jdbcOperationHolder = JdbcOperationSupport.getAndCheck();
+            Dialect dialect = jdbcOperationHolder.getDialect();
+            SearchParam<T> searchParam = Caster.cast(sqlParameterMapping.getParam());
+            FieldAccessor fieldAccessor = searchParam.getFieldAccessor();
+            List<Object> result = new ArrayList<>(searchParam.getContainerSize());
+            TableInfo tableInfo = searchParam.getTableInfo();
+            boolean nested = fieldAccessor.nested();
             try {
-                if (tableInfo.isNested()) {
-                    while (resultSet.next()) {
-                        start = System.currentTimeMillis();
-                        FlatPojoWrapper[] instanceDef = (FlatPojoWrapper[]) this.initInstance(tableChainHolder);
-                        this.mappingRow(resultSet, maxColumn, instanceDef, tableChainHolder.getFlatChain(), searchSqlParamIndexHolder.getIndexesArr());
-                        result.add(instanceDef);
-                        rowNum ++;
-                        rowMappingTime += System.currentTimeMillis() - start;
+                while (resultSet.next()) {
+                    Object[] instance = this.mappingRow(dialect, fieldAccessor, resultSet);
+                    if (instance == null) {
+                        continue;
                     }
-                } else {
-                    while (resultSet.next()) {
-                        start = System.currentTimeMillis();
-                        Object instanceDef = this.initInstance(tableChainHolder);
-                        this.mappingRow(resultSet, maxColumn, instanceDef, searchSqlParamIndexHolder.getIndexesArr());
-                        result.add(instanceDef);
-                        rowNum ++;
-                        rowMappingTime += System.currentTimeMillis() - start;
+                    if (nested) {
+                        result.add(instance);
+                    } else {
+                        result.add(instance[0]);
                     }
+                    rowNum ++;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                throw new RowMappingException("行映射异常：" + tableInfo.getPojoType().getName() + "，rowNumber："+ rowNum);
+                throw new RowMappingException("行映射异常：" + tableInfo.getPojoType().getName() + "，rowNumber："+ rowNum, e);
             }
-            logger.info("映射总耗时" + rowMappingTime + "\t对象：" + rowNum);
-            if (tableInfo.isNested()) {
+            if (nested) {
                 // 合并一对多映射
-                return (List<T>) rowAggregator.mergeRow(tableChainHolder, searchSqlParamIndexHolder.getExcludeFieldInfoWrapper(), Caster.cast(result));
+                return (List<T>) rowAggregator.mergeRow(tableInfo, fieldAccessor, Caster.cast(result));
             }
             return (List<T>) result;
         };
     }
 
-    /**
-     * 处理当前行数据（嵌套的对象集）
-     * @param resultSet 结果集
-     * @param maxColumn 最大列
-     * @param instanceDef 实例集引用
-     * @param flatChain 平铺的表链
-     * @param indexes 列映射关系
-     * @throws IllegalAccessException 反射引发的异常
-     * @throws SQLException 数据库交互引发的异常
-     * @throws InvocationTargetException 反射引发的异常
-     */
-    private void mappingRow(ResultSet resultSet, int maxColumn, FlatPojoWrapper[] instanceDef, List<TableChain> flatChain,
-                            TableFieldInfoIndexWrapper[] indexes) throws IllegalAccessException, SQLException, InvocationTargetException {
-        for (int i = 1; i <= maxColumn; i++) {
-            TableFieldInfoIndexWrapper indexWrapper = indexes[i -1];
-            if (null == indexWrapper || null == indexWrapper.getFieldInfo()) {
+    protected Object[] mappingRow(Dialect dialect, FieldAccessor fieldAccessor, ResultSet resultSet) throws SQLException {
+        Collection<TableNode> tableNodes = fieldAccessor.getTableNodeMapping().values();
+        Object[] instances = new Object[tableNodes.size()];
+        int index = 0;
+        for (TableNode tableNode : tableNodes) {
+            Object instance = this.mappingObj(dialect, tableNode, resultSet);
+            if (index == 0 && null == instance) {
+                return null;
+            }
+            instances[index ++] = instance;
+        }
+        return instances;
+    }
+
+    protected Object mappingObj(Dialect dialect, TableNode tableNode, ResultSet resultSet) throws SQLException {
+        FieldDescriptor idDescriptor = tableNode.getIdDescriptor();
+        Object id;
+        if (null == (id = JdbcUtils.getResultSetValue(resultSet, idDescriptor.getColumnIndex() + 1, idDescriptor.getJavaType()))) {
+            return null;
+        }
+        Object instance = ReflectUtil.newInstance(tableNode.getPojoType());
+        for (FieldDescriptor fieldDescriptor : tableNode.getFieldMapping().values()) {
+            if (fieldDescriptor == idDescriptor) {
+                ReflectUtil.invokeSetter(idDescriptor.getSetter(), instance, id);
                 continue;
             }
-            TableFieldInfo info = indexWrapper.getFieldInfo();
-            Object pojo;
-            if (indexWrapper.getChainFlatIndex() != -1) {
-                TableChain chain = flatChain.get(indexWrapper.getChainFlatIndex() - 1);
-                pojo = instanceDef[chain.getFlatIndex()].getPojoInstance();
-            } else {
-                pojo = instanceDef[0].getPojoInstance();
-            }
-            this.invoke(info, pojo, resultSet, i);
-        }
-    }
-
-    /**
-     * 处理当前行数据（嵌套的对象集）
-     * @param resultSet 结果集
-     * @param maxColumn 最大列
-     * @param instance 实例引用
-     * @param indexes 列映射关系
-     * @throws IllegalAccessException 反射引发的异常
-     * @throws SQLException 数据库交互引发的异常
-     * @throws InvocationTargetException 反射引发的异常
-     */
-    private void mappingRow(ResultSet resultSet, int maxColumn, Object instance, TableFieldInfoIndexWrapper[] indexes)
-            throws IllegalAccessException, SQLException, InvocationTargetException {
-        for (int i = 1; i <= maxColumn; i++) {
-            TableFieldInfoIndexWrapper indexWrapper = indexes[i -1];
-            if (null == indexWrapper || null == indexWrapper.getFieldInfo()) {
+            if (fieldDescriptor.isIgnored()) {
                 continue;
             }
-            TableFieldInfo info = indexWrapper.getFieldInfo();
-            this.invoke(info, instance, resultSet, i);
-        }
-    }
-
-    /**
-     * 初始化对象
-     * @param tableChainHolder 表映射
-     * @return 对象集合或者单个对象
-     * @throws IllegalAccessException 反射引发的异常
-     * @throws InstantiationException 反射引发的异常
-     */
-    private Object initInstance(TableChainHolder tableChainHolder) throws IllegalAccessException, InstantiationException {
-        if (tableChainHolder.getTableInfo().isNested()) {
-            int flatPojoCount = tableChainHolder.getFlatChain().size();
-            FlatPojoWrapper[] pojoWrapper = new FlatPojoWrapper[flatPojoCount + 1];
-            pojoWrapper[0] = new FlatPojoWrapper(0, tableChainHolder.getTableInfo().getPojoType().newInstance());
-            for (int i = 0; i < flatPojoCount; i++) {
-                pojoWrapper[i + 1] = new FlatPojoWrapper(0, tableChainHolder.getFlatChain().get(i).getPojoType().newInstance());
-            }
-            return pojoWrapper;
-        } else {
-            return tableChainHolder.getTableInfo().getPojoType().newInstance();
-        }
-    }
-
-    /**
-     * 完成数据的赋值操作
-     * @param info 字段信息
-     * @param instance pojo实例
-     * @param resultSet 数据集
-     * @param column 列号
-     * @throws SQLException 数据库交互引发的异常
-     * @throws InvocationTargetException 反射引发的异常
-     * @throws IllegalAccessException 反射引发的异常
-     */
-    private void invoke(TableFieldInfo info, Object instance, ResultSet resultSet, int column) throws SQLException, InvocationTargetException, IllegalAccessException {
-        if (info.havingTypeConverter()) {
-            TypeConverter converter = this.typeConverterProvider.provider(info.getColumn().getTypeConverter());
-            // 满足当前方言，再执行转换器
-            if (converter.match(dialect)) {
-                info.getSetter().invoke(instance, JdbcUtils.getResultSetValue(resultSet, column, info.getJavaType()));
-            } else {
-                try {
-                    info.getSetter().invoke(instance, converter.convertFromDb(instance, resultSet, column, info.getJavaType()));
-                } catch (SQLException sqlException) {
-                    sqlException.printStackTrace();
-                    throw new TypeConvertException("类型转换异常：" + instance.getClass().getName() + "#" + info.getSetter().getName() + "");
+            int columnIndex = fieldDescriptor.getColumnIndex() + 1;
+            Object value;
+            if (fieldDescriptor.havingTypeConverter()) {
+                TypeConverter converter = this.specialColumnProvider.provider(fieldDescriptor.getColumn().getTypeConverter());
+                // 满足当前方言，再执行转换器
+                if (converter.matchDialect(dialect)) {
+                    try {
+                        value = converter.convertFromDb(resultSet, columnIndex, fieldDescriptor.getJavaType());
+                    } catch (SQLException sqlException) {
+                        throw new TypeConvertException("类型转换异常：" + instance.getClass().getName() + "#" + fieldDescriptor.getSetter().getName() + "", sqlException);
+                    }
+                } else {
+                    value = JdbcUtils.getResultSetValue(resultSet, columnIndex, fieldDescriptor.getJavaType());
                 }
+            } else {
+                value = JdbcUtils.getResultSetValue(resultSet, columnIndex, fieldDescriptor.getJavaType());
             }
-        } else {
-            info.getSetter().invoke(instance, JdbcUtils.getResultSetValue(resultSet, column, info.getJavaType()));
+            ReflectUtil.invokeSetter(fieldDescriptor.getSetter(), instance, value);
         }
+        return instance;
     }
 }

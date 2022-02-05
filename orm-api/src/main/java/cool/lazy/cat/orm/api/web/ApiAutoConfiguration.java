@@ -1,18 +1,20 @@
 package cool.lazy.cat.orm.api.web;
 
 import cool.lazy.cat.orm.api.ApiConfig;
+import cool.lazy.cat.orm.api.manager.ApiPojoManager;
+import cool.lazy.cat.orm.api.service.CommonApiService;
+import cool.lazy.cat.orm.api.service.impl.CommonApiServiceImpl;
 import cool.lazy.cat.orm.api.web.entrust.BasicEntrustController;
-import cool.lazy.cat.orm.api.web.entrust.EntrustApiImpl;
 import cool.lazy.cat.orm.api.web.entrust.EntrustController;
 import cool.lazy.cat.orm.api.web.entrust.executor.ApiMethodExecutor;
 import cool.lazy.cat.orm.api.web.entrust.executor.DefaultApiMethodExecutor;
-import cool.lazy.cat.orm.api.web.entrust.executor.holder.DefaultExecutorHolder;
-import cool.lazy.cat.orm.api.web.entrust.executor.holder.ExecutorHolder;
+import cool.lazy.cat.orm.api.web.entrust.executor.intercepter.ApiMethodExecuteInterceptor;
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.MethodEntryConfiguration;
 import cool.lazy.cat.orm.api.web.entrust.provider.ApiEntryInfoProvider;
 import cool.lazy.cat.orm.api.web.entrust.provider.DefaultApiEntryInfoProvider;
-import cool.lazy.cat.orm.core.manager.BusinessManager;
+import cool.lazy.cat.orm.core.base.repository.BaseRepository;
+import cool.lazy.cat.orm.core.manager.PojoTableManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -23,15 +25,17 @@ import java.util.List;
  * @author: mahao
  * @date: 2021/4/21 19:56
  */
-@Import(value = {MethodEntryConfiguration.class})
+@Import(value = {ApiMethodAutoConfiguration.class})
 public class ApiAutoConfiguration {
 
     @Bean
-    public EntrustApiImpl entrustApi(BusinessManager businessManager) {
-        return new EntrustApiImpl(businessManager);
+    @ConditionalOnMissingBean(value = CommonApiService.class)
+    public CommonApiService commonApiService(BaseRepository baseRepository, PojoTableManager pojoTableManager, ApiPojoManager apiPojoManager) {
+        return new CommonApiServiceImpl(baseRepository, pojoTableManager, apiPojoManager);
     }
 
     @Bean
+    @ConditionalOnMissingBean(value = UriPojoMapping.class)
     public UriPojoMapping uriPojoMapping() {
         return new UriPojoMapping();
     }
@@ -44,19 +48,13 @@ public class ApiAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(value = ApiMethodExecutor.class)
-    public DefaultApiMethodExecutor defaultApiMethodExecutor(List<ApiMethodEntry> apiMethodEntryList) {
-        return new DefaultApiMethodExecutor(apiMethodEntryList);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(value = ExecutorHolder.class)
-    public DefaultExecutorHolder defaultExecutorHolder(ApiMethodExecutor apiMethodExecutor) {
-        return new DefaultExecutorHolder(apiMethodExecutor);
+    public DefaultApiMethodExecutor defaultApiMethodExecutor(List<ApiMethodEntry> apiMethodEntryList, @Autowired(required = false)List<ApiMethodExecuteInterceptor> interceptorList) {
+        return new DefaultApiMethodExecutor(apiMethodEntryList, interceptorList);
     }
 
     @Bean
     @ConditionalOnMissingBean(value = EntrustController.class)
-    public BasicEntrustController basicEntrustController(ApiEntryInfoProvider apiEntryInfoProvider, ExecutorHolder executorHolder, ApiConfig apiConfig) {
-        return new BasicEntrustController(apiEntryInfoProvider, executorHolder, apiConfig.getApiPath());
+    public BasicEntrustController basicEntrustController(ApiEntryInfoProvider apiEntryInfoProvider, ApiMethodExecutor apiMethodExecutor, ApiConfig apiConfig) {
+        return new BasicEntrustController(apiEntryInfoProvider, apiMethodExecutor, apiConfig.getApiPath());
     }
 }

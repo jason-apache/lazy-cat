@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootConfiguration
 @EnableAutoConfiguration
-@ComponentScan({"com.jason"})
-@PojoScan({"com.jason.test.pojo"})
+@ComponentScan({"com.jason.test"})
+@PojoScan({"com.jason.test.pojo.**"})
 public class TestConfiguration {
 }

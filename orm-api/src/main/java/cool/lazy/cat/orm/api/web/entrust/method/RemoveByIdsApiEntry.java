@@ -11,7 +11,7 @@ import java.util.List;
  * @author: mahao
  * @date: 2021/7/12 13:28
  */
-public class RemoveByIdsApiEntry extends AbstractApiMethodEntry implements ApiMethodEntry {
+public class RemoveByIdsApiEntry extends AbstractJacksonParameterApiMethodEntry implements ApiMethodEntry {
 
     public RemoveByIdsApiEntry(EntrustApi api, ObjectMapper objectMapper) {
         super(api, objectMapper, "removeByIds", List.class);

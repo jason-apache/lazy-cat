@@ -8,7 +8,7 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.MethodDescriptor;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -17,47 +17,41 @@ import java.util.stream.Collectors;
  */
 public class PojoSubject implements Subject {
 
-    protected String pojoName;
     protected Class<?> pojoType;
-    protected List<MethodDescriptor> setterList;
-    protected List<MethodDescriptor> getterList;
+    protected Set<MethodDescriptor> setters;
+    protected Set<MethodDescriptor> getters;
 
-    public void setPojoName(String pojoName) {
-        this.pojoName = pojoName;
+    public void init() {
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(pojoType);
+            this.setters = Arrays.stream(beanInfo.getMethodDescriptors()).filter(m -> m.getMethod().getName().startsWith(Constant.SET_METHOD_PREFIX)).collect(Collectors.toSet());
+            this.getters = Arrays.stream(beanInfo.getMethodDescriptors()).filter(m -> m.getMethod().getName().startsWith(Constant.GET_METHOD_PREFIX)).collect(Collectors.toSet());
+        } catch (IntrospectionException e) {
+            throw new CannotResolverBeanInfoException("无法解析bean对象信息，请检查：" + pojoType.getName(), e);
+        }
     }
 
     public void setPojoType(Class<?> pojoType) {
         this.pojoType = pojoType;
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(pojoType);
-            this.setterList = Arrays.stream(beanInfo.getMethodDescriptors()).filter(m -> m.getMethod().getName().startsWith(Constant.SET_METHOD_PREFIX)).collect(Collectors.toList());
-            this.getterList = Arrays.stream(beanInfo.getMethodDescriptors()).filter(m -> m.getMethod().getName().startsWith(Constant.GET_METHOD_PREFIX)).collect(Collectors.toList());
-        } catch (IntrospectionException e) {
-            throw new CannotResolverBeanInfoException("无法解析bean对象信息，请检查：" + pojoType.getName());
-        }
-    }
-
-    public String getPojoName() {
-        return pojoName;
     }
 
     public Class<?> getPojoType() {
         return pojoType;
     }
 
-    public List<MethodDescriptor> getSetterList() {
-        return setterList;
+    public Set<MethodDescriptor> getSetters() {
+        return setters;
     }
 
-    public void setSetterList(List<MethodDescriptor> setterList) {
-        this.setterList = setterList;
+    public void setSetters(Set<MethodDescriptor> setters) {
+        this.setters = setters;
     }
 
-    public List<MethodDescriptor> getGetterList() {
-        return getterList;
+    public Set<MethodDescriptor> getGetters() {
+        return getters;
     }
 
-    public void setGetterList(List<MethodDescriptor> getterList) {
-        this.getterList = getterList;
+    public void setGetters(Set<MethodDescriptor> getters) {
+        this.getters = getters;
     }
 }

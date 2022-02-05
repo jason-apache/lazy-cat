@@ -1,50 +1,56 @@
 package cool.lazy.cat.orm.core.manager;
 
 
+import cool.lazy.cat.orm.core.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.manager.exception.UnKnowPojoException;
+import cool.lazy.cat.orm.core.manager.scan.PojoClassScanner;
 import cool.lazy.cat.orm.core.manager.subject.PojoSubject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author: mahao
  * @date: 2021/3/4 20:03
  * pojo托管
  */
-public class PojoManager implements Manager {
+public class PojoManager implements Manager<PojoSubject> {
 
-    public static List<Class<?>> pojoClasses = Collections.emptyList();
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Map<Class<?>, PojoSubject> pojoSubjectMap;
 
-    private final List<PojoSubject> pojoSubjectList = new ArrayList<>();
-
-    public PojoManager() {
+    public PojoManager(List<String> scanBasePackages) {
+        List<Class<?>> pojoClasses;
+        if (CollectionUtil.isNotEmpty(scanBasePackages)) {
+            logger.info("使用配置文件声明的扫描路径加载pojo...");
+            pojoClasses = PojoClassScanner.scan(scanBasePackages);
+        } else {
+            pojoClasses = PojoClassScanner.take();
+        }
+        if (null == pojoClasses) {
+            throw new NullPointerException("无法加载pojo类信息");
+        }
+        pojoSubjectMap = new HashMap<>(pojoClasses.size());
         for (Class<?> pojoClass : pojoClasses) {
             PojoSubject subject = new PojoSubject();
-            subject.setPojoName(pojoClass.getName());
             subject.setPojoType(pojoClass);
-            this.pojoSubjectList.add(subject);
+            subject.init();
+            pojoSubjectMap.put(pojoClass, subject);
+        }
+        if (logger.isDebugEnabled()) {
+            String prefix = "\r\n -- \t";
+            String output = prefix + pojoSubjectMap.values().stream().map(c -> c.getPojoType().getName()).collect(Collectors.joining(prefix));
+            logger.debug("加载pojo类信息: {}", output);
         }
     }
 
     public List<PojoSubject> getPojoSubjectList() {
-        return this.pojoSubjectList;
-    }
-
-    /**
-     * 根据pojo完全限定名返回pojo信息
-     * @param pojoName pojo名称
-     * @return pojo主体信息
-     */
-    public PojoSubject getByName(String pojoName) {
-        for (PojoSubject subject : this.pojoSubjectList) {
-            if (Objects.equals(pojoName, subject.getPojoName())) {
-                return subject;
-            }
-        }
-        throw new UnKnowPojoException("未定义的pojo类型：" + pojoName);
+        return new ArrayList<>(this.pojoSubjectMap.values());
     }
 
     /**
@@ -52,12 +58,12 @@ public class PojoManager implements Manager {
      * @param pojoType pojo类型
      * @return pojo主体信息
      */
+    @Override
     public PojoSubject getByPojoType(Class<?> pojoType) {
-        for (PojoSubject subject : this.pojoSubjectList) {
-            if (pojoType == subject.getPojoType()) {
-                return subject;
-            }
+        PojoSubject subject = pojoSubjectMap.get(pojoType);
+        if (null == subject) {
+            throw new UnKnowPojoException("未定义的pojo类型：" + pojoType.getName());
         }
-        throw new UnKnowPojoException("未定义的pojo类型：" + pojoType.getName());
+        return subject;
     }
 }

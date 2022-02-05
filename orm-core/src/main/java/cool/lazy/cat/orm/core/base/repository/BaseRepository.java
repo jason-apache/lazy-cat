@@ -1,31 +1,25 @@
 package cool.lazy.cat.orm.core.base.repository;
 
-import cool.lazy.cat.orm.core.base.FullAutomaticMapping;
 import cool.lazy.cat.orm.core.base.bo.PageResult;
-import cool.lazy.cat.orm.core.base.bo.QueryInfo;
-import cool.lazy.cat.orm.core.base.util.Ignorer;
-import cool.lazy.cat.orm.core.jdbc.OrderBy;
-import cool.lazy.cat.orm.core.jdbc.condition.Condition;
-import cool.lazy.cat.orm.core.jdbc.dto.CascadeLevelMapper;
+import cool.lazy.cat.orm.core.jdbc.param.DeleteParam;
 import cool.lazy.cat.orm.core.jdbc.param.SearchParam;
+import cool.lazy.cat.orm.core.jdbc.param.SearchParamImpl;
 import cool.lazy.cat.orm.core.jdbc.param.UpdateParam;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.KeyHolder;
+import cool.lazy.cat.orm.core.jdbc.sql.condition.SqlCondition;
+import cool.lazy.cat.orm.core.jdbc.sql.source.SqlSource;
+import org.springframework.dao.support.DataAccessUtils;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
  * @author: mahao
  * @date: 2021/3/4 19:45
  */
-public interface BaseRepository<P> extends FullAutomaticMapping {
+public interface BaseRepository {
 
-    /**
-     * 返回持有的jdbcTemplate对象
-     * @return jdbcTemplate
-     */
-    NamedParameterJdbcTemplate getJdbcTemplate();
+    default <T> List<T> query(Class<T> pojoType) {
+        return this.query(new SearchParamImpl<>(pojoType));
+    }
 
     /**
      * 根据构建的查询参数查询
@@ -44,262 +38,152 @@ public interface BaseRepository<P> extends FullAutomaticMapping {
     <T> PageResult<T> queryPage(SearchParam<T> searchParam);
 
     /**
-     * 此方法为API预留
-     * @param queryInfo API查询参数
-     * @return 带分页的结果集
-     */
-    List<P> selectByInfo(QueryInfo queryInfo);
-
-    /**
-     * 条件查询单条数据
-     * 如果结果集为空，则抛出 EmptyResultDataAccessException异常
-     * 如果结果集大于1条，则抛出 IncorrectResultSizeDataAccessException异常
-     * @param condition 查询条件，可以为空
-     * @return 满足条件的结果集
-     */
-    default P selectSingle(Condition condition) {
-        return this.selectSingle(condition, Ignorer.EMPTY_IGNORE);
-    }
-
-    /**
-     * 条件查询单条数据
-     * 如果结果集为空，则抛出 EmptyResultDataAccessException异常
-     * 如果结果集大于1条，则抛出 IncorrectResultSizeDataAccessException异常
-     * @param condition 查询条件，可以为空
-     * @param ignorer 忽略查询字段
-     * @return 满足条件的结果集
-     */
-    P selectSingle(Condition condition, Ignorer ignorer);
-
-    default <T> T selectSingle(Class<T> pojoType, Condition condition) {
-        return this.selectSingle(pojoType, condition, Ignorer.EMPTY_IGNORE);
-    }
-
-    <T> T selectSingle(Class<T> pojoType, Condition condition, Ignorer ignorer);
-
-    /**
-     * 条件查询
-     * @param condition 查询条件，可以为空
-     * @return 满足条件的结果集
-     */
-    default List<P> select(Condition condition) {
-        return this.select(condition, Ignorer.EMPTY_IGNORE);
-    }
-
-    /**
-     * 条件查询
-     * @param condition 查询条件，可以为空
-     * @param ignorer 忽略查询字段
-     * @return 满足条件的结果集
-     */
-    List<P> select(Condition condition, Ignorer ignorer);
-
-    /**
-     * 条件查询
-     * @param condition 查询条件，可以为空
-     * @param orderBy 排序字段
-     * @return 满足条件的结果集
-     */
-    default List<P> select(Condition condition, OrderBy orderBy) {
-        return this.select(condition, orderBy,Ignorer.EMPTY_IGNORE);
-    }
-
-    /**
-     * 条件查询
-     * @param condition 查询条件，可以为空
-     * @param orderBy 排序字段
-     * @param ignorer 忽略查询字段
-     * @return 满足条件的结果集
-     */
-    List<P> select(Condition condition, OrderBy orderBy, Ignorer ignorer);
-
-    default <T> List<T> select(Class<T> pojoType, Condition condition) {
-        return this.select(pojoType, condition, Ignorer.EMPTY_IGNORE);
-    }
-
-    <T> List<T> select(Class<T> pojoType, Condition condition, Ignorer ignorer);
-
-    default <T> List<T> select(Class<T> pojoType, Condition condition, OrderBy orderBy) {
-        return this.select(pojoType, condition, orderBy, Ignorer.EMPTY_IGNORE);
-    }
-
-    <T> List<T> select(Class<T> pojoType, Condition condition, OrderBy orderBy, Ignorer ignorer);
-
-    /**
-     * 分页查询，此方法为API预留
-     * @param queryInfo API查询参数
-     * @return 带分页的结果集
-     */
-    PageResult<P> selectPage(QueryInfo queryInfo);
-
-    /**
-     * 条件分页查询
-     * @param condition 查询条件，可以为空
-     * @param index 起始行
-     * @param pageSize 分页大小
-     * @return 带分页的结果集
-     */
-    default PageResult<P> selectPage(Condition condition, int index, int pageSize) {
-        return this.selectPage(condition, index, pageSize, Ignorer.EMPTY_IGNORE);
-    }
-
-    /**
-     * 条件分页查询
-     * @param condition 查询条件，可以为空
-     * @param index 起始行
-     * @param pageSize 分页大小
-     * @param ignorer 忽略查询字段
-     * @return 带分页的结果集
-     */
-    PageResult<P> selectPage(Condition condition, int index, int pageSize, Ignorer ignorer);
-
-    /**
-     * 条件分页查询
-     * @param condition 查询条件，可以为空
-     * @param index 起始行
-     * @param orderBy 排序字段
-     * @return 带分页的结果集
-     */
-    default PageResult<P> selectPage(Condition condition, int index, int pageSize, OrderBy orderBy) {
-        return this.selectPage(condition, index, pageSize, orderBy, Ignorer.EMPTY_IGNORE);
-    }
-
-    /**
-     * 条件分页查询
-     * @param condition 查询条件，可以为空
-     * @param index 起始行
-     * @param orderBy 排序字段
-     * @param ignorer 忽略查询字段
-     * @return 带分页的结果集
-     */
-    PageResult<P> selectPage(Condition condition, int index, int pageSize, OrderBy orderBy, Ignorer ignorer);
-
-    default <T> PageResult<T> selectPage(Class<T> pojoType, Condition condition, int index, int pageSize) {
-        return this.selectPage(pojoType, condition, index, pageSize, Ignorer.EMPTY_IGNORE);
-    }
-
-    <T> PageResult<T> selectPage(Class<T> pojoType, Condition condition, int index, int pageSize, Ignorer ignorer);
-
-    default <T> PageResult<T> selectPage(Class<T> pojoType,  Condition condition, int index, int pageSize, OrderBy orderBy) {
-        return this.selectPage(pojoType, condition, index, pageSize, orderBy, Ignorer.EMPTY_IGNORE);
-    }
-
-    <T> PageResult<T> selectPage(Class<T> pojoType,  Condition condition, int index, int pageSize, OrderBy orderBy, Ignorer ignorer);
-
-    /**
-     * 重新定义级联结构查询
-     * @param pojoType pojo类型
-     * @param cascadeLevel 级联层级（全部级联对象）
-     * @param condition 条件查询
-     * @param orderBy 排序字段
+     * 查询单个对象
+     * @param searchParam 查询参数
      * @param <T> 泛型类型
-     * @return 结果集
+     * @return 单个对象 可能为null
      */
-    default <T> List<T> selectByStructure(Class<T> pojoType, int cascadeLevel, Condition condition, OrderBy orderBy) {
-        return this.selectByStructure(pojoType, cascadeLevel, condition, orderBy, Ignorer.EMPTY_IGNORE);
+    default <T> T querySingle(SearchParam<T> searchParam) {
+        return DataAccessUtils.singleResult(this.query(searchParam));
     }
 
     /**
-     * 重新定义级联结构查询
-     * @param pojoType pojo类型
-     * @param cascadeLevel 级联层级（全部级联对象）
-     * @param condition 条件查询
-     * @param orderBy 排序字段
-     * @param ignorer 忽略查询字段
+     * 根据主键查询
+     * @param type pojo类型
+     * @param id id
      * @param <T> 泛型类型
-     * @return 结果集
+     * @return pojo
      */
-    <T> List<T> selectByStructure(Class<T> pojoType, int cascadeLevel, Condition condition, OrderBy orderBy, Ignorer ignorer);
+    <T> T queryById(Class<T> type, Object id);
 
     /**
-     * 重新定义级联结构查询
-     * @param pojoType pojo类型
-     * @param cascadeLevelMapper 级联层级映射
-     * @param condition 条件查询
-     * @param orderBy 排序字段
+     * 根据主键集合查询 参数可以是数组、集合、基本类型对象、charSequence
+     * @param type pojo类型
+     * @param ids ids
      * @param <T> 泛型类型
-     * @return 结果集
+     * @return pojo集合
      */
-    default <T> List<T> selectByStructure(Class<T> pojoType, CascadeLevelMapper cascadeLevelMapper, Condition condition, OrderBy orderBy) {
-        return this.selectByStructure(pojoType, cascadeLevelMapper, condition, orderBy, Ignorer.EMPTY_IGNORE);
-    }
+    <T> List<T> queryByIds(Class<T> type, Object ids);
 
     /**
-     * 重新定义级联结构查询
-     * @param pojoType pojo类型
-     * @param cascadeLevelMapper 级联层级映射
-     * @param condition 条件查询
-     * @param orderBy 排序字段
-     * @param ignorer 忽略查询字段
-     * @param <T> 泛型类型
-     * @return 结果集
-     */
-    <T> List<T> selectByStructure(Class<T> pojoType, CascadeLevelMapper cascadeLevelMapper, Condition condition, OrderBy orderBy, Ignorer ignorer);
-
-    /**
-     * 新增一条数据
-     * @param pojo 数据
-     * @return 受影响的行数
-     */
-    int insert(P pojo);
-
-    /**
-     * 新增一条数据，返回数据库自增主键值
-     * @param pojo 数据
-     * @return 数据库自增主键值
-     */
-    KeyHolder insert(P pojo, KeyHolder keyHolder);
-
-    /**
-     * 批量新增数据，不支持KeyHolder
-     * @param pojoList 数据集
-     * @return 受影响的行数
-     */
-    int batchInsert(Collection<P> pojoList);
-
-    /**
-     * 修改数据
-     * @param pojo 数据
-     * @param condition 条件
-     * @param ignoreNull 是否忽略更新空值的字段
-     * @return 受影响的行数
-     */
-    default int update(P pojo, Condition condition, boolean ignoreNull) {
-        return this.update(pojo, condition, ignoreNull, new String[0]);
-    }
-
-    /**
-     * 修改数据
-     * @param pojo 数据
-     * @param condition 条件
-     * @param ignoreNull 是否忽略更新空值的字段
-     * @param ignoreFields 忽略更新的字段
-     * @return 受影响的行数
-     */
-    int update(P pojo, Condition condition, boolean ignoreNull, String ...ignoreFields);
-
-    /**
-     * 根据构建的参数更新数据
+     * 更新
      * @param updateParam 修改参数
-     * @return 受影响的行数
      */
-    int updateByParam(UpdateParam updateParam);
+    void update(UpdateParam updateParam);
+
+    default void update(Object data) {
+        this.update(data, true, false);
+    }
 
     /**
-     * 删除数据
-     * @param pojoType 删除数据的类型
-     * @param condition 删除条件
-     * @param <T> 泛型类型
-     * @return 受影响的行数
+     * 根据id更新
+     * @param data pojo对象 可以是单个对象、集合对象、数组
+     * @param ignoreNull 是否忽略参数为null的字段更新数据库
+     * @param cascade 是否同步更新关联对象 如果同步更新 则会将关联条件的字段重新赋值
      */
-    <T> int delete(Class<T> pojoType, Condition condition);
+    void update(Object data, boolean cascade, boolean ignoreNull);
 
     /**
-     * 逻辑删除数据
-     * 如果对象不存在逻辑删除字段，则抛出FieldDoesNotExistException
-     * @param pojo 待删除的数据
-     * @param condition 删除条件
-     * @return 受影响的行数
+     * 根据条件更新
+     * @param sqlSource 参数
+     * @param sqlCondition 条件
      */
-    int logicDelete(P pojo, Condition condition);
+    void updateByCondition(SqlSource sqlSource, SqlCondition sqlCondition);
+
+    default void save(Object data) {
+        this.save(data, true);
+    }
+
+    /**
+     * 保存 id不为空则更新 否则新增
+     * @param data pojo对象 可以是单个对象、集合对象、数组
+     * @param cascade 是否同步更新关联对象 如果同步更新 则会将关联条件的字段重新赋值
+     */
+    void save(Object data, boolean cascade);
+
+    /**
+     * 删除
+     * @param deleteParam 删除参数
+     */
+    void delete(DeleteParam deleteParam);
+
+    default void delete(Object data) {
+        delete(data, true);
+    }
+
+    /**
+     * 根据id删除
+     * @param data pojo对象 可以是单个对象、集合对象、数组
+     * @param cascade 是否同步删除关联对象
+     */
+    void delete(Object data, boolean cascade);
+
+    /**
+     * 根据id删除
+     * @param pojoType pojo类型
+     * @param id id
+     */
+    void deleteById(Class<?> pojoType, Object id);
+
+    /**
+     * 根据id集合删除
+     * @param pojoType pojo类型
+     * @param ids ids 可以是对象、集合对象、数组
+     */
+    void deleteByIds(Class<?> pojoType, Object ids);
+
+    /**
+     * 根据条件删除
+     * @param pojoType pojo类型
+     * @param sqlCondition 删除条件
+     */
+    void deleteByCondition(Class<?> pojoType, SqlCondition sqlCondition);
+    
+    default void logicDelete(Object data) {
+        this.logicDelete(data, true);
+    }
+
+    /**
+     * 根据id逻辑删除
+     * @param data pojo对象 可以是单个对象、集合对象、数组
+     * @param cascade 是否同步删除关联对象
+     */
+    void logicDelete(Object data, boolean cascade);
+
+    /**
+     * 根据id逻辑删除
+     * @param pojoType pojo类型
+     * @param id id
+     */
+    void logicDeleteById(Class<?> pojoType, Object id);
+
+    /**
+     * 根据id集合逻辑删除
+     * @param pojoType pojo类型
+     * @param ids id集合 可以是集合、数组、对象
+     */
+    void logicDeleteByIds(Class<?> pojoType, Object ids);
+
+    /**
+     * 根据条件逻辑删除
+     * @param pojoType pojo类型
+     * @param sqlCondition 删除条件
+     */
+    void logicDeleteByCondition(Class<?> pojoType, SqlCondition sqlCondition);
+
+    /**
+     * 根据id推导删除
+     * 如果对象存在逻辑删除字段 则逻辑删除 否则物理删除
+     * @param data pojo对象 可以是单个对象、集合对象、数组
+     * @param cascade 是否同步删除关联对象
+     */
+    void deleteByInfer(Object data, boolean cascade);
+
+    /**
+     * 根据ids推导删除
+     * 如果对象存在逻辑删除字段 则逻辑删除 否则物理删除
+     * @param pojoType pojo类型
+     * @param ids id集合
+     */
+    void deleteByIdsAndInfer(Class<?> pojoType, Object ids);
 }

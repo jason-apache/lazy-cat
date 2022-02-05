@@ -1,0 +1,215 @@
+<html lang="en">
+<head>
+    <title>dataModel</title>
+    <link rel="stylesheet" type="text/css" href="/static/js/lib/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-row">
+    <div class="layui-col-md12">
+        <div class="layui-tab layui-tab-brief" lay-filter="mainTab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">api请求</li>
+                <li>响应参数设置</li>
+                <li>数据模型设置</li>
+                <li>持久化接口</li>
+                <button class="layui-btn layui-btn-primary layui-border-green" id="configRecordBtn" type="button">数据配置记录</button>
+                <button class="layui-btn layui-btn-primary layui-border-green" id="configAddBtn" type="button">保存当前配置</button>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form lay-filter="requestParameterForm" class="layui-form" onsubmit="return false;">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">接口地址</label>
+                            <!--<div class="layui-input-block">
+                                <input type="text" name="api" lay-verify="required" autocomplete="off" placeholder="接口地址" class="layui-input" value="/api/user/selectPage">
+                            </div>-->
+                            <div class="layui-input-block">
+                                <select id="apiSelector" name="api" lay-search>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">method</label>
+                                <div class="layui-input-block">
+                                    <select name="method">
+                                        <option>post</option>
+                                        <option>get</option>
+                                        <option>put</option>
+                                        <option>delete</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">body</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="json格式" name="body" class="layui-textarea">{
+  "pageSize": 200,
+  "startIndex": 0,
+  "params": {
+  },
+  "orderFields": [
+  ],
+  "ignoreFields": [],
+  "asc": true
+}</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">header</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="json格式" name="header" class="layui-textarea">{}</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="text-align: center;">
+                            <button class="layui-btn" lay-submit="requestForm" lay-filter="requestForm" id="loadDataBtn">加载接口数据</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-tab-item">
+                    <form lay-filter="responseParameterForm" class="layui-form" onsubmit="return false;">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">数据根路径</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="responseRootPath" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" value="data.pageContent">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">数据类型</label>
+                                <div class="layui-input-block">
+                                    <select name="dataType">
+                                        <option>array</option>
+                                        <option>object</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-tab-item">
+                    <form lay-filter="dataModelParameterForm" class="layui-form" onsubmit="return false;">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">name key</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="nameKey" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" value="name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">head key</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="headKey" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">desc key</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="descKey" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">显示图标大小</label>
+                                <div class="layui-input-block">
+                                    <select name="iconSize">
+                                        <option value="s">小</option>
+                                        <option value="m">中</option>
+                                        <option value="l">大</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">模型样式</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="json格式 rowCss行样式 subjectCss每个object单元格样式 headCss单元格头部样式 infoCss详细信息区域的样式"
+                                          name="displayCss" class="layui-textarea">{"rowStyle":"padding:0px", "subjectStyle":"text-align:center;padding:5px;background-color:#F2F2F2;background-clip:content-box;", "headStyle":"min-height:50px;display:flex;justify-content:center;align-items:center;", "bodyStyle":"min-height:180px;border-radius:5px;background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNjQzNDY1NDQ4OTMwIiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjQwMjMiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNNTEyIDUxMm0tNDY5LjMzMzMzMyAwYTQ2OS4zMzMzMzMgNDY5LjMzMzMzMyAwIDEgMCA5MzguNjY2NjY2IDAgNDY5LjMzMzMzMyA0NjkuMzMzMzMzIDAgMSAwLTkzOC42NjY2NjYgMFoiIGZpbGw9IiM4M2MzYzYiIHAtaWQ9IjQwMjQiPjwvcGF0aD48L3N2Zz4=);background-repeat:no-repeat; background-size:contain; background-position:center;display:flex;justify-content:center;align-items:center;", "infoStyle": "min-height:50px;display:flex;justify-content:center;align-items:center;"}</textarea>
+                            </div>
+                        </div>
+                        <!--<div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">模型字段类型定义</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="json格式 默认按类型自动推导" name="typeDefine" class="layui-textarea">{}</textarea>
+                            </div>
+                        </div>-->
+                    </form>
+                </div>
+                <div class="layui-tab-item">
+                    <form lay-filter="persistenceApiParameterForm" class="layui-form" onsubmit="return false;">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">接口地址</label>
+                            <div class="layui-input-block">
+                                <!--<input type="text" name="api" lay-verify="required" autocomplete="off" placeholder="接口地址" class="layui-input" value="/api/user/select">-->
+                                <select id="persistenceApiSelector" name="api" lay-search>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">method</label>
+                                <div class="layui-input-block">
+                                    <select name="method">
+                                        <option>post</option>
+                                        <option>get</option>
+                                        <option>put</option>
+                                        <option>delete</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">header</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="json格式" name="header" class="layui-textarea">{}</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">数据源</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="持久化数据来源" lay-verify="required" name="dataSource" class="layui-textarea">(() => {
+    // 取全部已选中的数据下标
+    let indexes = $('.data-item-checkbox:checked').toArray().map(i => $(i).attr('data-index'))
+    return indexes.map(i => dataManager.allData[i])
+})();</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="text-align: center;">
+                            <button class="layui-btn" lay-submit="save" lay-filter="save">提交</button>
+                        </div>
+                        <div class="layui-form-item layui-btn-group" style="padding-left: 10px">
+                            <button id="addNewObject" type="button" class="layui-btn">添加</button>
+                        </div>
+                        <div class="layui-form-item layui-btn-group">
+                            <button id="modified" type="button" class="layui-btn">已修改的数据</button>
+                            <button id="selectAll" type="button" class="layui-btn">全选</button>
+                            <button id="unselectAll" type="button" class="layui-btn">全不选</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-row">
+    <div class="layui-col-md12 layui-col-space15" id="main">
+    </div>
+</div>
+<script src="/static/js/lib/jquery-3.6.9.js"></script>
+<script src="/static/js/lib/layui/layui-2.6.8.js"></script>
+<script src="/static/js/data_model.js"></script>
+</body>
+</html>

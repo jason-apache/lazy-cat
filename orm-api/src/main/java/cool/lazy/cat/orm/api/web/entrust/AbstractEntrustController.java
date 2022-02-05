@@ -1,7 +1,6 @@
 package cool.lazy.cat.orm.api.web.entrust;
 
-import cool.lazy.cat.orm.api.web.constant.ApiConstant;
-import cool.lazy.cat.orm.api.web.entrust.executor.holder.ExecutorHolder;
+import cool.lazy.cat.orm.api.web.entrust.executor.ApiMethodExecutor;
 import cool.lazy.cat.orm.api.web.entrust.provider.ApiEntryInfoProvider;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -13,13 +12,12 @@ public abstract class AbstractEntrustController implements EntrustController {
 
     protected final UrlPathHelper urlPathHelper = UrlPathHelper.defaultInstance;
     protected final ApiEntryInfoProvider apiEntryInfoProvider;
-    protected final ExecutorHolder executorHolder;
+    protected final ApiMethodExecutor apiMethodExecutor;
     protected final String apiPath;
-    private final int symbolLength = String.valueOf(ApiConstant.PATH_SYMBOL).length() + String.valueOf(ApiConstant.PATH_SYMBOL).length();
 
-    public AbstractEntrustController(ApiEntryInfoProvider apiEntryInfoProvider, ExecutorHolder executorHolder, String apiPath) {
+    public AbstractEntrustController(ApiEntryInfoProvider apiEntryInfoProvider, ApiMethodExecutor apiMethodExecutor, String apiPath) {
         this.apiEntryInfoProvider = apiEntryInfoProvider;
-        this.executorHolder = executorHolder;
+        this.apiMethodExecutor = apiMethodExecutor;
         this.apiPath = apiPath;
     }
 }

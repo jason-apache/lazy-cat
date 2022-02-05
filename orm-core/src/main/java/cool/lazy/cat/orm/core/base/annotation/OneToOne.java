@@ -1,5 +1,7 @@
 package cool.lazy.cat.orm.core.base.annotation;
 
+import cool.lazy.cat.orm.core.base.constant.JoinMode;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -28,6 +30,18 @@ public @interface OneToOne {
     int cascadeLevel() default 1;
 
     /**
+     * 逻辑与OneToMany一致
+     * @see OneToMany#cascadeScope()
+     */
+    String[] cascadeScope() default {};
+
+    /**
+     * 逻辑与OneToMany一致
+     * @see OneToMany#ignoreFields()
+     */
+    String[] ignoreFields() default {};
+
+    /**
      * 映射对象是否参与新增
      * 逻辑与OneToMany一致
      * @see OneToMany#insertable()
@@ -46,5 +60,15 @@ public @interface OneToOne {
      * 逻辑与OneToMany一致
      * @see OneToMany#deletable()
      */
-    boolean deletable() default false;
+    boolean deletable() default true;
+
+    /**
+     * 顺序 决定了join关联顺序
+     */
+    int sort() default 0;
+
+    /**
+     * 关联模式
+     */
+    JoinMode mode() default JoinMode.LEFT_JOIN;
 }

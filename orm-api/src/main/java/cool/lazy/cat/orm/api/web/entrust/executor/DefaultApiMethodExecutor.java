@@ -1,5 +1,6 @@
 package cool.lazy.cat.orm.api.web.entrust.executor;
 
+import cool.lazy.cat.orm.api.web.entrust.executor.intercepter.ApiMethodExecuteInterceptor;
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class DefaultApiMethodExecutor extends AbstractApiMethodExecutor implements ApiMethodExecutor {
 
-    public DefaultApiMethodExecutor(List<ApiMethodEntry> apiMethodEntryList) {
-        super(apiMethodEntryList);
+    public DefaultApiMethodExecutor(List<ApiMethodEntry> apiMethodEntryList, List<ApiMethodExecuteInterceptor> interceptorList) {
+        super(apiMethodEntryList, interceptorList);
     }
 }

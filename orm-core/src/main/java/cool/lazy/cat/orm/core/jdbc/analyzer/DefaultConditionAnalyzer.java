@@ -2,25 +2,21 @@ package cool.lazy.cat.orm.core.jdbc.analyzer;
 
 
 import cool.lazy.cat.orm.core.base.util.CollectionUtil;
-import cool.lazy.cat.orm.core.base.util.Ignorer;
-import cool.lazy.cat.orm.core.base.util.StringUtil;
-import cool.lazy.cat.orm.core.jdbc.JdbcConstant;
-import cool.lazy.cat.orm.core.jdbc.KeyWordConverter;
-import cool.lazy.cat.orm.core.jdbc.condition.Condition;
-import cool.lazy.cat.orm.core.jdbc.dto.TableFieldInfoWrapper;
-import cool.lazy.cat.orm.core.jdbc.exception.UnKnowFiledException;
-import cool.lazy.cat.orm.core.jdbc.holder.SearchSqlParamHolder;
-import cool.lazy.cat.orm.core.jdbc.holder.SqlParamHolder;
-import cool.lazy.cat.orm.core.jdbc.holder.UpdateSqlParamHolder;
-import cool.lazy.cat.orm.core.jdbc.mapping.TableChain;
-import cool.lazy.cat.orm.core.jdbc.mapping.TableFieldInfo;
-import cool.lazy.cat.orm.core.jdbc.param.SearchParam;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import cool.lazy.cat.orm.core.jdbc.adapter.ConditionTypeAdapter;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldAccessor;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldDescriptor;
+import cool.lazy.cat.orm.core.jdbc.sql.condition.SqlCondition;
+import cool.lazy.cat.orm.core.jdbc.sql.condition.inject.SqlConditionValuePlaceHolder;
+import cool.lazy.cat.orm.core.jdbc.sql.string.condition.CombinationType;
+import cool.lazy.cat.orm.core.jdbc.sql.string.condition.ConditionGroup;
+import cool.lazy.cat.orm.core.jdbc.sql.string.condition.ConditionGroupImpl;
+import cool.lazy.cat.orm.core.jdbc.sql.string.condition.ConditionSqlString;
+import cool.lazy.cat.orm.core.jdbc.sql.string.condition.ConditionSqlStringImpl;
+import cool.lazy.cat.orm.core.jdbc.sql.string.condition.express.ConditionExpressionSqlString;
+import cool.lazy.cat.orm.core.jdbc.sql.string.keyword.WhereSqlString;
+import cool.lazy.cat.orm.core.jdbc.sql.string.keyword.WhereSqlStringImpl;
+import cool.lazy.cat.orm.core.jdbc.sql.type.Select;
+import cool.lazy.cat.orm.core.jdbc.sql.type.SqlType;
 
 /**
  * @author: mahao
@@ -28,214 +24,79 @@ import java.util.Map;
  */
 public class DefaultConditionAnalyzer implements ConditionAnalyzer {
 
-    @Autowired
-    protected FieldInfoCatcher fieldInfoCatcher;
-    @Autowired
-    protected KeyWordConverter keyWordConverter;
-    @Autowired
-    protected ExpressionAdapter expressionAdapter;
+    protected final ConditionTypeAdapter conditionTypeAdapter;
+
+    public DefaultConditionAnalyzer(ConditionTypeAdapter conditionTypeAdapter) {
+        this.conditionTypeAdapter = conditionTypeAdapter;
+    }
 
     @Override
-    public SearchSqlParamHolder analysis(SearchParam searchParam) {
-        if (Condition.EMPTY_CONDITION == searchParam.getCondition() || (null == searchParam.getCondition() && null == searchParam.getParams())) {
-            return new SearchSqlParamHolder(new StringBuilder(), Collections.emptyMap());
-        }
-        StringBuilder sql = new StringBuilder();
-        Map<String, Object> params;
-        if (searchParam.getCondition() != null) {
-            params = new HashMap<>();
-            this.analysis(searchParam.getPojoType(), sql, searchParam.getNestedChain(), searchParam.getCondition(), params,
-                    true, Ignorer.getFields(searchParam.getIgnorer()), true, null);
+    public WhereSqlString<?> analysis(Class<? extends SqlType> type, Class<?> pojoType, FieldAccessor fieldAccessor, SqlCondition sqlCondition) {
+        if (sqlCondition.nested()) {
+            // 处理嵌套的复杂条件
+            WhereSqlString<ConditionGroup> whereSqlString = new WhereSqlStringImpl<>();
+            ConditionGroup conditionGroup = new ConditionGroupImpl(CombinationType.NONE, true);
+            this.recursionRender(type, whereSqlString, CombinationType.NONE, conditionGroup, fieldAccessor, sqlCondition);
+            whereSqlString.combination(conditionGroup);
+            return whereSqlString;
         } else {
-            params = searchParam.getParams();
-            this.analysis(searchParam.getPojoType(), sql, searchParam.getNestedChain(), params, Ignorer.getFields(searchParam.getIgnorer()));
-        }
-        return new SearchSqlParamHolder(sql, params);
-    }
-
-    @Override
-    public SqlParamHolder analysis(Class<?> pojoType, Condition condition) {
-        StringBuilder where = new StringBuilder();
-        UpdateSqlParamHolder holder = new UpdateSqlParamHolder(where);
-        if (null != condition) {
-            Map<String, Object> param = new HashMap<>();
-            this.analysis(pojoType, where, null, condition, param, true, null, false, this.buildHook());
-            holder.setParam(param);
-        }
-        if (where.length() > 0) {
-            where.insert(0, keyWordConverter.where());
-        }
-        return holder;
-    }
-
-    /**
-     * 解析map中的条件
-     * @param pojoType pojo类型
-     * @param sql 原始sql
-     * @param nestedChainList 嵌套的表链结构
-     * @param params 条件字段
-     * @param excludeFields 忽略字段
-     */
-    protected void analysis(Class<?> pojoType, StringBuilder sql, List<TableChain> nestedChainList, Map<String, Object> params, String[] excludeFields) {
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            if (StringUtil.isBlank(entry.getKey()) || null == entry.getValue() || StringUtil.isBlank(entry.getValue().toString())) {
-                continue;
-            }
-            if (CollectionUtil.contains(excludeFields, entry.getKey())) {
-                continue;
-            }
-            boolean isNested = entry.getKey().contains(".");
-            String tableName = null;
-            TableFieldInfo fieldInfo = null;
-            if (isNested) {
-                TableFieldInfoWrapper wrapper = fieldInfoCatcher.getNestedFiledByName(nestedChainList, entry.getKey(), false);
-                if (null != wrapper && wrapper.getFieldInfo().havingQueryFilter()) {
-                    tableName = wrapper.getTableChain().getAliasName();
-                    fieldInfo = wrapper.getFieldInfo();
-                }
-            } else {
-                tableName = JdbcConstant.MAIN_TABLE_NAME;
-                fieldInfo = fieldInfoCatcher.getByName(pojoType, entry.getKey(), false);
-            }
-            if (null != fieldInfo) {
-                sql.append(keyWordConverter.and()).append(tableName).append(".").append(fieldInfo.getDbFieldName()).append(" ");
-                expressionAdapter.adapterConditionSymbol(fieldInfo.getColumn().getQueryFilterType(), sql, entry.getKey());
-            }
-        }
-        if (sql.length() > 0) {
-            sql.replace(0, keyWordConverter.and().length(), "");
+            WhereSqlString<ConditionSqlString> whereSqlString = new WhereSqlStringImpl<>();
+            this.render(type, whereSqlString, fieldAccessor, sqlCondition);
+            return whereSqlString;
         }
     }
 
-    /**
-     * 递归解析条件并拼接sql
-     * @param pojoType pojo类型
-     * @param sql 原始sql
-     * @param nestedChainList 嵌套的表链结构
-     * @param condition 条件
-     * @param params 条件记录的持有对象，参数名与参数值的映射
-     * @param strictModel 严格模式
-     * @param excludeFields 排除字段
-     * @param columnAliasName 是否启用列别名
-     * @param hook 钩子方法，执行额外的逻辑
-     */
-    protected void analysis(Class<?> pojoType, StringBuilder sql, List<TableChain> nestedChainList, Condition condition, Map<String, Object> params, boolean strictModel,
-                            String[] excludeFields, boolean columnAliasName, Hook hook) {
-        if (null != hook) {
-            hook.call(pojoType, condition);
-        }
-        this.render(pojoType, sql, nestedChainList, condition, params, strictModel, excludeFields, columnAliasName);
-        if (null != condition.getAnd()) {
-            sql.append(keyWordConverter.and()).append(" ( ");
-            int count = 0;
-            for (Condition and : condition.getAnd()) {
-                if (count > 0) {
-                    sql.append(keyWordConverter.and());
-                }
-                sql.append(" (");
-                this.analysis(pojoType, sql, nestedChainList, and, params, strictModel, excludeFields, columnAliasName, hook);
-                sql.append(") ");
-                count ++;
+    protected void render(Class<? extends SqlType> type, WhereSqlString<ConditionSqlString> whereSqlString, FieldAccessor fieldAccessor, SqlCondition condition) {
+        ConditionSqlString conditionSqlString = this.buildConditionSql(type, whereSqlString.incrementAndGetTotalCount(), CombinationType.NONE, fieldAccessor.get(condition.field()), condition);
+        whereSqlString.combination(conditionSqlString);
+        if (CollectionUtil.isNotEmpty(condition.getAnd())) {
+            for (SqlCondition sqlCondition : condition.getAnd()) {
+                whereSqlString.combination(this.buildConditionSql(type, whereSqlString.incrementAndGetTotalCount(), CombinationType.AND, fieldAccessor.get(sqlCondition.field()), sqlCondition));
             }
-            sql.append(" ) ");
         }
-        if (null != condition.getOr()) {
-            sql.append(keyWordConverter.or()).append(" ( ");
-            int count = 0;
-            for (Condition or : condition.getOr()) {
-                if (count > 0) {
-                    sql.append(keyWordConverter.or());
-                }
-                sql.append(" (");
-                this.analysis(pojoType, sql, nestedChainList, or, params, strictModel, excludeFields, columnAliasName, hook);
-                sql.append(") ");
-                count ++;
+        if (CollectionUtil.isNotEmpty(condition.getOr())) {
+            for (SqlCondition sqlCondition : condition.getOr()) {
+                whereSqlString.combination(this.buildConditionSql(type, whereSqlString.incrementAndGetTotalCount(), CombinationType.OR, fieldAccessor.get(sqlCondition.field()), sqlCondition));
             }
-            sql.append(" ) ");
         }
     }
 
     /**
      * 注入参数名与参数值的映射
-     * @param pojoType pojo类型
-     * @param sql 原始sql
-     * @param nestedChainList 嵌套的表链结构
+     * @param fieldAccessor 实体字段访问器
      * @param condition 条件
-     * @param params 参数名与参数值的映射
-     * @param strictModel 严格模式
-     * @param excludeFields 排除字段
-     * @param tableAliasName 是否启用表别名
      */
-    protected void render(Class<?> pojoType, StringBuilder sql, List<TableChain> nestedChainList, Condition condition, Map<String, Object> params, boolean strictModel,
-                          String[] excludeFields, boolean tableAliasName) {
-        String tableName;
-        TableFieldInfo fieldInfo;
-        if (condition.getField().contains(".")) {
-            TableFieldInfoWrapper wrapper = fieldInfoCatcher.getNestedFiledByName(nestedChainList, condition.getField(), false);
-            if (null != wrapper) {
-                boolean contains = CollectionUtil.contains(excludeFields, wrapper.getFieldInfo().getJavaFieldName());
-                if (strictModel && contains) {
-                    throw new UnKnowFiledException("从表对象已被忽略：" + wrapper.getTableChain().getBelongField().getJavaFieldName());
-                }
-                if (contains) {
-                    return;
-                }
-                tableName = wrapper.getTableChain().getAliasName();
-                fieldInfo = wrapper.getFieldInfo();
-            } else {
-                if (strictModel) {
-                    throw new UnKnowFiledException("嵌套的属性，不存在的字段：" + condition.getField() + "\t请检查cascadeLevel");
-                }
-                return;
+    protected void recursionRender(Class<? extends SqlType> type, WhereSqlString<?> whereSqlString, CombinationType combinationType,
+                                   ConditionGroup conditionGroup, FieldAccessor fieldAccessor, SqlCondition condition) {
+        ConditionSqlString conditionSqlString = this.buildConditionSql(type, whereSqlString.incrementAndGetTotalCount(), combinationType, fieldAccessor.get(condition.field()), condition);
+        ConditionGroup complexGroup = new ConditionGroupImpl(combinationType);
+        complexGroup.combination(conditionSqlString);
+        conditionGroup.combination(complexGroup);
+        if (CollectionUtil.isNotEmpty(condition.getAnd())) {
+            for (SqlCondition sqlCondition : condition.getAnd()) {
+                ConditionGroup newConditionGroup = new ConditionGroupImpl(CombinationType.AND);
+                complexGroup.combination(newConditionGroup);
+                this.recursionRender(type, whereSqlString, CombinationType.AND, newConditionGroup, fieldAccessor, sqlCondition);
             }
-        } else {
-            fieldInfo = fieldInfoCatcher.getByName(pojoType, condition.getField(), false);
-            if (null == fieldInfo) {
-                if (strictModel) {
-                    throw new UnKnowFiledException("pojo不存在该字段：" + condition.getField());
-                }
-                return;
+        }
+        if (CollectionUtil.isNotEmpty(condition.getOr())) {
+            for (SqlCondition sqlCondition : condition.getOr()) {
+                ConditionGroup newConditionGroup = new ConditionGroupImpl(CombinationType.OR);
+                complexGroup.combination(newConditionGroup);
+                this.recursionRender(type, whereSqlString, CombinationType.OR, newConditionGroup, fieldAccessor, sqlCondition);
             }
-            tableName = JdbcConstant.MAIN_TABLE_NAME;
         }
-        if (tableAliasName) {
-            sql.append(tableName).append(".");
-        }
-        sql.append(fieldInfo.getDbFieldName()).append(" ");
-        int length = sql.length();
-        String fieldName = this.paramUniqueKey(condition.getField(), length);
-        expressionAdapter.adapterConditionSymbol(condition.getType(), sql, fieldName);
-        sql.append(" ");
-        params.put(fieldName, condition.getValue());
     }
 
-    private String paramUniqueKey(String key, int len) {
-        if (len != -1) {
-            key += len + "`";
+    protected ConditionSqlString buildConditionSql(Class<? extends SqlType> type, int offset, CombinationType combinationType, FieldDescriptor pojoField, SqlCondition condition) {
+        String parameterName = condition.value() instanceof SqlConditionValuePlaceHolder ? condition.field()
+                // 加入标识 避免与pojo字段名称发生碰撞
+                : 0 + condition.field() + offset;
+        ConditionExpressionSqlString expression = conditionTypeAdapter.adapt(condition.type(), parameterName, condition.value());
+        if (null == expression) {
+            return null;
         }
-        return key;
-    }
-
-    @FunctionalInterface
-    interface Hook {
-        /**
-         * 植入一个钩子方法，执行额外的逻辑
-         * @param pojoType pojo类型
-         * @param condition 条件
-         */
-        void call(Class<?> pojoType, Condition condition);
-    }
-
-    /**
-     * 生成一个钩子方法，修改、新增时进行额外检查
-     * @return 钩子方法
-     */
-    private Hook buildHook() {
-        return (pojoType, condition) -> {
-            boolean pojoFiledOnly = fieldInfoCatcher.pojoFieldOnly(pojoType, new String[]{condition.getField()});
-            if (!pojoFiledOnly) {
-                throw new UnsupportedOperationException("修改|删除操作只允许操作本对象中的属性 #" + pojoType.getName() + "#" + condition.getField());
-            }
-        };
+        String sql = Select.class.isAssignableFrom(type) ? pojoField.getTableNode().tableAliasName() + "." + pojoField.getDbFieldName() : pojoField.getDbFieldName();
+        return new ConditionSqlStringImpl(sql, condition.type(), parameterName, condition.value(), combinationType, expression);
     }
 }

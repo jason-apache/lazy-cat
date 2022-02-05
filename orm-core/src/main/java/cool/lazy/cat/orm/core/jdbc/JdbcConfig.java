@@ -1,10 +1,8 @@
 package cool.lazy.cat.orm.core.jdbc;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author: mahao
@@ -13,45 +11,40 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "cool.lazy-cat.jdbc")
 public class JdbcConfig {
 
-    private boolean uppercase;
-    @Value("${spring.datasource.driver-class-name:null}")
-    private Class<?> driverClass;
-    private Class<?> dialectClass;
-    private Map<String, String> dbSchema = new HashMap<>();
+    /**
+     * 从数据库映射对象时是否复用对象
+     */
+    private boolean multiplexObject = true;
+    /**
+     * 扫描pojo类路径, 配置此参数将忽略@PojoScan注解
+     */
+    private List<String> pojoScanBasePackages;
+    /**
+     * 是否开启service bean注入 调整此选项可能引起某些功能无法正常工作
+     */
+    private boolean enableServiceRegistry = true;
 
-    public boolean isUppercase() {
-        return uppercase;
+    public boolean isMultiplexObject() {
+        return multiplexObject;
     }
 
-    public JdbcConfig setUppercase(boolean uppercase) {
-        this.uppercase = uppercase;
-        return this;
+    public void setMultiplexObject(boolean multiplexObject) {
+        this.multiplexObject = multiplexObject;
     }
 
-    public Class<?> getDriverClass() {
-        return driverClass;
+    public List<String> getPojoScanBasePackages() {
+        return pojoScanBasePackages;
     }
 
-    public JdbcConfig setDriverClass(Class<?> driverClass) {
-        this.driverClass = driverClass;
-        return this;
+    public void setPojoScanBasePackages(List<String> pojoScanBasePackages) {
+        this.pojoScanBasePackages = pojoScanBasePackages;
     }
 
-    public Class<?> getDialectClass() {
-        return dialectClass;
+    public boolean isEnableServiceRegistry() {
+        return enableServiceRegistry;
     }
 
-    public JdbcConfig setDialectClass(Class<?> dialectClass) {
-        this.dialectClass = dialectClass;
-        return this;
-    }
-
-    public Map<String, String> getDbSchema() {
-        return dbSchema;
-    }
-
-    public JdbcConfig setDbSchema(Map<String, String> dbSchema) {
-        this.dbSchema = dbSchema;
-        return this;
+    public void setEnableServiceRegistry(boolean enableServiceRegistry) {
+        this.enableServiceRegistry = enableServiceRegistry;
     }
 }

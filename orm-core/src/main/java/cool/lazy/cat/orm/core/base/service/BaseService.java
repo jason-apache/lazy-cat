@@ -3,7 +3,6 @@ package cool.lazy.cat.orm.core.base.service;
 
 import cool.lazy.cat.orm.core.base.FullAutomaticMapping;
 import cool.lazy.cat.orm.core.base.bo.PageResult;
-import cool.lazy.cat.orm.core.base.bo.QueryInfo;
 import cool.lazy.cat.orm.core.jdbc.param.SearchParam;
 
 import java.util.Collection;
@@ -17,104 +16,43 @@ import java.util.List;
 public interface BaseService<P> extends FullAutomaticMapping {
 
     /**
-     * 构造一个指定实体的基础查询参数
-     * @param pojoType 实体类型
-     * @return 查询参数
+     * 构建pojo查询参数
+     * @return pojo查询参数
      */
-    <T> SearchParam<T> buildSearchParam(Class<T> pojoType);
+    SearchParam<P> buildSearchParam();
 
     /**
-     * 根据构建的查询参数查询
+     * 根据参数查询
      * @param searchParam 查询参数
-     * @return 结果集
+     * @return pojo集合
      */
-    Collection<P> selectByParam(SearchParam<P> searchParam);
+    List<P> select(SearchParam<P> searchParam);
 
     /**
-     * 查询方法泛型重载
+     * 根据参数分页查询
      * @param searchParam 查询参数
-     * @return 结果集
+     * @return pojo分页查询结果
      */
-    <T> Collection<T> selectObjByParam(SearchParam<T> searchParam);
-
-    /**
-     * 根据构建的查询参数分页查询
-     * @param searchParam 查询参数
-     * @return 带分页的结果集
-     */
-    PageResult<P> selectPageByParam(SearchParam<P> searchParam);
-
-    /**
-     * 查询方法泛型重载
-     * @param searchParam 查询参数
-     * @return 结果集
-     */
-    <T> PageResult<T> selectPageObjByParam(SearchParam<T> searchParam);
-
-    /**
-     * 根据API查询参数查询
-     * @param queryInfo　API查询参数
-     * @return 结果集
-     */
-    Collection<P> select(QueryInfo queryInfo);
-
-    /**
-     * 根据API查询参数分页查询
-     * @param queryInfo　API查询参数
-     * @return 带分页的结果集
-     */
-    PageResult<P> selectPage(QueryInfo queryInfo);
-
-    /**
-     * 查询单条数据
-     * 如果结果集为空，则抛出 EmptyResultDataAccessException异常
-     * 如果结果集大于1条，则抛出 IncorrectResultSizeDataAccessException异常
-     * @param searchParam 查询参数
-     * @return 单条数据
-     */
-    P selectSingle(SearchParam<P> searchParam);
-
-    /**
-     * 查询单条数据 泛型重载
-     * 如果结果集为空，则抛出 EmptyResultDataAccessException异常
-     * 如果结果集大于1条，则抛出 IncorrectResultSizeDataAccessException异常
-     * @param searchParam 查询参数
-     * @return 单条数据
-     */
-    <T> T selectSingleObj(SearchParam<T> searchParam);
+    PageResult<P> selectPage(SearchParam<P> searchParam);
 
     /**
      * 根据主键查询
-     * @param id 主键
+     * @param id id
      * @return pojo
      */
     P selectById(Object id);
 
     /**
-     * 根据主键查询，泛型重载
-     * @param id 主键
-     * @return pojo
-     */
-    <T> T selectById(Class<T> pojoType, Object id);
-
-    /**
-     * 根据主键集合查询
-     * @param ids 主键集合
+     * 根据主键id查询
+     * @param ids id集合
      * @return pojo集合
      */
-    Collection<P> selectByIds(List<Object> ids);
-
-    /**
-     * 根据主键集合查询，泛型重载
-     * @param ids 主键集合
-     * @return pojo集合
-     */
-    <T> Collection<T> selectByIds(Class<T> pojoType, List<Object> ids);
+    List<P> selectByIds(Collection<Object> ids);
 
     /**
      * 持久化数据，数据中包含id则修改，否则新增
      * @param pojo pojo数据
-     * @param cascade 级联操作，置为true则尝试级联持久化对象
+     * @param cascade 级联操作，置为true则尝试级联持久化对象 并将关联条件的字段重新赋值
      * @return pojo数据
      */
     P save(P pojo, boolean cascade);
@@ -122,31 +60,14 @@ public interface BaseService<P> extends FullAutomaticMapping {
     /**
      * 批量持久化数据，数据中包含id则修改，否则新增
      * @param pojoCollection pojo数据集
-     * @param cascade 级联操作，置为true则尝试级联持久化对象
-     * @return pojo数据
+     * @param cascade 级联操作，置为true则尝试级联持久化对象 并将关联条件的字段重新赋值
      */
-    Collection<P> batchSave(Collection<P> pojoCollection, boolean cascade);
-
-    /**
-     * 新增一条数据
-     * @param pojo pojo数据
-     * @param cascade 级联操作，置为true则尝试级联持久化对象
-     * @return pojo数据
-     */
-    P insert(P pojo, boolean cascade);
-
-    /**
-     * 批量新增，调用jdbcTemplate的batchUpdate()
-     * @param pojoCollection 数据集
-     * @param cascade 级联操作，置为true则尝试级联持久化对象
-     * @return pojo集合
-     */
-    Collection<P> batchInsert(Collection<P> pojoCollection, boolean cascade);
+    void save(Collection<P> pojoCollection, boolean cascade);
 
     /**
      * 修改数据默认实现
      * @param pojo pojo数据
-     * @param cascade 级联操作，置为true则尝试级联持久化对象
+     * @param cascade 级联操作，置为true则尝试级联持久化对象 并将关联条件的字段重新赋值
      * @return pojo数据
      */
     default P update(P pojo, boolean cascade) {
@@ -156,7 +77,7 @@ public interface BaseService<P> extends FullAutomaticMapping {
     /**
      * 修改一条数据
      * @param pojo pojo数据
-     * @param cascade 级联操作，置为true则尝试级联持久化对象
+     * @param cascade 级联操作，置为true则尝试级联持久化对象 并将关联条件的字段重新赋值
      * @param ignoreNull 更新时，是否忽略值为null的属性
      * @return pojo数据
      */
@@ -165,21 +86,19 @@ public interface BaseService<P> extends FullAutomaticMapping {
     /**
      * 批量修改数据默认实现
      * @param pojoCollection pojo数据集
-     * @param cascade 级联操作，置为true则尝试级联持久化对象
-     * @return pojo数据集
+     * @param cascade 级联操作，置为true则尝试级联持久化对象 并将关联条件的字段重新赋值
      */
-    default Collection<P> batchUpdate(Collection<P> pojoCollection, boolean cascade) {
-        return this.batchUpdate(pojoCollection, cascade, false);
+    default void update(Collection<P> pojoCollection, boolean cascade) {
+        this.update(pojoCollection, cascade, false);
     }
 
     /**
      * 批量修改数据
      * @param pojoCollection pojo数据集
-     * @param cascade 级联操作，置为true则尝试级联持久化对象
+     * @param cascade 级联操作，置为true则尝试级联持久化对象 并将关联条件的字段重新赋值
      * @param ignoreNull 更新时，是否忽略值为null的属性
-     * @return pojo数据集
      */
-    Collection<P> batchUpdate(Collection<P> pojoCollection, boolean cascade, boolean ignoreNull);
+    void update(Collection<P> pojoCollection, boolean cascade, boolean ignoreNull);
 
     /**
      * 删除一条数据
@@ -193,7 +112,7 @@ public interface BaseService<P> extends FullAutomaticMapping {
      * @param pojoCollection pojo数据集
      * @param cascade 级联操作，置为true则尝试级联持久化对象
      */
-    void batchDelete(Collection<P> pojoCollection, boolean cascade);
+    void delete(Collection<P> pojoCollection, boolean cascade);
 
     /**
      * 逻辑删除
@@ -207,7 +126,14 @@ public interface BaseService<P> extends FullAutomaticMapping {
      * @param pojoCollection pojo数据集
      * @param cascade 级联操作，置为true则尝试级联持久化对象
      */
-    void batchLogicDelete(Collection<P> pojoCollection, boolean cascade);
+    void logicDelete(Collection<P> pojoCollection, boolean cascade);
+
+    /**
+     * 根据id集合逻辑删除数据
+     * @param pojoType pojo类型
+     * @param ids id集合
+     */
+    void logicDeleteByIds(Class<?> pojoType, Collection<?> ids);
 
     /**
      * 推导删除，如果有逻辑删除字段，则执行逻辑删除，否则物理删除
@@ -221,19 +147,19 @@ public interface BaseService<P> extends FullAutomaticMapping {
      * @param pojoCollection pojo数据集
      * @param cascade 级联操作，置为true则尝试级联持久化对象
      */
-    void batchDeleteByInfer(Collection<P> pojoCollection, boolean cascade);
+    void deleteByInfer(Collection<P> pojoCollection, boolean cascade);
 
     /**
      * 根据id集合删除数据
      * @param pojoType 指定一个pojo类型
      * @param ids id集合
      */
-    <T> void deleteByIds(Class<T> pojoType, Collection<?> ids);
+    void deleteByIds(Class<?> pojoType, Collection<?> ids);
 
     /**
      * 根据id集合推导删除，如果有逻辑删除字段，则执行逻辑删除，否则物理删除
      * @param pojoType 指定一个pojo类型
      * @param ids id集合
      */
-    <T> void deleteByIdsAndInfer(Class<T> pojoType, Collection<?> ids);
+    void deleteByIdsAndInfer(Class<?> pojoType, Collection<?> ids);
 }

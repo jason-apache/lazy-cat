@@ -1,5 +1,7 @@
 package cool.lazy.cat.orm.core.base.util;
 
+import cool.lazy.cat.orm.core.jdbc.constant.Case;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +31,11 @@ public final class StringUtil {
         return !isBlank(charSequence);
     }
 
+    /**
+     * 将以下划线区分单词的字符串转换为小驼峰命名规范的字符串
+     * @param str 字符串
+     * @return 小驼峰命名规范的字符串
+     */
     public static String underline2Camel(String str, boolean lowercase) {
         if (isBlank(str)) {
             return EMPTY;
@@ -53,17 +60,21 @@ public final class StringUtil {
         return sb.toString();
     }
 
-    public static String camel2Underline(String str, boolean lowercase) {
+    /**
+     * 将驼峰规范字符串转换为下划线
+     * @param str 字符串
+     * @return 以下划线区分单词的字符串
+     */
+    public static String camel2Underline(String str, Case charCase) {
         if (str == null || "".equals(str)) {
             return "";
         }
-        str = String.valueOf(str.charAt(0)).toUpperCase()
-                .concat(str.substring(1));
+        str = String.valueOf(str.charAt(0)).toUpperCase().concat(str.substring(1));
         StringBuilder sb = new StringBuilder();
         Matcher matcher = UNDER_LINE_REG.matcher(str);
         while (matcher.find()) {
             String word = matcher.group();
-            sb.append(lowercase ? word.toLowerCase() : word.toUpperCase());
+            sb.append(charCase == Case.UPPERCASE ? word.toUpperCase() : word.toLowerCase());
             sb.append(matcher.end() == str.length() ? "" : "_");
         }
         return sb.toString();

@@ -1,7 +1,5 @@
 package cool.lazy.cat.orm.api;
 
-import cool.lazy.cat.orm.api.manager.WebManagerConfiguration;
-import cool.lazy.cat.orm.api.web.ApiAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -12,7 +10,7 @@ import org.springframework.context.annotation.Import;
  * Api模块自动装配配置类
  */
 @EnableConfigurationProperties(value = ApiConfig.class)
-@Import(value = {WebManagerConfiguration.class, ApiAutoConfiguration.class})
+@Import(value = {BeanRegistryConfiguration.class})
 public class LazyCatWebAutoConfiguration {
 
     @Bean

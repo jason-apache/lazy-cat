@@ -1,6 +1,6 @@
 package com.jason.test.service;
 
-import com.jason.test.pojo.FtpDir;
+import com.jason.test.pojo.mysql.FtpDir;
 import cool.lazy.cat.orm.core.base.service.BaseService;
 
 /**

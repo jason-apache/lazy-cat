@@ -1,0 +1,62 @@
+server:
+  port: 22333
+  servlet:
+    context-path: /
+
+spring:
+#  profiles:
+#    active: mysql
+  jdbc:
+    template:
+      fetch-size: 500
+  thymeleaf:
+    prefix: classpath:/template/
+    cache: false
+    mode: LEGACYHTML5
+  mvc:
+    static-path-pattern: /static/**
+
+cool:
+  lazy-cat:
+    jdbc:
+      multiplex-object: true
+    servlet:
+      api-path: api
+
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: debug
+    #org.springframework.jdbc.core.StatementCreatorUtils: Trace
+    cool.lazy.cat.orm: debug
+
+custom:
+  multiple-data-source-enable: true
+  dynamic-schema:
+    content:
+      mysql_test:
+        mstdata: jpa
+        m1: jpa
+      oracle_test:
+        mstdata: MSTDATA
+
+com:
+  jason:
+    test:
+      multiple-data-source:
+        config:
+          mysql_test:
+            url: jdbc:mysql://localhost:3306/jpa?serverTimezone=GMT%2B8&characterEncoding=utf-8&rewriteBatchedStatements=true
+            username: root
+            password: root
+            driver-class-name: com.mysql.cj.jdbc.Driver
+          oracle_test:
+            url: jdbc:oracle:thin:@192.168.3.115:1521:EE
+            username: core
+            password: app
+            driver-class-name: oracle.jdbc.driver.OracleDriver
+          localhost_postgreSql:
+            url: jdbc:postgresql://localhost:5432/lazy_cat
+            username: lazy_cat
+            password: lazy_cat
+            driver-class-name: org.postgresql.Driver
+

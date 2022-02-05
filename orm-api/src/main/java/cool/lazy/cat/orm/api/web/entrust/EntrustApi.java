@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.api.web.entrust;
 
 
-import cool.lazy.cat.orm.core.manager.subject.BusinessSubject;
+import cool.lazy.cat.orm.core.manager.subject.ServiceSubject;
 
 /**
  * @author: mahao
@@ -14,5 +14,5 @@ public interface EntrustApi {
      * 获取当前操作的pojo业务主体
      * @return pojo业务主体
      */
-    BusinessSubject getSubject();
+    ServiceSubject getSubject();
 }

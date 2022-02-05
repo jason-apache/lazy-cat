@@ -1,5 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.component.id;
 
+import java.util.List;
+
 /**
  * @author: mahao
  * @date: 2021/3/30 19:53
@@ -8,7 +10,7 @@ package cool.lazy.cat.orm.core.jdbc.component.id;
 public final class Auto implements IdGenerator {
 
     @Override
-    public Object[] generator(Object... args) {
+    public List<Object> generator(List<Object> instances) {
         return null;
     }
 }

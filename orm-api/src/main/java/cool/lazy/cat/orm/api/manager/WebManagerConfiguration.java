@@ -1,21 +1,19 @@
 package cool.lazy.cat.orm.api.manager;
 
-import cool.lazy.cat.orm.core.manager.BusinessManager;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author: mahao
  * @date: 2021/3/4 21:18
  */
+@Configuration
+@AutoConfigureOrder(Integer.MAX_VALUE)
 public class WebManagerConfiguration {
 
-    /**
-     * 注册ApiPojoManager
-     * @param businessManager 等待业务管理器加载完毕再加载ApiPojoManager
-     * @return ApiPojoManager
-     */
     @Bean
-    public ApiPojoManager apiPojoManager(BusinessManager businessManager) {
-        return new ApiPojoManager();
+    public ApiPojoManagerImpl apiPojoManager() {
+        return new ApiPojoManagerImpl();
     }
 }

@@ -2,10 +2,11 @@ package cool.lazy.cat.orm.api.web.entrust;
 
 import cool.lazy.cat.orm.api.exception.UnKnowTargetBeanException;
 import cool.lazy.cat.orm.api.web.EntryInfo;
+import cool.lazy.cat.orm.api.web.FullAutoMappingContext;
 import cool.lazy.cat.orm.api.web.constant.ApiConstant;
-import cool.lazy.cat.orm.api.web.entrust.executor.holder.ExecutorHolder;
+import cool.lazy.cat.orm.api.web.entrust.executor.ApiMethodExecutor;
 import cool.lazy.cat.orm.api.web.entrust.provider.ApiEntryInfoProvider;
-import cool.lazy.cat.orm.core.context.FullAutoMappingContext;
+import cool.lazy.cat.orm.core.base.util.StringUtil;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,22 +23,38 @@ public class BasicEntrustController extends AbstractEntrustController implements
 
     protected final int apiPathLength;
 
-    public BasicEntrustController(ApiEntryInfoProvider apiEntryInfoProvider, ExecutorHolder executorHolder, String apiPath) {
-        super(apiEntryInfoProvider, executorHolder, apiPath);
+    public BasicEntrustController(ApiEntryInfoProvider apiEntryInfoProvider, ApiMethodExecutor apiMethodExecutor, String apiPath) {
+        super(apiEntryInfoProvider, apiMethodExecutor, apiPath);
+        if (null == apiPath || StringUtil.isEmpty(apiPath)) {
+            throw new IllegalArgumentException("apiPath不能为空");
+        }
+        char prefix = apiPath.charAt(0);
+        char suffix = apiPath.charAt(apiPath.length() -1);
+        if (apiPath.contains("*") || prefix == ApiConstant.PATH_SYMBOL || prefix == '\\'
+                || suffix == ApiConstant.PATH_SYMBOL || suffix == '\\') {
+            throw new IllegalArgumentException("apiPath首尾不能包含路径或通配符");
+        }
         this.apiPathLength = (ApiConstant.PATH_SYMBOL + apiPath).length();
     }
 
+    /**
+     * 模糊匹配请求api
+     * @param request 请求体
+     * @param response 响应体
+     * @return api处理结果
+     */
     @Override
     @RequestMapping(value = "#{apiConfig.apiPath}/**")
     public Object entrust(HttpServletRequest request, HttpServletResponse response) {
         String uri = this.cut(urlPathHelper.getRequestUri(request));
+        // 从全局api映射中匹配
         EntryInfo entryInfo = apiEntryInfoProvider.provider(uri, HttpMethod.resolve(request.getMethod()));
         if (null == entryInfo) {
             throw new UnKnowTargetBeanException("未知请求");
         }
         try {
-            FullAutoMappingContext.setPojoType(entryInfo.getApiPojoSubject().getPojoType());
-            return executorHolder.execute(request, response, entryInfo);
+            FullAutoMappingContext.setPojoType(entryInfo.getPojoType());
+            return super.apiMethodExecutor.execute(request, response, entryInfo);
         } finally {
             FullAutoMappingContext.removePojoType();
         }

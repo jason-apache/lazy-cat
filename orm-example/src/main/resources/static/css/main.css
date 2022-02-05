@@ -1,0 +1,15 @@
+body {
+    background-color: #F2F2F2;
+}
+.layui-table {
+    margin: 0 !important;
+}
+.layui-table-view {
+    margin: 0 !important;
+}
+.layui-table-page {
+    padding: 0 !important;
+}
+.layui-table-cell {
+    height: inherit;
+}

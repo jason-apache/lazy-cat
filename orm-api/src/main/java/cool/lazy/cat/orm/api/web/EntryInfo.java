@@ -1,40 +1,43 @@
 package cool.lazy.cat.orm.api.web;
 
-import cool.lazy.cat.orm.api.manager.subject.ApiPojoSubject;
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
+import cool.lazy.cat.orm.core.jdbc.mapping.parameter.ParameterizationInfo;
 import org.springframework.http.HttpMethod;
 
 /**
  * @author: mahao
- * @date: 2021/7/7 15:22
+ * @date: 2021-11-16 16:14
+ * api入口
  */
-public class EntryInfo {
+public interface EntryInfo extends ParameterizationInfo {
 
-    private final ApiPojoSubject apiPojoSubject;
-    private final String path;
-    private final Class<? extends ApiMethodEntry> api;
-    private final HttpMethod method;
+    /**
+     * 当前api对应的pojo
+     * @return pojo class
+     */
+    Class<?> getPojoType();
 
-    public EntryInfo(ApiPojoSubject apiPojoSubject, String path, Class<? extends ApiMethodEntry> api, HttpMethod method) {
-        this.apiPojoSubject = apiPojoSubject;
-        this.path = path;
-        this.api = api;
-        this.method = method;
-    }
+    /**
+     * 获取pojo nameSpace
+     * @return nameSpace
+     */
+    String getNameSpace();
 
-    public ApiPojoSubject getApiPojoSubject() {
-        return apiPojoSubject;
-    }
+    /**
+     * 完整路径 nameSpace + path
+     * @return api 完整路径
+     */
+    String getFullPath();
 
-    public String getPath() {
-        return path;
-    }
+    /**
+     * 获取api方法所属bean
+     * @return api owner
+     */
+    Class<? extends ApiMethodEntry> getApi();
 
-    public Class<? extends ApiMethodEntry> getApi() {
-        return api;
-    }
-
-    public HttpMethod getMethod() {
-        return method;
-    }
+    /**
+     * 支持的请求方式
+     * @return method
+     */
+    HttpMethod[] getMethods();
 }

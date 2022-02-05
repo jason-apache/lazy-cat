@@ -3,6 +3,9 @@ package cool.lazy.cat.orm.core.jdbc;
 
 import cool.lazy.cat.orm.core.base.util.CollectionUtil;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author: mahao
  * @date: 2021/3/24 13:25
@@ -10,15 +13,19 @@ import cool.lazy.cat.orm.core.base.util.CollectionUtil;
 public class OrderBy {
 
     private boolean asc;
-    private String[] fields;
+    private List<String> fields;
 
     private OrderBy() {}
+
+    public static OrderBy buildOrderBy(String ...fields) {
+        return buildOrderBy(true, fields);
+    }
 
     public static OrderBy buildOrderBy(boolean asc, String ...fields) {
         if (CollectionUtil.isEmpty(fields)) {
             return null;
         }
-        return new OrderBy().setAsc(asc).setFields(fields);
+        return new OrderBy().setAsc(asc).setFields(Arrays.asList(fields));
     }
 
     public boolean isAsc() {
@@ -30,11 +37,11 @@ public class OrderBy {
         return this;
     }
 
-    public String[] getFields() {
+    public List<String> getFields() {
         return fields;
     }
 
-    public OrderBy setFields(String[] fields) {
+    public OrderBy setFields(List<String> fields) {
         this.fields = fields;
         return this;
     }

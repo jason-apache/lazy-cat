@@ -1,6 +1,6 @@
 package com.jason.test.service;
 
-import com.jason.test.pojo.FileContent;
+import com.jason.test.pojo.mysql.FileContent;
 import cool.lazy.cat.orm.core.base.service.BaseService;
 
 /**

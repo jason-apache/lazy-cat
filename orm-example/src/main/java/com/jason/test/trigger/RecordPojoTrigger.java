@@ -2,9 +2,12 @@ package com.jason.test.trigger;
 
 import com.jason.test.base.RecordPojo;
 import cool.lazy.cat.orm.core.jdbc.component.trigger.Trigger;
+import cool.lazy.cat.orm.core.jdbc.sql.source.PojoSqlSource;
+import cool.lazy.cat.orm.core.jdbc.sql.source.SqlSource;
+import cool.lazy.cat.orm.core.jdbc.sql.type.Insert;
+import cool.lazy.cat.orm.core.jdbc.sql.type.SqlType;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 /**
  * @author: mahao
@@ -13,15 +16,27 @@ import java.util.Collection;
 public class RecordPojoTrigger implements Trigger {
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void execute(Object... args) {
-        if (args[0] instanceof Collection && ((Collection<?>)args[0]).iterator().next() instanceof RecordPojo) {
-            Collection<RecordPojo> ref = (Collection<RecordPojo>) args[0];
-            for (RecordPojo pojo : ref) {
-                this.doSet(pojo, (boolean) args[2]);
+    public void execute(Class<? extends SqlType> type, Object instance) {
+        if (instance instanceof RecordPojo) {
+            this.doSet((RecordPojo) instance, Insert.class.isAssignableFrom(type));
+        } else if (instance instanceof SqlSource) {
+            this.doSet((SqlSource) instance, Insert.class.isAssignableFrom(type));
+        }
+    }
+
+    protected void doSet(SqlSource sqlSource, boolean onInsert) {
+        if (sqlSource instanceof PojoSqlSource && ((PojoSqlSource) sqlSource).getPojo() instanceof RecordPojo) {
+            this.doSet(((RecordPojo) ((PojoSqlSource) sqlSource).getPojo()), onInsert);
+        } else {
+            if (RecordPojo.class.isAssignableFrom(sqlSource.getPojoType())) {
+                if (onInsert) {
+                    sqlSource.set("createDate", LocalDateTime.now());
+                    sqlSource.set("updateDate", LocalDateTime.now());
+                    sqlSource.set("modifyCounter", 0);
+                } else {
+                    sqlSource.set("updateDate", LocalDateTime.now());
+                }
             }
-        } else if (args[0] instanceof RecordPojo) {
-            this.doSet((RecordPojo) args[0], (boolean) args[2]);
         }
     }
 

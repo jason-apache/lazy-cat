@@ -11,6 +11,7 @@
     <modules>
         <module>orm-core</module>
         <module>orm-api</module>
+        <module>orm-example</module>
     </modules>
 
     <name>lazy-cat-parent</name>

@@ -1,8 +1,7 @@
 package com.jason.test.convert;
 
 import cool.lazy.cat.orm.core.jdbc.component.convert.TypeConverter;
-import cool.lazy.cat.orm.core.jdbc.dialect.Dialect;
-import cool.lazy.cat.orm.core.jdbc.mapping.TableFieldInfo;
+import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,21 +13,29 @@ import java.util.Objects;
  */
 public class BooleanTypeConverter implements TypeConverter {
 
-    @Override
-    public Object convertFromDb(Object instance, ResultSet resultSet, int index, Class<?> javaType) throws SQLException {
-        return "1".equals(resultSet.getString(index));
-    }
+    private static final String TRUE = "1";
+    private static final String FALSE = "0";
 
     @Override
-    public Object convertToDb(Object instance, Object value, TableFieldInfo fieldInfo) {
-        if (Objects.equals(true, value)) {
-            return "1";
+    public Object convertFromDb(ResultSet resultSet, int index, Class<?> javaType) throws SQLException {
+        Object val = TypeConverter.super.convertFromDb(resultSet, index, javaType);
+        if (val == null) {
+            return null;
         }
-        return "0";
+        return TRUE.equals(val);
     }
 
     @Override
-    public boolean match(Dialect dialect) {
-        return true;
+    public Object convertToDb(Object value, PojoField pojoField) {
+        if (null == value) {
+            return null;
+        }
+        if (TRUE.equals(value) || FALSE.equals(value)) {
+            return value;
+        }
+        if (Objects.equals(true, value)) {
+            return TRUE;
+        }
+        return FALSE;
     }
 }

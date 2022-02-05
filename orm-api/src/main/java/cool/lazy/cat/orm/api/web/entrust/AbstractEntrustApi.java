@@ -1,9 +1,9 @@
 package cool.lazy.cat.orm.api.web.entrust;
 
+import cool.lazy.cat.orm.api.web.FullAutoMappingContext;
 import cool.lazy.cat.orm.core.base.service.BaseService;
-import cool.lazy.cat.orm.core.context.FullAutoMappingContext;
-import cool.lazy.cat.orm.core.manager.BusinessManager;
-import cool.lazy.cat.orm.core.manager.subject.BusinessSubject;
+import cool.lazy.cat.orm.core.manager.ServiceManager;
+import cool.lazy.cat.orm.core.manager.subject.ServiceSubject;
 
 /**
  * @author: mahao
@@ -11,18 +11,18 @@ import cool.lazy.cat.orm.core.manager.subject.BusinessSubject;
  */
 public abstract class AbstractEntrustApi implements EntrustApi {
 
-    protected final BusinessManager businessManager;
+    protected final ServiceManager serviceManager;
 
-    public AbstractEntrustApi(BusinessManager businessManager) {
-        this.businessManager = businessManager;
+    public AbstractEntrustApi(ServiceManager serviceManager) {
+        this.serviceManager = serviceManager;
     }
 
     @Override
-    public BusinessSubject getSubject() {
-        return businessManager.getBusinessSubject(FullAutoMappingContext.getPojoType());
+    public ServiceSubject getSubject() {
+        return serviceManager.getByPojoType(FullAutoMappingContext.getPojoType());
     }
 
     protected BaseService<?> getService() {
-        return this.getSubject().getServiceSubject().getService();
+        return this.getSubject().getService();
     }
 }

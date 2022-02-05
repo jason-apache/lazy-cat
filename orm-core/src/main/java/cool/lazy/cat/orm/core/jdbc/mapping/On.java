@@ -1,75 +1,57 @@
 package cool.lazy.cat.orm.core.jdbc.mapping;
 
+import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
+
 /**
  * @author: mahao
- * @date: 2021/3/12 13:19
+ * @date: 2021/10/18 11:21
  * 对象关联条件
  */
-public class On {
+public interface On {
 
-    private Class<?> foreignPojoType;
-    private Class<?> targetPojoType;
-    private String foreignField;
-    private String targetFiled;
-    private TableFieldInfo foreignKeyInfo;
-    private TableFieldInfo targetFiledInfo;
+    /**
+     * @return 对象类型
+     */
+    Class<?> getForeignPojoType();
 
-    public On(cool.lazy.cat.orm.core.base.annotation.On on) {
-        this.foreignField = on.foreignFiled();
-        this.targetFiled = on.targetFiled();
-    }
+    /**
+     * @return 关联对象类型
+     */
+    Class<?> getTargetPojoType();
 
-    public Class<?> getForeignPojoType() {
-        return foreignPojoType;
-    }
+    /**
+     * @return 对象字段名称
+     */
+    String getForeignField();
 
-    public On setForeignPojoType(Class<?> foreignPojoType) {
-        this.foreignPojoType = foreignPojoType;
-        return this;
-    }
+    /**
+     * @return 关联对象字段名称
+     */
+    String getTargetFiled();
 
-    public Class<?> getTargetPojoType() {
-        return targetPojoType;
-    }
+    /**
+     * @return 赋值方式
+     */
+    cool.lazy.cat.orm.core.base.annotation.On.AssignmentMethod getAssignmentMethod();
 
-    public On setTargetPojoType(Class<?> targetPojoType) {
-        this.targetPojoType = targetPojoType;
-        return this;
-    }
+    /**
+     * @return 对象字段信息
+     */
+    PojoField getForeignKeyInfo();
 
-    public String getForeignField() {
-        return foreignField;
-    }
+    void setForeignKeyInfo(PojoField foreignKeyInfo);
 
-    public On setForeignField(String foreignField) {
-        this.foreignField = foreignField;
-        return this;
-    }
+    /**
+     * @return 关联对象字段信息
+     */
+    PojoField getTargetFiledInfo();
 
-    public String getTargetFiled() {
-        return targetFiled;
-    }
+    void setTargetFiledInfo(PojoField targetFiledInfo);
 
-    public On setTargetFiled(String targetFiled) {
-        this.targetFiled = targetFiled;
-        return this;
-    }
+    /**
+     * @return 关联字段是否由映射对象赋值到源对象
+     */
+    boolean isMappedToSource();
 
-    public TableFieldInfo getForeignKeyInfo() {
-        return foreignKeyInfo;
-    }
-
-    public On setForeignKeyInfo(TableFieldInfo foreignKeyInfo) {
-        this.foreignKeyInfo = foreignKeyInfo;
-        return this;
-    }
-
-    public TableFieldInfo getTargetFiledInfo() {
-        return targetFiledInfo;
-    }
-
-    public On setTargetFiledInfo(TableFieldInfo targetFiledInfo) {
-        this.targetFiledInfo = targetFiledInfo;
-        return this;
-    }
+    void setMappedToSource(boolean mappedToSource);
 }
