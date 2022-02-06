@@ -46,11 +46,11 @@
                     - service 由spring控制事务提交或回滚 ↴
                     - finished
    #### mvn  
-    `<dependency>`  
-    `    <groupId>cool.lazy-cat</groupId>`  
-    `    <artifactId>orm-core-spring-boot-starter</artifactId>`   
-    `    <version>2.0.0</version>`  
-    `</dependency>`  
+    <dependency>  
+        <groupId>cool.lazy-cat</groupId>  
+        <artifactId>orm-core-spring-boot-starter</artifactId>  
+        <version>2.0.0</version>  
+    </dependency>  
 
 ## orm-api
    配置: `cool.lazy.cat.orm.api.ApiConfig`  
@@ -75,11 +75,11 @@
                     - basicEntrustController 交给mvc返回结果 并释放上下文信息 ↴
                     - finished
    #### mvn
-    `<dependency>`   
-    `    <groupId>cool.lazy-cat</groupId>`   
-    `    <artifactId>orm-api-spring-boot-starter</artifactId>`    
-    `    <version>2.0.0</version>`    
-    `</dependency>`    
+    <dependency>   
+        <groupId>cool.lazy-cat</groupId>  
+        <artifactId>orm-api-spring-boot-starter</artifactId>  
+        <version>2.0.0</version>  
+    </dependency>  
 
 
 
