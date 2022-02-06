@@ -20,7 +20,8 @@
     具体可以参考example项目中test项目的示例  
    #### 扩展多数据源支持
     需要扩展: cool.lazy.cat.orm.core.jdbc.adapter.mapper.JdbcOperationHolderMapper  
-    和cool.lazy.cat.orm.core.jdbc.adapter.mapper.DynamicNameMapper  并自定义DataSource、PlatformTransactionManager对象的构建   
+    和cool.lazy.cat.orm.core.jdbc.adapter.mapper.DynamicNameMapper    
+    并自定义DataSource、PlatformTransactionManager对象的构建    
     可参考example项目中 com.jason.test.component.datasource包下的示例  
    #### sql方言扩展
     @see cool.lazy.cat.orm.core.jdbc.sql.dialect.Dialect  
@@ -45,11 +46,11 @@
                     - service 由spring控制事务提交或回滚 ↴
                     - finished
    ####mvn  
-    `<dependency>  
-        <groupId>cool.lazy-cat</groupId>  
-        <artifactId>orm-core-spring-boot-starter</artifactId>  
-        <version>2.0.0</version>  
-    </dependency>`  
+    `<dependency>`  
+    `    <groupId>cool.lazy-cat</groupId>`  
+    `    <artifactId>orm-core-spring-boot-starter</artifactId>`   
+    `    <version>2.0.0</version>`  
+    `</dependency>`  
 
 ## orm-api
    配置: `cool.lazy.cat.orm.api.ApiConfig`  
@@ -74,15 +75,15 @@
                     - basicEntrustController 交给mvc返回结果 并释放上下文信息 ↴
                     - finished
    ####mvn
-    `<dependency>  
-        <groupId>cool.lazy-cat</groupId>  
-        <artifactId>orm-api-spring-boot-starter</artifactId>  
-        <version>2.0.0</version>  
-    </dependency>`  
+    `<dependency>`   
+    `    <groupId>cool.lazy-cat</groupId>`   
+    `    <artifactId>orm-api-spring-boot-starter</artifactId>`    
+    `    <version>2.0.0</version>`    
+    `</dependency>`    
 
 
 
-##开发者的话
+   ##开发者的话
     lazy-cat的第一个快照版仅仅使用了2个月就完成了全部的开发、测试和发布。  
     但随后代码的维护让我苦不堪言，第二个版本的代码删减、重构量基本达到了90%  
     足足花费了我近9个月业余时间去重构、扩展功能。由此可见保持一个良好的编码和设计风格是多么重要的一件事。  
