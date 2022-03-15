@@ -32,7 +32,7 @@ public interface On {
     /**
      * @return 赋值方式
      */
-    cool.lazy.cat.orm.core.base.annotation.On.AssignmentMethod getAssignmentMethod();
+    cool.lazy.cat.orm.annotation.On.AssignmentMethod getAssignmentMethod();
 
     /**
      * @return 对象字段信息

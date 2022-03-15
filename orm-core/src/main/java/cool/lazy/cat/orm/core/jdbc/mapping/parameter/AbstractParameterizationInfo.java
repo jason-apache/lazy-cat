@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.mapping.parameter;
 
-import cool.lazy.cat.orm.core.base.annotation.Parameter;
+import cool.lazy.cat.orm.annotation.Parameter;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -53,7 +53,7 @@ public class TableFieldInfo implements PojoField {
         this.javaType = getter.getReturnType();
     }
 
-    public void initColumn(cool.lazy.cat.orm.core.base.annotation.Column column) {
+    public void initColumn(cool.lazy.cat.orm.annotation.Column column) {
         if (null == column) {
             return;
         }

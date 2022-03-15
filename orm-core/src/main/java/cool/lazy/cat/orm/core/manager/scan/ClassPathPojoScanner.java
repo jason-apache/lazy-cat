@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.manager.scan;
 
-import cool.lazy.cat.orm.core.base.annotation.Pojo;
+import cool.lazy.cat.orm.annotation.Pojo;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;

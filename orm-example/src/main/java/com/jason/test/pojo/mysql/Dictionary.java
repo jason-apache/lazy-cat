@@ -1,11 +1,11 @@
 package com.jason.test.pojo.mysql;
 
 import com.jason.test.base.RecordPojo;
-import cool.lazy.cat.orm.core.base.annotation.Column;
-import cool.lazy.cat.orm.core.base.annotation.Id;
-import cool.lazy.cat.orm.core.base.annotation.Parameter;
-import cool.lazy.cat.orm.core.base.annotation.Pojo;
-import cool.lazy.cat.orm.core.base.constant.Constant;
+import cool.lazy.cat.orm.annotation.Column;
+import cool.lazy.cat.orm.annotation.Id;
+import cool.lazy.cat.orm.annotation.Parameter;
+import cool.lazy.cat.orm.annotation.Pojo;
+import cool.lazy.cat.orm.base.constant.Constant;
 import cool.lazy.cat.orm.core.jdbc.component.id.SequenceIdGenerator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

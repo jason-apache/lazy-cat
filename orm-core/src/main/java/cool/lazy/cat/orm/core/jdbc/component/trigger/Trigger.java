@@ -1,6 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.component.trigger;
 
-import cool.lazy.cat.orm.core.jdbc.component.CommonComponent;
+import cool.lazy.cat.orm.base.component.BaseTrigger;
+import cool.lazy.cat.orm.base.component.CommonComponent;
 import cool.lazy.cat.orm.core.jdbc.sql.type.SqlType;
 
 /**
@@ -8,7 +9,7 @@ import cool.lazy.cat.orm.core.jdbc.sql.type.SqlType;
  * @date: 2021/4/14 11:52
  * 触发器
  */
-public interface Trigger extends CommonComponent {
+public interface Trigger extends BaseTrigger, CommonComponent {
 
     /**
      * 执行触发器

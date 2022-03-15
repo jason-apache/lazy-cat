@@ -1,4 +1,6 @@
-package cool.lazy.cat.orm.core.base.annotation;
+package cool.lazy.cat.orm.annotation;
+
+import cool.lazy.cat.orm.base.component.BaseValidator;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,9 +19,8 @@ public @interface Validator {
      * 指定一个参数校验器实现类
      * 它可以是一个spring bean，应用程序将尝试从IOC容器中获取
      * 也可以是一个普通java对象，调用newInstance()完成初始化
-     * @see cool.lazy.cat.orm.core.jdbc.provider.impl.SimpleSpecialColumnProvider#provider
      */
-    Class<? extends cool.lazy.cat.orm.core.jdbc.component.validator.Validator> type() default cool.lazy.cat.orm.core.jdbc.component.validator.Validator.class;
+    Class<? extends BaseValidator> type() default BaseValidator.class;
 
     /**
      * 非空字段

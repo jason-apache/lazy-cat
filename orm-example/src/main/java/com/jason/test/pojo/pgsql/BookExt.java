@@ -2,12 +2,12 @@ package com.jason.test.pojo.pgsql;
 
 import com.jason.test.constant.Constant;
 import com.jason.test.annotation.DataSource;
-import cool.lazy.cat.orm.core.base.annotation.Column;
-import cool.lazy.cat.orm.core.base.annotation.Id;
-import cool.lazy.cat.orm.core.base.annotation.ManyToOne;
-import cool.lazy.cat.orm.core.base.annotation.On;
-import cool.lazy.cat.orm.core.base.annotation.Pojo;
-import cool.lazy.cat.orm.core.base.annotation.Table;
+import cool.lazy.cat.orm.annotation.Column;
+import cool.lazy.cat.orm.annotation.Id;
+import cool.lazy.cat.orm.annotation.ManyToOne;
+import cool.lazy.cat.orm.annotation.On;
+import cool.lazy.cat.orm.annotation.Pojo;
+import cool.lazy.cat.orm.annotation.Table;
 import cool.lazy.cat.orm.core.jdbc.component.id.UUIdGenerator;
 import lombok.Data;
 import lombok.experimental.Accessors;

@@ -1,8 +1,8 @@
 package cool.lazy.cat.orm.core.jdbc.mapping;
 
 
-import cool.lazy.cat.orm.core.base.annotation.OneToMany;
-import cool.lazy.cat.orm.core.base.constant.JoinMode;
+import cool.lazy.cat.orm.annotation.OneToMany;
+import cool.lazy.cat.orm.base.constant.JoinMode;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
 
 import java.util.ArrayList;
@@ -49,11 +49,11 @@ public class OneToManyMappingImpl implements OneToManyMapping, PojoMapping {
         this.joinMode = oneToMany.mode();
     }
 
-    public OneToManyMappingImpl addJoinCondition(cool.lazy.cat.orm.core.base.annotation.On[] onArr, Class<?> foreignPojoType, Class<?> targetPojoType) {
+    public OneToManyMappingImpl addJoinCondition(cool.lazy.cat.orm.annotation.On[] onArr, Class<?> foreignPojoType, Class<?> targetPojoType) {
         if (joinCondition == null) {
             joinCondition = new ArrayList<>(onArr.length);
         }
-        for (cool.lazy.cat.orm.core.base.annotation.On on : onArr) {
+        for (cool.lazy.cat.orm.annotation.On on : onArr) {
             joinCondition.add(new OnImpl(on).setForeignPojoType(foreignPojoType).setTargetPojoType(targetPojoType));
         }
         return this;

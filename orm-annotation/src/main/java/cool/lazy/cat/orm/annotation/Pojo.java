@@ -1,4 +1,4 @@
-package cool.lazy.cat.orm.core.base.annotation;
+package cool.lazy.cat.orm.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

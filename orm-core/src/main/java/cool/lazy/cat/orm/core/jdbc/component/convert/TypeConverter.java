@@ -1,6 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.component.convert;
 
 
+import cool.lazy.cat.orm.base.component.BaseTypeConverter;
 import cool.lazy.cat.orm.core.jdbc.component.SpecialColumn;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
 import cool.lazy.cat.orm.core.jdbc.sql.dialect.Dialect;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
  * @author: mahao
  * @date: 2021/3/10 13:25
  */
-public interface TypeConverter extends SpecialColumn {
+public interface TypeConverter extends BaseTypeConverter, SpecialColumn {
 
     /**
      * 从数据库中查询结果集映射为指定类型

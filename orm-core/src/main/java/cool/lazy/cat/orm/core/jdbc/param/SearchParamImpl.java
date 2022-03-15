@@ -4,7 +4,7 @@ package cool.lazy.cat.orm.core.jdbc.param;
 import cool.lazy.cat.orm.core.base.util.Caster;
 import cool.lazy.cat.orm.core.jdbc.Ignorer;
 import cool.lazy.cat.orm.core.jdbc.OrderBy;
-import cool.lazy.cat.orm.core.jdbc.component.CommonComponent;
+import cool.lazy.cat.orm.base.component.CommonComponent;
 import cool.lazy.cat.orm.core.jdbc.mapping.TableInfo;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.CascadeScopeFieldAccessor;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldAccessor;

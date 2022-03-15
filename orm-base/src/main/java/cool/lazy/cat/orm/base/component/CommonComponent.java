@@ -1,4 +1,4 @@
-package cool.lazy.cat.orm.core.jdbc.component;
+package cool.lazy.cat.orm.base.component;
 
 /**
  * @author: mahao

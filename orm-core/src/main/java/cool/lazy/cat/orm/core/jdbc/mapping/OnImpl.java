@@ -11,14 +11,14 @@ public class OnImpl implements On {
 
     private final String foreignField;
     private final String targetFiled;
-    private final cool.lazy.cat.orm.core.base.annotation.On.AssignmentMethod assignmentMethod;
+    private final cool.lazy.cat.orm.annotation.On.AssignmentMethod assignmentMethod;
     private Class<?> foreignPojoType;
     private Class<?> targetPojoType;
     private PojoField foreignKeyInfo;
     private PojoField targetFiledInfo;
     private boolean mappedToSource;
 
-    public OnImpl(cool.lazy.cat.orm.core.base.annotation.On on) {
+    public OnImpl(cool.lazy.cat.orm.annotation.On on) {
         this.foreignField = on.foreignFiled();
         this.targetFiled = on.targetFiled();
         this.assignmentMethod = on.assignmentMethod();
@@ -55,7 +55,7 @@ public class OnImpl implements On {
     }
 
     @Override
-    public cool.lazy.cat.orm.core.base.annotation.On.AssignmentMethod getAssignmentMethod() {
+    public cool.lazy.cat.orm.annotation.On.AssignmentMethod getAssignmentMethod() {
         return assignmentMethod;
     }
 

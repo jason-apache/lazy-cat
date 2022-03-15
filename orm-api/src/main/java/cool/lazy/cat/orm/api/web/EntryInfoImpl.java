@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.api.web;
 
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
-import cool.lazy.cat.orm.core.base.annotation.Parameter;
+import cool.lazy.cat.orm.annotation.Parameter;
 import cool.lazy.cat.orm.core.jdbc.mapping.parameter.AbstractParameterizationInfo;
 import org.springframework.http.HttpMethod;
 

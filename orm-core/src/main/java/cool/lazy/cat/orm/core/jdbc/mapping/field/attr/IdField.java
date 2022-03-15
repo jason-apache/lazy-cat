@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.mapping.field.attr;
 
-import cool.lazy.cat.orm.core.jdbc.component.id.IdGenerator;
+import cool.lazy.cat.orm.base.component.IdGenerator;
 import cool.lazy.cat.orm.core.jdbc.mapping.parameter.ParameterizationInfo;
 
 /**

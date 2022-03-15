@@ -1,5 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.component;
 
+import cool.lazy.cat.orm.base.component.CommonComponent;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
 import cool.lazy.cat.orm.core.jdbc.sql.source.SqlSource;
 

@@ -1,6 +1,8 @@
 package cool.lazy.cat.orm.core.jdbc.mapping;
 
 
+import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.core.base.util.ReflectUtil;
 import cool.lazy.cat.orm.core.jdbc.component.validator.Validator;
 import cool.lazy.cat.orm.core.jdbc.mapping.parameter.AbstractParameterizationInfo;
 
@@ -20,8 +22,15 @@ public class ValidatorInfoImpl extends AbstractParameterizationInfo implements V
      */
     private final boolean notNull;
 
-    public ValidatorInfoImpl(cool.lazy.cat.orm.core.base.annotation.Validator validator) {
-        this.validator = validator.type();
+    public ValidatorInfoImpl(cool.lazy.cat.orm.annotation.Validator validator) {
+        if (ReflectUtil.canInstantiate(validator.type())) {
+            if (!Validator.class.isAssignableFrom(validator.type())) {
+                throw new UnsupportedOperationException("不支持的类型: " + validator.type() + ", 期望的类型: " + Validator.class.getName());
+            }
+            this.validator = Caster.cast(validator.type());
+        } else {
+            this.validator = Validator.class;
+        }
         this.notNull = validator.notNull();
         super.initParameter(validator.parameter());
     }

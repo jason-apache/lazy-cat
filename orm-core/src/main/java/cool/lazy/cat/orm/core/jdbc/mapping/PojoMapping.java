@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.mapping;
 
-import cool.lazy.cat.orm.core.base.constant.JoinMode;
+import cool.lazy.cat.orm.base.constant.JoinMode;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
 
 import java.util.List;

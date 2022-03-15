@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.manager.subject;
 
-import cool.lazy.cat.orm.core.base.constant.Constant;
+import cool.lazy.cat.orm.base.constant.Constant;
 import cool.lazy.cat.orm.core.manager.exception.CannotResolverBeanInfoException;
 
 import java.beans.BeanInfo;

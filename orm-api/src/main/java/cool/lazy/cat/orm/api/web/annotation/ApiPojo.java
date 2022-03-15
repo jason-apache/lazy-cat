@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.api.web.annotation;
 
-import cool.lazy.cat.orm.core.base.annotation.Parameter;
+import cool.lazy.cat.orm.annotation.Parameter;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

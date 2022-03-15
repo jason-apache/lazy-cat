@@ -1,4 +1,4 @@
-package cool.lazy.cat.orm.core.base.constant;
+package cool.lazy.cat.orm.base.constant;
 
 /**
  * @author: mahao

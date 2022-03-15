@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.param;
 
-import cool.lazy.cat.orm.core.jdbc.component.CommonComponent;
+import cool.lazy.cat.orm.base.component.CommonComponent;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.SqlCondition;
 
 import java.util.Set;

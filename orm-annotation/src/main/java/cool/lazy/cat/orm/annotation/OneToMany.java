@@ -1,7 +1,6 @@
-package cool.lazy.cat.orm.core.base.annotation;
+package cool.lazy.cat.orm.annotation;
 
-import cool.lazy.cat.orm.core.base.constant.JoinMode;
-import cool.lazy.cat.orm.core.base.service.BaseService;
+import cool.lazy.cat.orm.base.constant.JoinMode;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -77,7 +76,6 @@ public @interface OneToMany {
 
     /**
      * 映射对象是否参与新增
-     * @see BaseService#save
      * eg：
      *      user携带一个userDirList
      *      执行userDirList中id不为空的对象修改操作，id为空的对象新增操作

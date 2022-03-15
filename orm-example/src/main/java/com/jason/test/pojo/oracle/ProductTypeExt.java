@@ -2,11 +2,11 @@ package com.jason.test.pojo.oracle;
 
 import com.jason.test.constant.Constant;
 import com.jason.test.annotation.DataSource;
-import cool.lazy.cat.orm.core.base.annotation.Column;
-import cool.lazy.cat.orm.core.base.annotation.Id;
-import cool.lazy.cat.orm.core.base.annotation.Parameter;
-import cool.lazy.cat.orm.core.base.annotation.Pojo;
-import cool.lazy.cat.orm.core.base.annotation.Table;
+import cool.lazy.cat.orm.annotation.Column;
+import cool.lazy.cat.orm.annotation.Id;
+import cool.lazy.cat.orm.annotation.Parameter;
+import cool.lazy.cat.orm.annotation.Pojo;
+import cool.lazy.cat.orm.annotation.Table;
 import cool.lazy.cat.orm.core.jdbc.component.id.SequenceIdGenerator;
 import lombok.Data;
 

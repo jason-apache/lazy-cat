@@ -1,4 +1,6 @@
 # 快速开始 :cat:  
+    orm-annotation 相关注解
+    orm-base 桥接annotation和core 同时也作为基础支持层
     orm-core 底层基于spring jdbc template 在此之上扩展完成了orm  
     orm-api 扩展了orm-core 实现全局自动映射api接口  
 
@@ -7,7 +9,7 @@
 ## orm-core
    配置: `cool.lazy.cat.orm.core.jdbc.JdbcConfig`  
    你需要先了解这些注解的功能和基本工作方式:  
-   `cool.lazy.cat.orm.core.base.annotation.*`  
+   `cool.lazy.cat.orm.annotation.*`  
    **lazy-cat一律以pojo字段的getter方法标注的注解为准 请注意**  
    #### 正确使用方式
     根入口为cool.lazy.cat.orm.core.base.repository.BaseRepository. baseRepository提供了丰富的api供使用  
@@ -34,7 +36,7 @@
     和cool.lazy.cat.orm.core.jdbc.constant.ConditionConstant的CONDITION_TYPE_CACHE属性  
     可以查看example项目中的com.jason.test.component.conditiontype包下的示例  
    #### 扩展组件
-    @see cool.lazy.cat.orm.core.jdbc.component.CommonComponent  
+    @see cool.lazy.cat.orm.base.component.CommonComponent  
     @see cool.lazy.cat.orm.core.jdbc.component.SpecialColumn  
    #### 基本工作流程
     假设入口为service: 
@@ -49,7 +51,7 @@
     <dependency>  
         <groupId>cool.lazy-cat</groupId>  
         <artifactId>orm-core-spring-boot-starter</artifactId>  
-        <version>2.0.0</version>  
+        <version>2.1.0</version>  
     </dependency>  
 
 ## orm-api
@@ -78,7 +80,7 @@
     <dependency>   
         <groupId>cool.lazy-cat</groupId>  
         <artifactId>orm-api-spring-boot-starter</artifactId>  
-        <version>2.0.1</version>  
+        <version>2.1.0</version>  
     </dependency>  
 
 

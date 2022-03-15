@@ -1,4 +1,4 @@
-package cool.lazy.cat.orm.core.base.annotation;
+package cool.lazy.cat.orm.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -24,6 +24,11 @@ public @interface Table {
      * 指定库
      */
     String schema() default "";
+
+    /**
+     * 表描述, 可供生成DML使用
+     */
+    String description() default "";
 
     /**
      * @return 附加参数

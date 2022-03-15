@@ -5,6 +5,7 @@ import cool.lazy.cat.orm.core.base.exception.ReflectiveException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * @author: mahao
@@ -34,5 +35,9 @@ public final class ReflectUtil {
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new ReflectiveException("反射异常: Setter方法", e);
         }
+    }
+
+    public static boolean canInstantiate(Class<?> type) {
+        return null != type && !Modifier.isAbstract(type.getModifiers()) && !type.isEnum();
     }
 }

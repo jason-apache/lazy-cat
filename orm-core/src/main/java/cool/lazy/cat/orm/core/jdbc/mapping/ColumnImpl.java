@@ -1,6 +1,8 @@
 package cool.lazy.cat.orm.core.jdbc.mapping;
 
 
+import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.core.base.util.ReflectUtil;
 import cool.lazy.cat.orm.core.jdbc.component.convert.TypeConverter;
 import cool.lazy.cat.orm.core.jdbc.component.validator.Validator;
 import cool.lazy.cat.orm.core.jdbc.mapping.parameter.AbstractParameterizationInfo;
@@ -37,9 +39,16 @@ public class ColumnImpl extends AbstractParameterizationInfo implements Column {
      */
     private final int sort;
 
-    public ColumnImpl(cool.lazy.cat.orm.core.base.annotation.Column column) {
+    public ColumnImpl(cool.lazy.cat.orm.annotation.Column column) {
+        if (ReflectUtil.canInstantiate(column.typeConverter())) {
+            if (!TypeConverter.class.isAssignableFrom(column.typeConverter())) {
+                throw new UnsupportedOperationException("不支持的类型: " + column.typeConverter() + ", 期望的类型: " + TypeConverter.class.getName());
+            }
+            this.typeConverter = Caster.cast(column.typeConverter());
+        } else {
+            this.typeConverter = TypeConverter.class;
+        }
         this.name = column.name();
-        this.typeConverter = column.typeConverter();
         this.insertable = column.insertable();
         this.updatable = column.updatable();
         this.validatorInfo = new ValidatorInfoImpl(column.validator());
