@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.provider.impl;
 
 import cool.lazy.cat.orm.core.base.exception.InitFailedException;
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.jdbc.component.SpecialColumn;
 import cool.lazy.cat.orm.core.jdbc.provider.SpecialColumnProvider;
 import org.springframework.beans.factory.annotation.Autowired;

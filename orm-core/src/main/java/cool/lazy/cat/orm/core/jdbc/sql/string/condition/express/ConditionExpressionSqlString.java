@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql.string.condition.express;
 
-import cool.lazy.cat.orm.core.jdbc.constant.Case;
+import cool.lazy.cat.orm.base.constant.Case;
 import cool.lazy.cat.orm.core.jdbc.sql.string.NormalSqlString;
 import cool.lazy.cat.orm.core.jdbc.sql.string.ParameterNameSqlString;
 import cool.lazy.cat.orm.core.jdbc.sql.string.SqlString;

@@ -4,7 +4,7 @@ import cool.lazy.cat.orm.api.service.CommonApiService;
 import cool.lazy.cat.orm.api.web.FullAutoMappingContext;
 import cool.lazy.cat.orm.api.web.bo.QueryInfo;
 import cool.lazy.cat.orm.api.web.bo.WebResponse;
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.manager.ServiceManager;
 
 import java.util.Collection;

@@ -1,6 +1,8 @@
 package cool.lazy.cat.orm.core.jdbc.constant;
 
 
+import cool.lazy.cat.orm.base.constant.Case;
+
 /**
  * @author: mahao
  * @date: 2021/3/10 13:48

@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>orm-core-spring-boot-starter</artifactId>
-    <version>2.1.0</version>
+    <version>${project.parent.version}</version>
     <parent>
         <groupId>cool.lazy-cat</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.0</version>
+        <version>2.2.0</version>
     </parent>
 
     <name>orm core</name>
@@ -40,12 +40,12 @@
         <dependency>
             <groupId>cool.lazy-cat</groupId>
             <artifactId>orm-base</artifactId>
-            <version>2.0.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>cool.lazy-cat</groupId>
             <artifactId>orm-annotation</artifactId>
-            <version>2.0.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

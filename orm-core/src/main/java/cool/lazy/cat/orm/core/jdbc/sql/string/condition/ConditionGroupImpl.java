@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql.string.condition;
 
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.sql.string.AbstractCompoundSqlString;
 import cool.lazy.cat.orm.core.jdbc.sql.string.SqlString;
 

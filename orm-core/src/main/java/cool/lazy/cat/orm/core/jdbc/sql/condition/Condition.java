@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.sql.condition;
 
 
-import cool.lazy.cat.orm.core.base.util.StringUtil;
+import cool.lazy.cat.orm.base.util.StringUtil;
 import cool.lazy.cat.orm.core.jdbc.constant.ConditionConstant;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.inject.SqlConditionValuePlaceHolder;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;

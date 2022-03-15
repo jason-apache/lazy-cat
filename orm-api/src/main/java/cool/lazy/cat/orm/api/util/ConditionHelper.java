@@ -4,7 +4,7 @@ import cool.lazy.cat.orm.api.manager.ApiPojoManager;
 import cool.lazy.cat.orm.api.manager.subject.ApiPojoSubject;
 import cool.lazy.cat.orm.api.manager.subject.ApiQueryFilterInfo;
 import cool.lazy.cat.orm.core.base.util.ReflectUtil;
-import cool.lazy.cat.orm.core.base.util.StringUtil;
+import cool.lazy.cat.orm.base.util.StringUtil;
 import cool.lazy.cat.orm.core.jdbc.constant.ConditionConstant;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldAccessor;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldDescriptor;

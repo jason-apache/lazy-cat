@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.analyzer;
 
 
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.adapter.ConditionTypeAdapter;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldAccessor;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldDescriptor;

@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql;
 
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.param.operation.DataOperationDescriptor;
 import cool.lazy.cat.orm.core.jdbc.param.Param;
 import cool.lazy.cat.orm.core.jdbc.sql.type.SqlType;

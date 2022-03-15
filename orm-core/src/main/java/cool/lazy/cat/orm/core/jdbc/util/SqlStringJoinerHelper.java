@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.util;
 
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
-import cool.lazy.cat.orm.core.jdbc.constant.Case;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.constant.Case;
 import cool.lazy.cat.orm.core.jdbc.constant.JdbcConstant;
 import cool.lazy.cat.orm.core.jdbc.sql.string.SqlString;
 import cool.lazy.cat.orm.core.jdbc.sql.string.joiner.SqlStringJoiner;

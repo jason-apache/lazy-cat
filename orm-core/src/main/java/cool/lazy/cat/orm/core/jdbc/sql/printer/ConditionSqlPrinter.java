@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.sql.printer;
 
-import cool.lazy.cat.orm.core.base.util.Caster;
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.Caster;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.analyzer.ConditionAnalyzer;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldAccessor;
 import cool.lazy.cat.orm.core.jdbc.param.Param;

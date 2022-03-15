@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.dict;
 
-import cool.lazy.cat.orm.core.jdbc.constant.Case;
+import cool.lazy.cat.orm.base.constant.Case;
 
 import java.util.HashMap;
 import java.util.Map;

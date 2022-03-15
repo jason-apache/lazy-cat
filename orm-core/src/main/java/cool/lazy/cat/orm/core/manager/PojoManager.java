@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.manager;
 
 
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.manager.exception.UnKnowPojoException;
 import cool.lazy.cat.orm.core.manager.scan.PojoClassScanner;
 import cool.lazy.cat.orm.core.manager.subject.PojoSubject;

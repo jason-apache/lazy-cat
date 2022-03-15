@@ -1,6 +1,6 @@
-package cool.lazy.cat.orm.core.base.util;
+package cool.lazy.cat.orm.base.util;
 
-import cool.lazy.cat.orm.core.jdbc.constant.Case;
+import cool.lazy.cat.orm.base.constant.Case;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

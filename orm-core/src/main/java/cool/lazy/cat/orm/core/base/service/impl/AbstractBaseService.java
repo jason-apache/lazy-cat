@@ -4,7 +4,7 @@ import cool.lazy.cat.orm.core.base.bo.PageResult;
 import cool.lazy.cat.orm.core.base.repository.BaseRepository;
 import cool.lazy.cat.orm.core.base.service.BaseService;
 import cool.lazy.cat.orm.core.base.service.CommonService;
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.jdbc.param.SearchParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

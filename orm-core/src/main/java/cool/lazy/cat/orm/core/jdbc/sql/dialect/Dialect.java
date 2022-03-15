@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql.dialect;
 
-import cool.lazy.cat.orm.core.jdbc.constant.Case;
+import cool.lazy.cat.orm.base.constant.Case;
 import cool.lazy.cat.orm.core.jdbc.dict.KeywordDictionary;
 import cool.lazy.cat.orm.core.jdbc.dict.KeywordDictionaryRegistry;
 import cool.lazy.cat.orm.core.jdbc.param.SearchParam;

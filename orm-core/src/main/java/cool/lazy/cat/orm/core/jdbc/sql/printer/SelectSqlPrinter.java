@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.sql.printer;
 
 import cool.lazy.cat.orm.base.constant.JoinMode;
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
 import cool.lazy.cat.orm.core.jdbc.OrderBy;
 import cool.lazy.cat.orm.core.jdbc.constant.JdbcConstant;

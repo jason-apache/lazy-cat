@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.api.util;
 
 import cool.lazy.cat.orm.api.web.constant.ApiConstant;
-import cool.lazy.cat.orm.core.base.util.StringUtil;
+import cool.lazy.cat.orm.base.util.StringUtil;
 
 /**
  * @author: mahao

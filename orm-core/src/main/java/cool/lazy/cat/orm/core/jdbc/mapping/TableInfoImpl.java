@@ -2,7 +2,7 @@ package cool.lazy.cat.orm.core.jdbc.mapping;
 
 import cool.lazy.cat.orm.annotation.Table;
 import cool.lazy.cat.orm.core.base.exception.FieldAlreadyExistsException;
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.PojoFieldMapper;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.IdField;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.LogicDeleteField;

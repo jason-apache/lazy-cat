@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql.string;
 
-import cool.lazy.cat.orm.core.jdbc.constant.Case;
+import cool.lazy.cat.orm.base.constant.Case;
 
 /**
  * @author: mahao

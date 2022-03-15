@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.mapping.field.access;
 
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.IgnoreModel;
 import cool.lazy.cat.orm.core.jdbc.Ignorer;
 import cool.lazy.cat.orm.core.jdbc.constant.JdbcConstant;

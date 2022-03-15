@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.mapping.field.access;
 
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.mapping.PojoMapping;
 import cool.lazy.cat.orm.core.jdbc.mapping.TableInfo;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.PojoFieldMapper;

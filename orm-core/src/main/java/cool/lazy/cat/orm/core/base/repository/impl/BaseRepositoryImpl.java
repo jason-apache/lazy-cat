@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.base.repository.impl;
 
 import cool.lazy.cat.orm.core.base.repository.BaseRepository;
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.datasource.JdbcOperationHolderAdapter;
 import cool.lazy.cat.orm.core.jdbc.component.executor.ComponentExecutor;
 import cool.lazy.cat.orm.core.jdbc.mapping.TableInfo;

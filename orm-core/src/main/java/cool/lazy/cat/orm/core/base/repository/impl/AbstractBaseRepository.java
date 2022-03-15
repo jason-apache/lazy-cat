@@ -3,7 +3,7 @@ package cool.lazy.cat.orm.core.base.repository.impl;
 
 import cool.lazy.cat.orm.core.base.bo.PageResult;
 import cool.lazy.cat.orm.core.base.repository.BaseRepository;
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.base.util.ReflectUtil;
 import cool.lazy.cat.orm.base.component.CommonComponent;
 import cool.lazy.cat.orm.core.jdbc.component.executor.ComponentExecutor;

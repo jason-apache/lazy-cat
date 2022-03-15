@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql.printer.corrector;
 
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationHolder;
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
 import cool.lazy.cat.orm.core.jdbc.sql.SqlParameterMapping;

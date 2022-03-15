@@ -7,7 +7,7 @@ import cool.lazy.cat.orm.api.web.entrust.EntrustApi;
 import cool.lazy.cat.orm.api.web.entrust.MethodInfo;
 import cool.lazy.cat.orm.api.web.entrust.executor.intercepter.ApiMethodExecuteInterceptor;
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

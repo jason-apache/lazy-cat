@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql.printer.corrector;
 
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.jdbc.sql.SqlParameterMapping;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.inject.SqlConditionValuePlaceHolder;
 import cool.lazy.cat.orm.core.jdbc.sql.printer.cause.Cause;

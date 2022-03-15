@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.param;
 
 
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.jdbc.Ignorer;
 import cool.lazy.cat.orm.core.jdbc.OrderBy;
 import cool.lazy.cat.orm.base.component.CommonComponent;

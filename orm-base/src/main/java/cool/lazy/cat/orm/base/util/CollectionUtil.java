@@ -1,4 +1,4 @@
-package cool.lazy.cat.orm.core.base.util;
+package cool.lazy.cat.orm.base.util;
 
 
 import java.util.Collection;

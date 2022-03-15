@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.mapping;
 
 
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.base.util.ReflectUtil;
 import cool.lazy.cat.orm.core.jdbc.component.trigger.Trigger;
 

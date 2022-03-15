@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.base.service.impl;
 
 import cool.lazy.cat.orm.core.base.service.BaseService;
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 
 import java.util.Collection;
 

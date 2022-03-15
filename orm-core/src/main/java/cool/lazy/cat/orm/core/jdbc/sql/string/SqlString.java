@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql.string;
 
-import cool.lazy.cat.orm.core.jdbc.constant.Case;
+import cool.lazy.cat.orm.base.constant.Case;
 import cool.lazy.cat.orm.core.jdbc.sql.printer.cause.Cause;
 import cool.lazy.cat.orm.core.jdbc.sql.string.joiner.SpaceSqlStringJoiner;
 import cool.lazy.cat.orm.core.jdbc.sql.string.joiner.SqlStringJoiner;

@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.sql.string.keyword;
 
-import cool.lazy.cat.orm.core.base.util.Caster;
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.Caster;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
 import cool.lazy.cat.orm.core.jdbc.sql.printer.cause.Cause;
 import cool.lazy.cat.orm.core.jdbc.sql.string.AbstractCompoundSqlString;

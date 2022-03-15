@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.component.convert;
 
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
 
 import java.sql.ResultSet;

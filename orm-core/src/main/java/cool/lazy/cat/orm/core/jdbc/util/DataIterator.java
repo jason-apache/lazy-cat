@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.util;
 
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.base.util.ReflectUtil;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.TableNode;
 

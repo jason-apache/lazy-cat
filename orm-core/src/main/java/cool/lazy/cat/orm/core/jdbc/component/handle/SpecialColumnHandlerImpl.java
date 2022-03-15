@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.component.handle;
 
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.base.component.CommonComponent;
 import cool.lazy.cat.orm.core.jdbc.component.convert.TypeConverter;
 import cool.lazy.cat.orm.core.jdbc.component.validator.Validator;

@@ -2,7 +2,7 @@ package cool.lazy.cat.orm.core.jdbc.component.id;
 
 import cool.lazy.cat.orm.base.component.IdGenerator;
 import cool.lazy.cat.orm.base.constant.Constant;
-import cool.lazy.cat.orm.core.base.util.CollectionUtil;
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationHolder;
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
 import cool.lazy.cat.orm.core.jdbc.adapter.DynamicNameAdapter;

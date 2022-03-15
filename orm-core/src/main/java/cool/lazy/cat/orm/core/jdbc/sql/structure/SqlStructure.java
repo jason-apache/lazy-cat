@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.sql.structure;
 
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
-import cool.lazy.cat.orm.core.jdbc.constant.Case;
+import cool.lazy.cat.orm.base.constant.Case;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.SqlCondition;
 import cool.lazy.cat.orm.core.jdbc.sql.string.SqlString;
 import cool.lazy.cat.orm.core.jdbc.sql.string.keyword.WhereSqlString;

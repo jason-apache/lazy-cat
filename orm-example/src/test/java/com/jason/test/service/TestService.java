@@ -12,7 +12,7 @@ import com.jason.test.pojo.mysql.User;
 import cool.lazy.cat.orm.core.base.bo.PageResult;
 import cool.lazy.cat.orm.core.base.service.BaseService;
 import cool.lazy.cat.orm.core.base.service.CommonService;
-import cool.lazy.cat.orm.core.base.util.Caster;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.core.jdbc.Ignorer;
 import cool.lazy.cat.orm.core.jdbc.OrderBy;
 import cool.lazy.cat.orm.core.jdbc.param.SearchParam;
