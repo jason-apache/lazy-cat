@@ -1,11 +1,11 @@
 package cool.lazy.cat.orm.api.web;
 
+import cool.lazy.cat.orm.api.base.constant.HttpMethod;
 import cool.lazy.cat.orm.api.manager.ApiPojoManager;
 import cool.lazy.cat.orm.api.manager.subject.ApiPojoSubject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.Arrays;

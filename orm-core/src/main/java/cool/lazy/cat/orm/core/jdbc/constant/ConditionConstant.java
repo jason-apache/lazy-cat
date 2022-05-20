@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.constant;
 
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.like.AllLike;
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
+import cool.lazy.cat.orm.base.jdbc.sql.condition.type.ConditionType;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.Equals;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.GreaterThan;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.GreaterThanEquals;

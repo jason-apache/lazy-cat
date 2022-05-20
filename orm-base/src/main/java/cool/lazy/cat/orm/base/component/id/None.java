@@ -1,6 +1,6 @@
-package cool.lazy.cat.orm.core.jdbc.component.id;
+package cool.lazy.cat.orm.base.component.id;
 
-import cool.lazy.cat.orm.base.component.IdGenerator;
+import cool.lazy.cat.orm.base.component.id.IdGenerator;
 
 import java.util.List;
 

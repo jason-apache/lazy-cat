@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.component.id;
 
-import cool.lazy.cat.orm.base.component.IdGenerator;
+import cool.lazy.cat.orm.base.component.id.IdGenerator;
 import cool.lazy.cat.orm.base.constant.Constant;
 import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationHolder;

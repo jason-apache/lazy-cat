@@ -1,17 +1,18 @@
 package cool.lazy.cat.orm.api.manager.subject;
 
+import cool.lazy.cat.orm.api.base.anno.ApiPojo;
+import cool.lazy.cat.orm.api.base.anno.Entry;
+import cool.lazy.cat.orm.api.base.constant.HttpMethod;
 import cool.lazy.cat.orm.api.exception.ExistPathApiException;
 import cool.lazy.cat.orm.api.util.PathGenerator;
 import cool.lazy.cat.orm.api.web.EntryInfo;
 import cool.lazy.cat.orm.api.web.EntryInfoImpl;
-import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
-import cool.lazy.cat.orm.api.web.annotation.Entry;
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
+import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.base.util.StringUtil;
 import cool.lazy.cat.orm.core.jdbc.mapping.parameter.AbstractParameterizationInfo;
 import cool.lazy.cat.orm.core.manager.subject.Subject;
-import org.springframework.http.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,15 +51,18 @@ public class ApiPojoSubject extends AbstractParameterizationInfo implements Subj
             }
             // 分析api
             for (Entry entry : apiPojoAnnotation.entry()) {
-                if (entry.api() == ApiMethodEntry.class) {
+                if (entry.api().isInterface()) {
                     throw new IllegalArgumentException("不是一个ApiMethodEntry实现类：" + entry.api().getName());
+                }
+                if (!ApiMethodEntry.class.isAssignableFrom(entry.api())) {
+                    throw new UnsupportedOperationException("不支持类型, 请自定义实现: " + entry.api());
                 }
                 if (CollectionUtil.isEmpty(entry.methods())) {
                     throw new IllegalArgumentException("method为空：" + entry.path());
                 }
                 // 生成完整路径
                 String fullPath = nameSpace + PathGenerator.format(entry.path());
-                EntryInfo entryMethod = new EntryInfoImpl(pojoType, nameSpace, fullPath, entry.api(), entry.methods(), entry.parameters());
+                EntryInfo entryMethod = new EntryInfoImpl(pojoType, nameSpace, fullPath, Caster.cast(entry.api()), entry.methods(), entry.parameters());
                 for (HttpMethod httpMethod : entryMethod.getMethods()) {
                     if (entryInfoMap.get(entryMethod.getFullPath()) != null && entryInfoMap.get(entryMethod.getFullPath()).containsKey(httpMethod)) {
                         throw new ExistPathApiException("已存在的path：代理类" + pojoType.getName() + "[value：" + entryMethod.getFullPath() + "，type：" + Arrays.toString(entry.methods()) + "]");

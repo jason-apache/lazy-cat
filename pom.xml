@@ -13,6 +13,7 @@
         <module>orm-api</module>
         <module>orm-base</module>
         <module>orm-annotation</module>
+        <module>orm-api-base</module>
     </modules>
 
     <name>lazy-cat-parent</name>

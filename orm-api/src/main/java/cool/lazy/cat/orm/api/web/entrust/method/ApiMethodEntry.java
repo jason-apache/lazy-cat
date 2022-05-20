@@ -1,5 +1,6 @@
 package cool.lazy.cat.orm.api.web.entrust.method;
 
+import cool.lazy.cat.orm.api.base.method.ApiMethodEntryHook;
 import cool.lazy.cat.orm.api.web.entrust.EntrustApi;
 import cool.lazy.cat.orm.api.web.entrust.MethodInfo;
 
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date: 2021/7/7 10:50
  * api方法载体
  */
-public interface ApiMethodEntry {
+public interface ApiMethodEntry extends ApiMethodEntryHook {
 
     /**
      * 获取api方法所属bean

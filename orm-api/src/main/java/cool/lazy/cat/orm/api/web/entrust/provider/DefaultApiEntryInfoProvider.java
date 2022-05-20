@@ -1,9 +1,9 @@
 package cool.lazy.cat.orm.api.web.entrust.provider;
 
+import cool.lazy.cat.orm.api.base.constant.HttpMethod;
 import cool.lazy.cat.orm.api.exception.BadRequestException;
 import cool.lazy.cat.orm.api.web.EntryInfo;
 import cool.lazy.cat.orm.api.web.UriPojoMapping;
-import org.springframework.http.HttpMethod;
 
 import java.util.Map;
 

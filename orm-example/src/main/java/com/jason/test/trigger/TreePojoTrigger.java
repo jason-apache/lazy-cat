@@ -3,7 +3,7 @@ package com.jason.test.trigger;
 import com.jason.test.base.NodePojo;
 import com.jason.test.base.RecordPojo;
 import com.jason.test.base.TreePojo;
-import cool.lazy.cat.orm.base.util.CollectionUtil;
+import cool.lazy.cat.orm.core.base.util.CollectionUtil;
 
 import java.util.List;
 

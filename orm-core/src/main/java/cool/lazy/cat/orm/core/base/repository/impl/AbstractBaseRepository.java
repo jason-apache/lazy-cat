@@ -7,7 +7,7 @@ import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.base.util.ReflectUtil;
 import cool.lazy.cat.orm.base.component.CommonComponent;
 import cool.lazy.cat.orm.core.jdbc.component.executor.ComponentExecutor;
-import cool.lazy.cat.orm.base.component.IdGenerator;
+import cool.lazy.cat.orm.base.component.id.IdGenerator;
 import cool.lazy.cat.orm.core.jdbc.datasource.JdbcOperationHolderAdapter;
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationHolder;
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;

@@ -1,19 +1,19 @@
 package cool.lazy.cat.orm.api.manager;
 
+import cool.lazy.cat.orm.api.base.anno.ApiPojo;
+import cool.lazy.cat.orm.api.base.anno.ApiQueryFilter;
+import cool.lazy.cat.orm.api.base.constant.HttpMethod;
 import cool.lazy.cat.orm.api.exception.ExistNameSpaceException;
 import cool.lazy.cat.orm.api.exception.SamePathApiException;
 import cool.lazy.cat.orm.api.manager.subject.ApiPojoSubject;
 import cool.lazy.cat.orm.api.manager.subject.ApiQueryFilterInfo;
 import cool.lazy.cat.orm.api.web.EntryInfo;
-import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
-import cool.lazy.cat.orm.api.web.annotation.ApiQueryFilter;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
 import cool.lazy.cat.orm.core.manager.PojoManager;
 import cool.lazy.cat.orm.core.manager.PojoTableManager;
 import cool.lazy.cat.orm.core.manager.exception.UnKnowPojoException;
 import cool.lazy.cat.orm.core.manager.subject.PojoSubject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -26,7 +26,7 @@ public class LocalPgsqlNameMapper implements DynamicNameMapper {
 
     @Autowired
     public void setMappings(DynamicSchemaConfig dynamicSchemaConfig) {
-        this.mappings = dynamicSchemaConfig.getContent().get(Constant.ORACLE);
+        this.mappings = dynamicSchemaConfig.getContent().get(Constant.LOCAL_PG);
         if (this.mappings == null) {
             this.mappings = Collections.emptyMap();
         }

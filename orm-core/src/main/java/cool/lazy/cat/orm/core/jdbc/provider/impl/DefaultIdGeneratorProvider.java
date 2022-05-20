@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.provider.impl;
 
 import cool.lazy.cat.orm.core.base.exception.InitFailedException;
-import cool.lazy.cat.orm.base.component.IdGenerator;
+import cool.lazy.cat.orm.base.component.id.IdGenerator;
 import cool.lazy.cat.orm.core.jdbc.provider.IdGeneratorProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,7 +1,6 @@
-package cool.lazy.cat.orm.api.web.annotation;
+package cool.lazy.cat.orm.api.base.anno;
 
 import cool.lazy.cat.orm.annotation.Parameter;
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -11,20 +10,25 @@ import java.lang.annotation.Target;
 
 /**
  * @author: mahao
- * @date: 2022-02-05 15:54
+ * @date: 2021/3/5 10:14
+ * 标注一个pojo需要参与Api自动映射
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Documented
-public @interface ApiQueryFilter {
+public @interface ApiPojo {
 
     /**
-     * @return 字段查询过滤条件
+     * api的唯一标识，也就是api访问路径的根 默认取类名
      */
-    Class<? extends ConditionType> value();
+    String nameSpace() default "";
 
     /**
-     *
+     * Api方法
+     */
+    Entry[] entry();
+
+    /**
      * @return 附加参数
      */
     Parameter[] parameters() default {};

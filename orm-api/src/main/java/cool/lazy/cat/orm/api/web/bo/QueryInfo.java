@@ -1,7 +1,5 @@
 package cool.lazy.cat.orm.api.web.bo;
 
-import cool.lazy.cat.orm.api.web.annotation.ApiQueryFilter;
-
 import java.io.Serializable;
 import java.util.Map;
 
@@ -28,7 +26,7 @@ public class QueryInfo implements Serializable {
     private boolean asc;
     /**
      * 查询参数，配合queryFilter使用
-     * @see ApiQueryFilter#value()
+     * @see cool.lazy.cat.orm.api.base.anno.ApiQueryFilter#value()
      */
     private Map<String, Object> params;
     /**

@@ -1,5 +1,6 @@
 package cool.lazy.cat.orm.api.web.entrust;
 
+import cool.lazy.cat.orm.api.base.constant.HttpMethod;
 import cool.lazy.cat.orm.api.exception.UnKnowTargetBeanException;
 import cool.lazy.cat.orm.api.web.EntryInfo;
 import cool.lazy.cat.orm.api.web.FullAutoMappingContext;
@@ -7,7 +8,6 @@ import cool.lazy.cat.orm.api.web.constant.ApiConstant;
 import cool.lazy.cat.orm.api.web.entrust.executor.ApiMethodExecutor;
 import cool.lazy.cat.orm.api.web.entrust.provider.ApiEntryInfoProvider;
 import cool.lazy.cat.orm.base.util.StringUtil;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

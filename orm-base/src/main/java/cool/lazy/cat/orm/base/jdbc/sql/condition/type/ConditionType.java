@@ -1,4 +1,4 @@
-package cool.lazy.cat.orm.core.jdbc.sql.condition.type;
+package cool.lazy.cat.orm.base.jdbc.sql.condition.type;
 
 /**
  * @author: mahao

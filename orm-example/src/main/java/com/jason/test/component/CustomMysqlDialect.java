@@ -1,7 +1,7 @@
 package com.jason.test.component;
 
 import cool.lazy.cat.orm.core.jdbc.adapter.FunctionHandlerAdapter;
-import cool.lazy.cat.orm.base.constant.Case;
+import cool.lazy.cat.orm.core.jdbc.constant.Case;
 import cool.lazy.cat.orm.core.jdbc.sql.dialect.SimpleMysqlDialect;
 import cool.lazy.cat.orm.core.jdbc.sql.string.NormalSqlStringImpl;
 import cool.lazy.cat.orm.core.jdbc.sql.string.SqlString;

@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql.string.condition;
 
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
+import cool.lazy.cat.orm.base.jdbc.sql.condition.type.ConditionType;
 import cool.lazy.cat.orm.core.jdbc.sql.printer.cause.Cause;
 import cool.lazy.cat.orm.core.jdbc.sql.string.NormalSqlString;
 import cool.lazy.cat.orm.core.jdbc.sql.string.NormalSymbolSqlString;

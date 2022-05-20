@@ -1,8 +1,8 @@
 package cool.lazy.cat.orm.api.manager.subject;
 
-import cool.lazy.cat.orm.api.web.annotation.ApiQueryFilter;
+import cool.lazy.cat.orm.api.base.anno.ApiQueryFilter;
+import cool.lazy.cat.orm.base.jdbc.sql.condition.type.ConditionType;
 import cool.lazy.cat.orm.core.jdbc.mapping.parameter.AbstractParameterizationInfo;
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
 
 /**
  * @author: mahao

@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.adapter.mapper;
 
 
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
+import cool.lazy.cat.orm.base.jdbc.sql.condition.type.ConditionType;
 import cool.lazy.cat.orm.core.jdbc.sql.string.condition.express.ConditionExpressionSqlString;
 
 /**

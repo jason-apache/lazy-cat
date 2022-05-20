@@ -2,7 +2,7 @@ package cool.lazy.cat.orm.core.jdbc.mapping.field.attr;
 
 
 import cool.lazy.cat.orm.annotation.Parameter;
-import cool.lazy.cat.orm.base.component.IdGenerator;
+import cool.lazy.cat.orm.base.component.id.IdGenerator;
 
 import java.lang.reflect.Method;
 import java.util.Collections;

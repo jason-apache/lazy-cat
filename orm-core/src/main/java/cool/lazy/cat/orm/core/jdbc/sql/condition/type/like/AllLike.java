@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.sql.condition.type.like;
 
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
+import cool.lazy.cat.orm.base.jdbc.sql.condition.type.ConditionType;
 
 /**
  * @author: mahao

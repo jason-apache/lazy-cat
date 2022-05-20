@@ -1,7 +1,7 @@
 package cool.lazy.cat.orm.core.jdbc.provider;
 
 
-import cool.lazy.cat.orm.base.component.IdGenerator;
+import cool.lazy.cat.orm.base.component.id.IdGenerator;
 
 /**
  * @author: mahao

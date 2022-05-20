@@ -10,12 +10,11 @@ import cool.lazy.cat.orm.annotation.Pojo;
 import cool.lazy.cat.orm.annotation.Table;
 import cool.lazy.cat.orm.annotation.Trigger;
 import cool.lazy.cat.orm.base.constant.Constant;
-import cool.lazy.cat.orm.core.base.exception.FieldAlreadyExistsException;
-import cool.lazy.cat.orm.core.base.exception.UnsupportedTypeException;
 import cool.lazy.cat.orm.base.util.Caster;
 import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.base.util.StringUtil;
-import cool.lazy.cat.orm.base.component.IdGenerator;
+import cool.lazy.cat.orm.core.base.exception.FieldAlreadyExistsException;
+import cool.lazy.cat.orm.core.base.exception.UnsupportedTypeException;
 import cool.lazy.cat.orm.core.jdbc.constant.JdbcConstant;
 import cool.lazy.cat.orm.core.jdbc.exception.CannotFindJoinConditionException;
 import cool.lazy.cat.orm.core.jdbc.exception.UniqueKeyUndefinedException;
@@ -269,10 +268,10 @@ public class PojoTableSubjectFactoryImpl implements PojoTableSubjectFactory {
      * @param fieldInfo 字段信息
      */
     protected TableFieldInfo buildId(Id idAnnotation, TableFieldInfo fieldInfo) {
-        if (idAnnotation.idGenerator() == IdGenerator.class) {
+        if (idAnnotation.idGenerator().isInterface()) {
             throw new IllegalArgumentException("不是一个实现类：" + idAnnotation.idGenerator().getName());
         }
-        IdFieldImpl id = new IdFieldImpl(fieldInfo.getGetter(), fieldInfo.getSetter(), idAnnotation.idGenerator());
+        IdFieldImpl id = new IdFieldImpl(fieldInfo.getGetter(), fieldInfo.getSetter(), Caster.cast(idAnnotation.idGenerator()));
         BeanUtils.copyProperties(fieldInfo, id);
         id.initParameter(idAnnotation.parameters());
         return id;

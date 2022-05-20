@@ -2,7 +2,7 @@ package cool.lazy.cat.orm.core.jdbc.adapter.mapper;
 
 import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
 import cool.lazy.cat.orm.core.jdbc.dict.KeywordDictionary;
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
+import cool.lazy.cat.orm.base.jdbc.sql.condition.type.ConditionType;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.IsNull;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.NotNull;
 import cool.lazy.cat.orm.core.jdbc.sql.string.condition.express.ConditionExpressionSqlString;

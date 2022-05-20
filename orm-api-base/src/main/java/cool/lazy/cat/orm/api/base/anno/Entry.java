@@ -1,8 +1,8 @@
-package cool.lazy.cat.orm.api.web.annotation;
+package cool.lazy.cat.orm.api.base.anno;
 
-import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
 import cool.lazy.cat.orm.annotation.Parameter;
-import org.springframework.http.HttpMethod;
+import cool.lazy.cat.orm.api.base.constant.HttpMethod;
+import cool.lazy.cat.orm.api.base.method.ApiMethodEntryHook;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -25,7 +25,7 @@ public @interface Entry {
     /**
      * api方法, 必须是一个ApiMethodEntry的实现类
      */
-    Class<? extends ApiMethodEntry> api();
+    Class<? extends ApiMethodEntryHook> api();
 
     /**
      * http请求方式

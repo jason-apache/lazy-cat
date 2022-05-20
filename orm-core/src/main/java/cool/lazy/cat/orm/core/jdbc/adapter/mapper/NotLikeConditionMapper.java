@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.core.jdbc.adapter.mapper;
 
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
+import cool.lazy.cat.orm.base.jdbc.sql.condition.type.ConditionType;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.like.NotAllLike;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.like.NotLeftLike;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.like.NotLike;

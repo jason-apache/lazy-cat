@@ -9,7 +9,7 @@ import cool.lazy.cat.orm.core.jdbc.constant.ConditionConstant;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldAccessor;
 import cool.lazy.cat.orm.core.jdbc.mapping.field.access.FieldDescriptor;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.SqlCondition;
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
+import cool.lazy.cat.orm.base.jdbc.sql.condition.type.ConditionType;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.None;
 import cool.lazy.cat.orm.core.manager.PojoTableManager;
 
@@ -27,7 +27,7 @@ public final class ConditionHelper {
 
     /**
      * 将map转换为SqlCondition, 使用ApiQueryFilter注解中的queryFilter条件and拼接
-     * @see cool.lazy.cat.orm.api.web.annotation.ApiQueryFilter#value()
+     * @see cool.lazy.cat.orm.api.base.anno.ApiQueryFilter#value()
      * @param apiPojoManager apiPojo管理器
      * @param paramMap map查询参数
      * @return sqlCondition对象

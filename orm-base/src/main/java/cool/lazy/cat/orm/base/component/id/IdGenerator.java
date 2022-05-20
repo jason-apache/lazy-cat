@@ -1,4 +1,6 @@
-package cool.lazy.cat.orm.base.component;
+package cool.lazy.cat.orm.base.component.id;
+
+import cool.lazy.cat.orm.base.component.CommonComponent;
 
 import java.util.List;
 
