@@ -1,18 +1,18 @@
 package com.jason.test.pojo.mysql.resource;
 
-import com.jason.test.constant.Constant;
 import com.jason.test.base.RecordPojo;
+import com.jason.test.constant.Constant;
 import com.jason.test.trigger.RecordPojoTrigger;
-import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
-import cool.lazy.cat.orm.api.web.annotation.Entry;
-import cool.lazy.cat.orm.api.web.entrust.method.QueryApiEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.RemoveApiEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.SaveApiEntry;
 import cool.lazy.cat.orm.annotation.Column;
 import cool.lazy.cat.orm.annotation.Id;
 import cool.lazy.cat.orm.annotation.Parameter;
 import cool.lazy.cat.orm.annotation.Pojo;
 import cool.lazy.cat.orm.annotation.Trigger;
+import cool.lazy.cat.orm.api.base.anno.ApiPojo;
+import cool.lazy.cat.orm.api.base.anno.Entry;
+import cool.lazy.cat.orm.api.web.entrust.method.QueryApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.RemoveApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.SaveApiEntry;
 import cool.lazy.cat.orm.core.jdbc.component.convert.SimpleEnumTypeConverter;
 import cool.lazy.cat.orm.core.jdbc.component.id.SequenceIdGenerator;
 import lombok.Data;

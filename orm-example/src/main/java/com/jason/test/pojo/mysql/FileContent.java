@@ -1,8 +1,6 @@
 package com.jason.test.pojo.mysql;
 
 import com.jason.test.base.BasePojo;
-import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
-import cool.lazy.cat.orm.api.web.annotation.ApiQueryFilter;
 import cool.lazy.cat.orm.annotation.Column;
 import cool.lazy.cat.orm.annotation.Id;
 import cool.lazy.cat.orm.annotation.ManyToOne;
@@ -10,6 +8,8 @@ import cool.lazy.cat.orm.annotation.On;
 import cool.lazy.cat.orm.annotation.OneToOne;
 import cool.lazy.cat.orm.annotation.Parameter;
 import cool.lazy.cat.orm.annotation.Pojo;
+import cool.lazy.cat.orm.api.base.anno.ApiPojo;
+import cool.lazy.cat.orm.api.base.anno.ApiQueryFilter;
 import cool.lazy.cat.orm.base.constant.Constant;
 import cool.lazy.cat.orm.core.jdbc.component.id.SequenceIdGenerator;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.like.RightLike;

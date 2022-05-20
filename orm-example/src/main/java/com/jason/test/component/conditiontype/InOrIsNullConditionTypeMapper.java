@@ -1,11 +1,11 @@
 package com.jason.test.component.conditiontype;
 
-import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
+import cool.lazy.cat.orm.base.jdbc.sql.condition.type.ConditionType;
 import cool.lazy.cat.orm.core.jdbc.adapter.mapper.ConditionTypeMapper;
 import cool.lazy.cat.orm.core.jdbc.adapter.mapper.InConditionTypeMapper;
 import cool.lazy.cat.orm.core.jdbc.constant.ConditionConstant;
+import cool.lazy.cat.orm.core.jdbc.datasource.operation.JdbcOperationSupport;
 import cool.lazy.cat.orm.core.jdbc.dict.KeywordDictionary;
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.ConditionType;
 import cool.lazy.cat.orm.core.jdbc.sql.string.condition.express.ConditionExpressionSqlString;
 import cool.lazy.cat.orm.core.jdbc.sql.string.condition.express.ConditionExpressionSqlStringImpl;
 import org.springframework.stereotype.Component;

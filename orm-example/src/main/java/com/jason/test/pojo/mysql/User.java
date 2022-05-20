@@ -9,15 +9,6 @@ import com.jason.test.constant.ValidateConstant;
 import com.jason.test.pojo.mysql.resource.UserResource;
 import com.jason.test.trigger.RecordPojoTrigger;
 import com.jason.test.validator.CommonValidator;
-import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
-import cool.lazy.cat.orm.api.web.annotation.ApiQueryFilter;
-import cool.lazy.cat.orm.api.web.annotation.Entry;
-import cool.lazy.cat.orm.api.web.entrust.method.QueryApiEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.QueryPageApiEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.RemoveApiEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.RemoveCascadeApiEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.SaveApiEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.SaveCascadeApiEntry;
 import cool.lazy.cat.orm.annotation.Column;
 import cool.lazy.cat.orm.annotation.Id;
 import cool.lazy.cat.orm.annotation.ManyToOne;
@@ -28,16 +19,24 @@ import cool.lazy.cat.orm.annotation.Pojo;
 import cool.lazy.cat.orm.annotation.Table;
 import cool.lazy.cat.orm.annotation.Trigger;
 import cool.lazy.cat.orm.annotation.Validator;
+import cool.lazy.cat.orm.api.base.anno.ApiPojo;
+import cool.lazy.cat.orm.api.base.anno.ApiQueryFilter;
+import cool.lazy.cat.orm.api.base.anno.Entry;
+import cool.lazy.cat.orm.api.base.constant.HttpMethod;
+import cool.lazy.cat.orm.api.web.entrust.method.QueryApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.QueryPageApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.RemoveApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.RemoveCascadeApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.SaveApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.SaveCascadeApiEntry;
 import cool.lazy.cat.orm.base.constant.Constant;
 import cool.lazy.cat.orm.core.jdbc.component.convert.SimpleEnumTypeConverter;
 import cool.lazy.cat.orm.core.jdbc.component.id.SequenceIdGenerator;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.Equals;
 import cool.lazy.cat.orm.core.jdbc.sql.condition.type.In;
-import cool.lazy.cat.orm.core.jdbc.sql.condition.type.like.RightLike;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.springframework.http.HttpMethod;
 
 import java.util.List;
 
@@ -84,7 +83,7 @@ public class User extends RecordPojo {
     }
 
     @Column(sort = 10)
-    @ApiQueryFilter(RightLike.class)
+    @ApiQueryFilter(In.class)
     public String getName() {
         return name;
     }

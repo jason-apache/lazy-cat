@@ -1,12 +1,7 @@
 package com.jason.test.pojo.pgsql;
 
-import com.jason.test.constant.Constant;
 import com.jason.test.annotation.DataSource;
-import cool.lazy.cat.orm.api.web.annotation.ApiPojo;
-import cool.lazy.cat.orm.api.web.annotation.Entry;
-import cool.lazy.cat.orm.api.web.entrust.method.QueryPageApiEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.RemoveCascadeApiEntry;
-import cool.lazy.cat.orm.api.web.entrust.method.SaveCascadeApiEntry;
+import com.jason.test.constant.Constant;
 import cool.lazy.cat.orm.annotation.Column;
 import cool.lazy.cat.orm.annotation.Id;
 import cool.lazy.cat.orm.annotation.On;
@@ -14,7 +9,12 @@ import cool.lazy.cat.orm.annotation.OneToMany;
 import cool.lazy.cat.orm.annotation.OneToOne;
 import cool.lazy.cat.orm.annotation.Pojo;
 import cool.lazy.cat.orm.annotation.Table;
-import cool.lazy.cat.orm.core.jdbc.component.id.UUIdGenerator;
+import cool.lazy.cat.orm.api.base.anno.ApiPojo;
+import cool.lazy.cat.orm.api.base.anno.Entry;
+import cool.lazy.cat.orm.api.web.entrust.method.QueryPageApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.RemoveCascadeApiEntry;
+import cool.lazy.cat.orm.api.web.entrust.method.SaveCascadeApiEntry;
+import cool.lazy.cat.orm.base.component.id.UUIdGenerator;
 import lombok.Data;
 
 import java.util.List;

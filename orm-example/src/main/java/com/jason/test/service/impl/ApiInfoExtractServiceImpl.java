@@ -2,11 +2,11 @@ package com.jason.test.service.impl;
 
 import com.jason.test.service.ApiInfoExtractService;
 import com.jason.test.vo.ApiInfo;
+import cool.lazy.cat.orm.api.base.constant.HttpMethod;
 import cool.lazy.cat.orm.api.web.EntryInfo;
 import cool.lazy.cat.orm.api.web.UriPojoMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
