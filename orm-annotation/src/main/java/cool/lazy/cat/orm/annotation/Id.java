@@ -1,6 +1,7 @@
 package cool.lazy.cat.orm.annotation;
 
-import cool.lazy.cat.orm.base.component.IdGenerator;
+
+import cool.lazy.cat.orm.base.component.id.IdGenerator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
