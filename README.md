@@ -51,7 +51,7 @@
     <dependency>  
         <groupId>cool.lazy-cat</groupId>  
         <artifactId>orm-core-spring-boot-starter</artifactId>  
-        <version>2.3.0</version>  
+        <version>2.3.1</version>  
     </dependency>  
 
 ## orm-api
@@ -80,7 +80,7 @@
     <dependency>   
         <groupId>cool.lazy-cat</groupId>  
         <artifactId>orm-api-spring-boot-starter</artifactId>  
-        <version>2.3.0</version>  
+        <version>2.3.1</version>  
     </dependency>  
 
 
