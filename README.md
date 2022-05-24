@@ -267,7 +267,7 @@ cool:
 ## orm-api
    配置: `cool.lazy.cat.orm.api.ApiConfig`  
    你需要先了解这些注解的功能和基本工作方式:  
-   `cool.lazy.cat.orm.api.web.annotation.*`  
+   `cool.lazy.cat.orm.api.base.anno.*`  
    **lazy-cat以pojo字段的getter方法标注的注解为准 请注意**
    #### 正确使用方式
     api模块映射了一个根路径作为入口, 又根据Pojo类限定了namespace, 一个完整的api映射路径是由 api映射根路径 + pojo namespace + apiMethod   
