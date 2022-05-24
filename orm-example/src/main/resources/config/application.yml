@@ -22,6 +22,29 @@ cool:
       multiplex-object: true
     servlet:
       api-path: api
+      # 使用配置文件的方式也可以注册api方法映射
+#      api-pojo-subject-registry-instance: cool.lazy.cat.orm.api.manager.provider.ConfigFileApiPojoSubjectProvider
+#      api-entries:
+#        - pojo-type: com.jason.test.pojo.mysql.User
+#          name-space: user
+#          properties:
+#            - path: select
+#              api: cool.lazy.cat.orm.api.web.entrust.method.QueryApiEntry
+#              allow-methods: POST,GET
+#          query-filters:
+#            - field: name
+#              condition: cool.lazy.cat.orm.core.jdbc.sql.condition.type.In
+#            - field: age
+#              condition: cool.lazy.cat.orm.core.jdbc.sql.condition.type.Equals
+#        - pojo-type: com.jason.test.pojo.mysql.Office
+#          name-space: officeTest
+#          properties:
+#            - path: selectPage
+#              api: cool.lazy.cat.orm.api.web.entrust.method.QueryApiEntry
+#              allow-methods: POST,GET
+#          query-filters:
+#            - field: name
+#              condition: cool.lazy.cat.orm.core.jdbc.sql.condition.type.In
 
 logging:
   level:
@@ -30,33 +53,27 @@ logging:
     cool.lazy.cat.orm: debug
 
 custom:
-  multiple-data-source-enable: true
-  dynamic-schema:
-    content:
+  data-source:
+    multiple-data-source-enable: true
+    dynamic-schema:
       mysql_test:
         mstdata: jpa
         m1: jpa
       oracle_test:
-        mstdata: MSTDATA
-
-com:
-  jason:
-    test:
-      multiple-data-source:
-        config:
-          mysql_test:
-            url: jdbc:mysql://localhost:3306/jpa?serverTimezone=GMT%2B8&characterEncoding=utf-8&rewriteBatchedStatements=true
-            username: root
-            password: root
-            driver-class-name: com.mysql.cj.jdbc.Driver
-          oracle_test:
-            url: jdbc:oracle:thin:@192.168.3.115:1521:EE
-            username: core
-            password: app
-            driver-class-name: oracle.jdbc.driver.OracleDriver
-          localhost_postgreSql:
-            url: jdbc:postgresql://localhost:5432/lazy_cat
-            username: lazy_cat
-            password: lazy_cat
-            driver-class-name: org.postgresql.Driver
-
+        mstdata: DEMXS
+    data-source-config:
+      mysql_test:
+        url: jdbc:mysql://localhost:3306/jpa?serverTimezone=GMT%2B8&characterEncoding=utf-8&rewriteBatchedStatements=true
+        username: root
+        password: root
+        driver-class-name: com.mysql.cj.jdbc.Driver
+      oracle_test:
+        url: jdbc:oracle:thin:@192.168.198.223:1521:helowin
+        username: demxs
+        password: demxs
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+      localhost_postgreSql:
+        url: jdbc:postgresql://localhost:5432/lazy_cat
+        username: lazy_cat
+        password: lazy_cat
+        driver-class-name: org.postgresql.Driver

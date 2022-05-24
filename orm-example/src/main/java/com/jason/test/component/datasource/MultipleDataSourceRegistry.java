@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
  * @date: 2022-02-03 16:29
  */
 @Component
-@ConditionalOnExpression("${custom.multiple-data-source-enable:false}")
+@ConditionalOnExpression("${custom.data-source.multiple-data-source-enable:false}")
 public class MultipleDataSourceRegistry {
 }

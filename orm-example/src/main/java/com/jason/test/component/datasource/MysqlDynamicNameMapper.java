@@ -1,7 +1,6 @@
 package com.jason.test.component.datasource;
 
 import com.jason.test.constant.Constant;
-import com.jason.test.component.DynamicSchemaConfig;
 import cool.lazy.cat.orm.core.jdbc.adapter.mapper.DynamicNameMapper;
 import cool.lazy.cat.orm.core.jdbc.sql.ObjectName;
 import cool.lazy.cat.orm.core.jdbc.sql.ObjectNameImpl;
@@ -24,8 +23,8 @@ public class MysqlDynamicNameMapper implements DynamicNameMapper {
     protected Map<String, String> mappings;
 
     @Autowired
-    public void setMappings(DynamicSchemaConfig dynamicSchemaConfig) {
-        this.mappings = dynamicSchemaConfig.getContent().get(Constant.MYSQL);
+    public void setMappings(MultipleDataSourceConfig multipleDataSourceConfig) {
+        this.mappings = multipleDataSourceConfig.getDynamicSchema().get(Constant.MYSQL);
         if (this.mappings == null) {
             this.mappings = Collections.emptyMap();
         }

@@ -116,7 +116,7 @@ public class User extends RecordPojo {
     @OneToMany(condition = {@On(foreignFiled = "id", targetFiled = "userId")},
             cascadeScope = {"userDirList.userFileList.fileContentList"},
             ignoreFields = {"userDirList.userFileList.fileContentList.suffix"},
-            cascadeLevel = 3, sort = 10)
+            sort = 10)
     public List<UserDir> getUserDirList() {
         return userDirList;
     }

@@ -21,8 +21,8 @@ import javax.sql.DataSource;
 public class MultipleDataSourceAutoConfiguration {
 
     @Bean(name = Constant.MYSQL)
-    public DataSource mysqlTest(MultipleDataSourceConfig dataSourceConfig) {
-        return dataSourceConfig.getConfig().get(Constant.MYSQL).initializeDataSourceBuilder().build();
+    public DataSource mysqlTest(MultipleDataSourceConfig multipleDataSourceConfig) {
+        return multipleDataSourceConfig.getDataSourceConfig().get(Constant.MYSQL).initializeDataSourceBuilder().build();
     }
 
     @Bean(name = Constant.MYSQL + "PlatformTransactionManager")
@@ -31,8 +31,8 @@ public class MultipleDataSourceAutoConfiguration {
     }
 
     @Bean(name = Constant.ORACLE)
-    public DataSource oracleTest(MultipleDataSourceConfig dataSourceConfig) {
-        return dataSourceConfig.getConfig().get(Constant.ORACLE).initializeDataSourceBuilder().build();
+    public DataSource oracleTest(MultipleDataSourceConfig multipleDataSourceConfig) {
+        return multipleDataSourceConfig.getDataSourceConfig().get(Constant.ORACLE).initializeDataSourceBuilder().build();
     }
 
     @Bean(name = Constant.ORACLE + "PlatformTransactionManager")
@@ -41,8 +41,8 @@ public class MultipleDataSourceAutoConfiguration {
     }
 
     @Bean(name = Constant.LOCAL_PG)
-    public DataSource localhostPgsql(MultipleDataSourceConfig dataSourceConfig) {
-        return dataSourceConfig.getConfig().get(Constant.LOCAL_PG).initializeDataSourceBuilder().build();
+    public DataSource localhostPgsql(MultipleDataSourceConfig multipleDataSourceConfig) {
+        return multipleDataSourceConfig.getDataSourceConfig().get(Constant.LOCAL_PG).initializeDataSourceBuilder().build();
     }
 
     @Bean(name = Constant.LOCAL_PG + "PlatformTransactionManager")

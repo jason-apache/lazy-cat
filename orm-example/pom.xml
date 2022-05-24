@@ -34,7 +34,7 @@
         <dependency>
             <groupId>cool.lazy-cat</groupId>
             <artifactId>orm-api-spring-boot-starter</artifactId>
-            <version>2.3.2</version>
+            <version>2.4.0</version>
         </dependency>
         <!-- 驱动 -->
         <dependency>
