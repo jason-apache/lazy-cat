@@ -8,7 +8,7 @@ lazy-cat是基于spring-jdbcTemplate封装的orm框架
 - orm-api   api自动映射  
 ***
 # 快速开始 :cat:  
-####orm-core maven依赖:  
+#### orm-core maven依赖:  
     <dependency>  
         <groupId>cool.lazy-cat</groupId>  
         <artifactId>orm-core-spring-boot-starter</artifactId>  
@@ -115,7 +115,7 @@ List<User> u = baseRepository.query(new SearchParamImpl<>(User.class).setSearchS
 事务控制层面提供了泛型接口`BaseService<Object>`  
 ***
 
-####orm-api maven依赖  
+#### orm-api maven依赖  
     <dependency>   
         <groupId>cool.lazy-cat</groupId>  
         <artifactId>orm-api-spring-boot-starter</artifactId>  
@@ -185,6 +185,7 @@ orm-api提供了7个接口
 | RemoveByIdsApiEntry | `List<String>` | baseService.deleteByIdsAndInfer(pojoType, ids) |  
 | SaveApiEntry | `List<Object>` | baseService.save(dataList, false) |  
 | SaveCascadeApiEntry | `List<Object>` | baseService.save(dataList, true) |  
+
 你也可以扩展[自定义的api代理](#扩展自定义api) 自定义请求参数、响应参数、以及真正执行业务逻辑的bean    
 除了使用注解配置api请求路径映射之外 orm-api还提供了基于配置文件配置api参数的方式  
 ```yml
