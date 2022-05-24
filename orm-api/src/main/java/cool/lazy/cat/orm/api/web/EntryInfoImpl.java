@@ -2,8 +2,9 @@ package cool.lazy.cat.orm.api.web;
 
 import cool.lazy.cat.orm.api.base.constant.HttpMethod;
 import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
-import cool.lazy.cat.orm.annotation.Parameter;
 import cool.lazy.cat.orm.core.jdbc.mapping.parameter.AbstractParameterizationInfo;
+
+import java.util.Map;
 
 /**
  * @author: mahao
@@ -17,14 +18,12 @@ public class EntryInfoImpl extends AbstractParameterizationInfo implements Entry
     private final Class<? extends ApiMethodEntry> api;
     private final HttpMethod[] methods;
 
-    public EntryInfoImpl(Class<?> pojoType, String nameSpace, String fullPath, Class<? extends ApiMethodEntry> api,
-                         HttpMethod[] methods, Parameter[] parameters) {
+    public EntryInfoImpl(Class<?> pojoType, String nameSpace, String fullPath, Class<? extends ApiMethodEntry> api, HttpMethod[] methods) {
         this.pojoType = pojoType;
         this.nameSpace = nameSpace;
         this.fullPath = fullPath;
         this.api = api;
         this.methods = methods;
-        super.initParameter(parameters);
     }
 
     @Override
@@ -50,5 +49,9 @@ public class EntryInfoImpl extends AbstractParameterizationInfo implements Entry
     @Override
     public HttpMethod[] getMethods() {
         return methods;
+    }
+
+    public void setParameterMapping(Map<String, String> parameterMapping) {
+        super.parameterMapping = parameterMapping;
     }
 }

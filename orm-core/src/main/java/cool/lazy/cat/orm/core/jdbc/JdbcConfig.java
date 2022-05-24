@@ -2,6 +2,7 @@ package cool.lazy.cat.orm.core.jdbc;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,6 +20,10 @@ public class JdbcConfig {
      * 扫描pojo类路径, 配置此参数将忽略@PojoScan注解
      */
     private List<String> pojoScanBasePackages;
+    /**
+     * 扫描pojo类路径排除路径项
+     */
+    private List<String> pojoScanExcludePackages = Collections.emptyList();
     /**
      * 是否开启service bean注入 调整此选项可能引起某些功能无法正常工作
      */
@@ -46,5 +51,14 @@ public class JdbcConfig {
 
     public void setEnableServiceRegistry(boolean enableServiceRegistry) {
         this.enableServiceRegistry = enableServiceRegistry;
+    }
+
+    public List<String> getPojoScanExcludePackages() {
+        return pojoScanExcludePackages;
+    }
+
+    public JdbcConfig setPojoScanExcludePackages(List<String> pojoScanExcludePackages) {
+        this.pojoScanExcludePackages = pojoScanExcludePackages;
+        return this;
     }
 }

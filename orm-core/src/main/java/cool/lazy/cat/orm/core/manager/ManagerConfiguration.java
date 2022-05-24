@@ -17,7 +17,7 @@ public class ManagerConfiguration {
     @Bean
     @ConditionalOnMissingBean(value = PojoManager.class)
     public PojoManager pojoManager(JdbcConfig jdbcConfig) {
-        return new PojoManager(jdbcConfig.getPojoScanBasePackages());
+        return new PojoManager(jdbcConfig.getPojoScanBasePackages(), jdbcConfig.getPojoScanExcludePackages());
     }
 
     @Bean

@@ -8,7 +8,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.classreading.MetadataReader;
-import org.springframework.util.Assert;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,28 +31,34 @@ public class ClassPathPojoScanner extends ClassPathBeanDefinitionScanner {
         super(registry, false);
     }
 
-    public List<Class<?>> doScanPojo(List<String> basePackages) {
-        Assert.notEmpty(basePackages, "At least one base package must be specified");
+    public List<Class<?>> doScanPojo(List<String> basePackages, List<String> excludePackages) {
         List<Class<?>> pojoClasses = new ArrayList<>();
         for (String basePackage : basePackages) {
-            pojoClasses.addAll(this.analysisPojo(basePackage));
+            pojoClasses.addAll(this.analysisPojo(basePackage, excludePackages));
         }
         return pojoClasses.stream().distinct().collect(Collectors.toList());
     }
 
-    private List<Class<?>> analysisPojo(String basePackage) {
+    private List<Class<?>> analysisPojo(String basePackage, List<String> excludePackages) {
         // 扫描路径
-        String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + resolveBasePackage(basePackage) + '/' + this.resourcePattern;
+        String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + super.resolveBasePackage(basePackage) + '/' + this.resourcePattern;
         List<Class<?>> beanClass = new ArrayList<>();
+        PathMatcher pathMatcher = new AntPathMatcher();
         PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
         try {
             Resource[] resources = patternResolver.getResources(packageSearchPath);
-            for (Resource resource : resources) {
+            outer: for (Resource resource : resources) {
                 if (resource.isReadable()) {
                     MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
                     metadataReader.getAnnotationMetadata().getClassName();
                     try {
                         Class<?> pojoClass = Class.forName(metadataReader.getAnnotationMetadata().getClassName());
+                        String pkg = pojoClass.getPackage().getName();
+                        for (String excludePackage : excludePackages) {
+                            if (pathMatcher.match(excludePackage, pkg) || pkg.equals(excludePackage)) {
+                                continue outer;
+                            }
+                        }
                         // 只注册Pojo注解标注的类
                         if (pojoClass.getAnnotation(Pojo.class) != null) {
                             beanClass.add(pojoClass);

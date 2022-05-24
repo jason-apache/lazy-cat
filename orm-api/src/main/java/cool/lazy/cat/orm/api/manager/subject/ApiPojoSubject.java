@@ -1,23 +1,11 @@
 package cool.lazy.cat.orm.api.manager.subject;
 
-import cool.lazy.cat.orm.api.base.anno.ApiPojo;
-import cool.lazy.cat.orm.api.base.anno.Entry;
 import cool.lazy.cat.orm.api.base.constant.HttpMethod;
-import cool.lazy.cat.orm.api.exception.ExistPathApiException;
-import cool.lazy.cat.orm.api.util.PathGenerator;
 import cool.lazy.cat.orm.api.web.EntryInfo;
-import cool.lazy.cat.orm.api.web.EntryInfoImpl;
-import cool.lazy.cat.orm.api.web.entrust.method.ApiMethodEntry;
-import cool.lazy.cat.orm.base.util.Caster;
-import cool.lazy.cat.orm.base.util.CollectionUtil;
-import cool.lazy.cat.orm.base.util.StringUtil;
 import cool.lazy.cat.orm.core.jdbc.mapping.parameter.AbstractParameterizationInfo;
 import cool.lazy.cat.orm.core.manager.subject.Subject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -36,44 +24,6 @@ public class ApiPojoSubject extends AbstractParameterizationInfo implements Subj
 
     public ApiPojoSubject(Class<?> pojoType) {
         this.pojoType = pojoType;
-    }
-
-    public void init(ApiPojo apiPojoAnnotation) {
-        if (null != apiPojoAnnotation) {
-            entryInfoMap = new HashMap<>(apiPojoAnnotation.entry().length);
-            entryInfoList = new ArrayList<>(apiPojoAnnotation.entry().length);
-            // 初始化命名空间
-            this.nameSpace = PathGenerator.format(apiPojoAnnotation.nameSpace());
-            if (StringUtil.isBlank(this.nameSpace)) {
-                String name = pojoType.getSimpleName();
-                // 转小驼峰
-                this.nameSpace = PathGenerator.format(StringUtil.upper2Lower(name));
-            }
-            // 分析api
-            for (Entry entry : apiPojoAnnotation.entry()) {
-                if (entry.api().isInterface()) {
-                    throw new IllegalArgumentException("不是一个ApiMethodEntry实现类：" + entry.api().getName());
-                }
-                if (!ApiMethodEntry.class.isAssignableFrom(entry.api())) {
-                    throw new UnsupportedOperationException("不支持类型, 请自定义实现: " + entry.api());
-                }
-                if (CollectionUtil.isEmpty(entry.methods())) {
-                    throw new IllegalArgumentException("method为空：" + entry.path());
-                }
-                // 生成完整路径
-                String fullPath = nameSpace + PathGenerator.format(entry.path());
-                EntryInfo entryMethod = new EntryInfoImpl(pojoType, nameSpace, fullPath, Caster.cast(entry.api()), entry.methods(), entry.parameters());
-                for (HttpMethod httpMethod : entryMethod.getMethods()) {
-                    if (entryInfoMap.get(entryMethod.getFullPath()) != null && entryInfoMap.get(entryMethod.getFullPath()).containsKey(httpMethod)) {
-                        throw new ExistPathApiException("已存在的path：代理类" + pojoType.getName() + "[value：" + entryMethod.getFullPath() + "，type：" + Arrays.toString(entry.methods()) + "]");
-                    }
-                    // 生成method映射结构
-                    entryInfoMap.computeIfAbsent(entryMethod.getFullPath(), l -> new HashMap<>()).put(httpMethod, entryMethod);
-                }
-                entryInfoList.add(entryMethod);
-            }
-            super.initParameter(apiPojoAnnotation.parameters());
-        }
     }
 
     @Override
@@ -101,12 +51,24 @@ public class ApiPojoSubject extends AbstractParameterizationInfo implements Subj
         return nameSpace;
     }
 
+    public void setNameSpace(String nameSpace) {
+        this.nameSpace = nameSpace;
+    }
+
     public Map<String, Map<HttpMethod, EntryInfo>> getEntryInfoMap() {
         return entryInfoMap;
     }
 
+    public void setEntryInfoMap(Map<String, Map<HttpMethod, EntryInfo>> entryInfoMap) {
+        this.entryInfoMap = entryInfoMap;
+    }
+
     public List<EntryInfo> getEntryInfoList() {
         return entryInfoList;
+    }
+
+    public void setEntryInfoList(List<EntryInfo> entryInfoList) {
+        this.entryInfoList = entryInfoList;
     }
 
     public Map<String, ApiQueryFilterInfo> getQueryFilterInfoMap() {
@@ -115,5 +77,9 @@ public class ApiPojoSubject extends AbstractParameterizationInfo implements Subj
 
     public void setQueryFilterInfoMap(Map<String, ApiQueryFilterInfo> queryFilterInfoMap) {
         this.queryFilterInfoMap = queryFilterInfoMap;
+    }
+
+    public void setParameterMapping(Map<String, String> parameterMapping) {
+        super.parameterMapping = parameterMapping;
     }
 }

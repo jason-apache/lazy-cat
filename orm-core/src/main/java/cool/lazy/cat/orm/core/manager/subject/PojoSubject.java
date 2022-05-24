@@ -54,4 +54,9 @@ public class PojoSubject implements Subject {
     public void setGetters(Set<MethodDescriptor> getters) {
         this.getters = getters;
     }
+
+    @Override
+    public String toString() {
+        return pojoType.getName();
+    }
 }

@@ -1,18 +1,12 @@
 package cool.lazy.cat.orm.api.manager;
 
-import cool.lazy.cat.orm.api.base.anno.ApiPojo;
-import cool.lazy.cat.orm.api.base.anno.ApiQueryFilter;
 import cool.lazy.cat.orm.api.base.constant.HttpMethod;
 import cool.lazy.cat.orm.api.exception.ExistNameSpaceException;
 import cool.lazy.cat.orm.api.exception.SamePathApiException;
 import cool.lazy.cat.orm.api.manager.subject.ApiPojoSubject;
-import cool.lazy.cat.orm.api.manager.subject.ApiQueryFilterInfo;
 import cool.lazy.cat.orm.api.web.EntryInfo;
-import cool.lazy.cat.orm.core.jdbc.mapping.field.attr.PojoField;
-import cool.lazy.cat.orm.core.manager.PojoManager;
-import cool.lazy.cat.orm.core.manager.PojoTableManager;
+import cool.lazy.cat.orm.api.manager.provider.ApiPojoSubjectProvider;
 import cool.lazy.cat.orm.core.manager.exception.UnKnowPojoException;
-import cool.lazy.cat.orm.core.manager.subject.PojoSubject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -35,19 +29,14 @@ public class ApiPojoManagerImpl implements ApiPojoManager {
     protected Map<String, ApiPojoSubject> nameSpaceMap;
 
     @Autowired
-    public void initSubject(PojoManager pojoManager, PojoTableManager pojoTableManager) {
-        List<PojoSubject> subjectList = pojoManager.getPojoSubjectList().stream().filter(p -> p.getPojoType().getAnnotation(ApiPojo.class) != null).collect(Collectors.toList());
-        apiPojoSubjectMap = new HashMap<>(subjectList.size());
-        nameSpaceMap = new HashMap<>(subjectList.size());
-        for (PojoSubject subject : subjectList) {
-            ApiPojoSubject apiPojoSubject = new ApiPojoSubject(subject.getPojoType());
-            //初始化命名空间、api方法
-            apiPojoSubject.init(subject.getPojoType().getAnnotation(ApiPojo.class));
+    public void initSubject(ApiPojoSubjectProvider apiPojoSubjectProvider) {
+        List<ApiPojoSubject> apiPojoSubjects = apiPojoSubjectProvider.provider();
+        apiPojoSubjectMap = new HashMap<>(apiPojoSubjects.size());
+        nameSpaceMap = new HashMap<>(apiPojoSubjects.size());
+        for (ApiPojoSubject apiPojoSubject : apiPojoSubjects) {
             if (nameSpaceMap.containsKey(apiPojoSubject.getNameSpace())) {
                 throw new ExistNameSpaceException("已存在的nameSpace：代理类" + apiPojoSubject.getPojoType().getName() + "[value：" + apiPojoSubject.getNameSpace()+ "]");
             }
-            // 初始化字段查询条件
-            this.initQueryFilter(apiPojoSubject, pojoTableManager.getByPojoType(subject.getPojoType()).getTableInfo().getFieldInfoMap());
             apiPojoSubjectMap.put(apiPojoSubject.getPojoType(), apiPojoSubject);
             nameSpaceMap.put(apiPojoSubject.getNameSpace(), apiPojoSubject);
         }
@@ -85,26 +74,6 @@ public class ApiPojoManagerImpl implements ApiPojoManager {
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * 初始字段化查询条件
-     * @param apiPojoSubject apiPojo主体
-     * @param fieldInfoMap pojo字段映射
-     */
-    protected void initQueryFilter(ApiPojoSubject apiPojoSubject, Map<String, PojoField> fieldInfoMap) {
-        Map<String, ApiQueryFilterInfo> apiQueryFilterInfoMap = new HashMap<>(fieldInfoMap.size());
-        for (Map.Entry<String, PojoField> entry : fieldInfoMap.entrySet()) {
-            String key = entry.getKey();
-            ApiQueryFilter apiQueryFilter = entry.getValue().getGetter().getAnnotation(ApiQueryFilter.class);
-            if (null == apiQueryFilter) {
-                continue;
-            }
-            apiQueryFilterInfoMap.put(key, new ApiQueryFilterInfo(apiQueryFilter));
-        }
-        if (!apiQueryFilterInfoMap.isEmpty()) {
-            apiPojoSubject.setQueryFilterInfoMap(apiQueryFilterInfoMap);
         }
     }
 

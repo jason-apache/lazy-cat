@@ -21,14 +21,14 @@ import java.util.stream.Collectors;
  */
 public class PojoManager implements Manager<PojoSubject> {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     protected final Map<Class<?>, PojoSubject> pojoSubjectMap;
 
-    public PojoManager(List<String> scanBasePackages) {
+    public PojoManager(List<String> scanBasePackages, List<String> excludePackages) {
         List<Class<?>> pojoClasses;
         if (CollectionUtil.isNotEmpty(scanBasePackages)) {
-            logger.info("使用配置文件声明的扫描路径加载pojo...");
-            pojoClasses = PojoClassScanner.scan(scanBasePackages);
+            LOGGER.info("使用配置文件声明的扫描路径加载pojo...");
+            pojoClasses = PojoClassScanner.scan(scanBasePackages, excludePackages);
         } else {
             pojoClasses = PojoClassScanner.take();
         }
@@ -42,10 +42,10 @@ public class PojoManager implements Manager<PojoSubject> {
             subject.init();
             pojoSubjectMap.put(pojoClass, subject);
         }
-        if (logger.isDebugEnabled()) {
+        if (LOGGER.isDebugEnabled()) {
             String prefix = "\r\n -- \t";
             String output = prefix + pojoSubjectMap.values().stream().map(c -> c.getPojoType().getName()).collect(Collectors.joining(prefix));
-            logger.debug("加载pojo类信息: {}", output);
+            LOGGER.debug("加载pojo类信息: {}", output);
         }
     }
 

@@ -26,5 +26,10 @@ public @interface PojoScan {
      * @see Pojo
      * @see cool.lazy.cat.orm.core.manager.scan.ClassPathPojoScanner#doScanPojo
      */
-    String[] value();
+    String[] value() default {};
+
+    /**
+     * 扫描pojo类路径排除包
+     */
+    String[] excludes() default {};
 }

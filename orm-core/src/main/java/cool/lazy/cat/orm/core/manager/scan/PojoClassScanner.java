@@ -1,5 +1,6 @@
 package cool.lazy.cat.orm.core.manager.scan;
 
+import cool.lazy.cat.orm.base.util.CollectionUtil;
 import cool.lazy.cat.orm.core.manager.scan.annotation.PojoScan;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
@@ -29,20 +30,28 @@ public class PojoClassScanner implements ImportBeanDefinitionRegistrar, Resource
         scanner = new ClassPathPojoScanner(registry);
         scanner.setResourceLoader(resourceLoader);
         List<String> basePackages = new ArrayList<>();
+        List<String> excludePackages = new ArrayList<>();
         for (String pkg : annoAttrs.getStringArray("value")) {
             if (StringUtils.hasText(pkg)) {
                 basePackages.add(pkg);
             }
         }
-        payload = scanner.doScanPojo(basePackages);
+        for (String pkg : annoAttrs.getStringArray("excludes")) {
+            if (StringUtils.hasText(pkg)) {
+                excludePackages.add(pkg);
+            }
+        }
+        if (CollectionUtil.isNotEmpty(basePackages)) {
+            payload = scanner.doScanPojo(basePackages, excludePackages);
+        }
     }
 
-    public static List<Class<?>> scan(List<String> basePackages) {
+    public static List<Class<?>> scan(List<String> basePackages, List<String> excludePackages) {
         try {
             if (null == scanner) {
                 return null;
             }
-            return scanner.doScanPojo(basePackages);
+            return scanner.doScanPojo(basePackages, excludePackages);
         } finally {
             payload = null;
             scanner = null;
