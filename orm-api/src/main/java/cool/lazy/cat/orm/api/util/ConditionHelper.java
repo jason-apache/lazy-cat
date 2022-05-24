@@ -58,7 +58,7 @@ public final class ConditionHelper {
             if (conditionType == None.class || null == conditionType) {
                 continue;
             }
-            ConditionType conditionTypeInstance = ConditionConstant.CONDITION_TYPE_CACHE.getOrDefault(conditionType, (ConditionType) ReflectUtil.newInstance(conditionType));
+            ConditionType conditionTypeInstance = ConditionConstant.CONDITION_TYPE_CACHE.computeIfAbsent(conditionType, v -> (ConditionType) ReflectUtil.newInstance(conditionType));
             if (null == root) {
                 root = new SqlConditionImpl(key, entry.getValue(), conditionTypeInstance);
             } else {
