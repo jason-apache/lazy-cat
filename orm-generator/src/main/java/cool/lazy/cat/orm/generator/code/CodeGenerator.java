@@ -4,6 +4,7 @@ import cool.lazy.cat.orm.generator.config.CodeGeneratorConfig;
 import cool.lazy.cat.orm.generator.dialect.Dialect;
 import cool.lazy.cat.orm.generator.dialect.DialectRegistry;
 import cool.lazy.cat.orm.generator.info.TableInfo;
+import cool.lazy.cat.orm.generator.jdbc.ConnectionManager;
 
 import java.util.List;
 
@@ -15,7 +16,9 @@ import java.util.List;
 public class CodeGenerator {
 
     public void generate(CodeGeneratorConfig generatorConfig) {
+        // 初始化数据库连接
+        ConnectionManager.initConnection(generatorConfig.getJdbcConnectionConfig());
         Dialect dialect = DialectRegistry.getInstance().get(generatorConfig.getJdbcConnectionConfig().getDatabaseType());
-        List<TableInfo> tableInfoList = dialect.extractTableInfo(generatorConfig);
+        List<TableInfo> tableInfoList = dialect.extractTableInfo(generatorConfig.getScanningConfig());
     }
 }

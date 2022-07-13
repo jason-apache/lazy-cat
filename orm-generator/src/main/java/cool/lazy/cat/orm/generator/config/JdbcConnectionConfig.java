@@ -23,7 +23,6 @@ public class JdbcConnectionConfig {
         this.password = password;
         this.schema = schema;
         this.databaseType = DatabaseType.adaptFromJdbcUrl(url);
-        ConnectionManager.initConnection(this);
     }
 
     public String getUrl() {

@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.generator.dialect;
 
-import cool.lazy.cat.orm.generator.config.CodeGeneratorConfig;
+import cool.lazy.cat.orm.generator.config.ScanningConfig;
 import cool.lazy.cat.orm.generator.constant.Case;
 import cool.lazy.cat.orm.generator.constant.DatabaseType;
 import cool.lazy.cat.orm.generator.dialect.extractor.TableInfoExtractor;
@@ -44,8 +44,8 @@ public interface Dialect {
      */
     TableInfoExtractor getTableInfoExtractor();
 
-    default List<TableInfo> extractTableInfo(CodeGeneratorConfig generatorConfig) {
-        return this.getTableInfoExtractor().extractTableInfo(generatorConfig);
+    default List<TableInfo> extractTableInfo(ScanningConfig ScanningConfig) {
+        return this.getTableInfoExtractor().extractTableInfo(ScanningConfig);
     }
 
     /**

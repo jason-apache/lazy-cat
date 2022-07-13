@@ -8,11 +8,15 @@ package cool.lazy.cat.orm.generator.config;
 public class CodeGeneratorConfig {
     private JdbcConnectionConfig jdbcConnectionConfig;
 
-    public CodeGeneratorConfig() {
-    }
+    private ScanningConfig scanningConfig = new ScanningConfig();
 
     public CodeGeneratorConfig(JdbcConnectionConfig jdbcConnectionConfig) {
         this.jdbcConnectionConfig = jdbcConnectionConfig;
+    }
+
+    public CodeGeneratorConfig(JdbcConnectionConfig jdbcConnectionConfig, ScanningConfig scanningConfig) {
+        this.jdbcConnectionConfig = jdbcConnectionConfig;
+        this.scanningConfig = scanningConfig;
     }
 
     public JdbcConnectionConfig getJdbcConnectionConfig() {
@@ -21,5 +25,13 @@ public class CodeGeneratorConfig {
 
     public void setJdbcConnectionConfig(JdbcConnectionConfig jdbcConnectionConfig) {
         this.jdbcConnectionConfig = jdbcConnectionConfig;
+    }
+
+    public ScanningConfig getScanningConfig() {
+        return scanningConfig;
+    }
+
+    public void setScanningConfig(ScanningConfig scanningConfig) {
+        this.scanningConfig = scanningConfig;
     }
 }

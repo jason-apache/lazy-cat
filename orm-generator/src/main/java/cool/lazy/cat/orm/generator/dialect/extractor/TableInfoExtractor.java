@@ -1,6 +1,6 @@
 package cool.lazy.cat.orm.generator.dialect.extractor;
 
-import cool.lazy.cat.orm.generator.config.CodeGeneratorConfig;
+import cool.lazy.cat.orm.generator.config.ScanningConfig;
 import cool.lazy.cat.orm.generator.dialect.Dialect;
 import cool.lazy.cat.orm.generator.info.TableInfo;
 
@@ -14,10 +14,10 @@ import java.util.List;
 public interface TableInfoExtractor {
 
     /**
-     * @param generatorConfig 配置
+     * @param scanningConfig 扫描配置
      * @return 表信息
      */
-    List<TableInfo> extractTableInfo(CodeGeneratorConfig generatorConfig);
+    List<TableInfo> extractTableInfo(ScanningConfig scanningConfig);
 
     /**
      * @return 数据库方言

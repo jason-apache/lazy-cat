@@ -1,12 +1,13 @@
 package cool.lazy.cat.orm.generator.dialect.extractor;
 
-import cool.lazy.cat.orm.generator.config.CodeGeneratorConfig;
+import cool.lazy.cat.orm.generator.config.ScanningConfig;
 import cool.lazy.cat.orm.generator.dialect.Dialect;
 import cool.lazy.cat.orm.generator.exception.GetDatabaseInfoException;
 import cool.lazy.cat.orm.generator.exception.GetResultSetMetaDataException;
 import cool.lazy.cat.orm.generator.exception.ReflectException;
 import cool.lazy.cat.orm.generator.info.TableFieldInfo;
 import cool.lazy.cat.orm.generator.info.TableInfo;
+import cool.lazy.cat.orm.generator.jdbc.ConnectionManager;
 import cool.lazy.cat.orm.generator.util.CollectionUtil;
 
 import java.sql.Connection;
@@ -35,8 +36,6 @@ public abstract class AbstractTableInfoExtractor implements TableInfoExtractor {
     protected AbstractTableInfoExtractor(Dialect dialect) {
         this.dialect = dialect;
     }
-
-    protected final String[] types = new String[]{"TABLE"};
     protected static final Map<Class<?>, Map<String, FieldAnnotationInfo>> CLASS_FIELD_INFO_MAP;
     protected static final Map<Class<?>, List<ColumnLabel>> RESULT_SET_COLUMN_LABEL_CACHE = new HashMap<>();
 
@@ -48,11 +47,11 @@ public abstract class AbstractTableInfoExtractor implements TableInfoExtractor {
     }
 
     @Override
-    public List<TableInfo> extractTableInfo(CodeGeneratorConfig generatorConfig) {
+    public List<TableInfo> extractTableInfo(ScanningConfig scanningConfig) {
         try {
-            Connection connection = generatorConfig.getJdbcConnectionConfig().getConnection();
-            List<TableInfo> tableInfoList = this.extractTableRawData(connection).stream().map(this::buildTableInfo).collect(Collectors.toList());
-            Map<String, List<ColumnRawData>> columnGroupByTable = this.extractColumnRawData(connection).stream().collect(Collectors.groupingBy(r -> r.tableName));
+            Connection connection = ConnectionManager.getConnection();
+            List<TableInfo> tableInfoList = this.extractTableRawData(connection, scanningConfig.getTableScanningConfig()).stream().map(this::buildTableInfo).collect(Collectors.toList());
+            Map<String, List<ColumnRawData>> columnGroupByTable = this.extractColumnRawData(connection, scanningConfig.getColumnScanningConfig()).stream().collect(Collectors.groupingBy(r -> r.tableName));
             Map<String, List<PrimaryKeyRawData>> primaryKeyGroupByTable = this.extractPrimaryKeyRawData(connection, tableInfoList).stream().collect(Collectors.groupingBy(r -> r.tableName));
             for (TableInfo tableInfo : tableInfoList) {
                 tableInfo.getFields().addAll(this.buildTableFieldInfos(columnGroupByTable.get(tableInfo.getName()), primaryKeyGroupByTable.get(tableInfo.getName())));
@@ -85,16 +84,37 @@ public abstract class AbstractTableInfoExtractor implements TableInfoExtractor {
                 .build();
     }
 
-    protected List<TableRawData> extractTableRawData(Connection connection) throws SQLException {
+    protected List<TableRawData> extractTableRawData(Connection connection, ScanningConfig.TableScanningConfig tableScanningConfig) throws SQLException {
+        String[] types = (null == tableScanningConfig || tableScanningConfig.isSkipView()) ? new String[] {"TABLE"} : new String[] {"TABLE", "VIEW"};
         ResultSet resultSet = connection.getMetaData().getTables(connection.getCatalog(), connection.getSchema(), null, types);
-        // todo 过滤表信息
-        return this.extractRawData(resultSet, TableRawData.class);
+        List<TableRawData> tableRawData = this.extractRawData(resultSet, TableRawData.class);
+        if (null != tableScanningConfig && null != tableScanningConfig.getStrategyList()) {
+            tableRawData = tableRawData.stream().filter(tr -> {
+                for (ScanningConfig.ScanningStrategy strategy : tableScanningConfig.getStrategyList()) {
+                    if (!strategy.match(tr.tableName)) {
+                        return false;
+                    }
+                }
+                return true;
+            }).collect(Collectors.toList());
+        }
+        return tableRawData;
     }
 
-    protected List<ColumnRawData> extractColumnRawData(Connection connection) throws SQLException {
+    protected List<ColumnRawData> extractColumnRawData(Connection connection, ScanningConfig.ColumnScanningConfig columnScanningConfig) throws SQLException {
         ResultSet resultSet = connection.getMetaData().getColumns(connection.getCatalog(), connection.getSchema(), null, null);
-        // todo 过滤字段信息
-        return this.extractRawData(resultSet, ColumnRawData.class);
+        List<ColumnRawData> columnRawData = this.extractRawData(resultSet, ColumnRawData.class);
+        if (null != columnScanningConfig && null != columnScanningConfig.getStrategyList()) {
+            columnRawData = columnRawData.stream().filter(tr -> {
+                for (ScanningConfig.ScanningStrategy strategy : columnScanningConfig.getStrategyList()) {
+                    if (!strategy.match(tr.columnName)) {
+                        return false;
+                    }
+                }
+                return true;
+            }).collect(Collectors.toList());
+        }
+        return columnRawData;
     }
 
     protected List<PrimaryKeyRawData> extractPrimaryKeyRawData(Connection connection, List<TableInfo> tableInfoList) throws SQLException {
