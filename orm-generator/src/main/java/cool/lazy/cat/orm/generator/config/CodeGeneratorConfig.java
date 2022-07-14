@@ -6,32 +6,43 @@ package cool.lazy.cat.orm.generator.config;
  * @date : 2022/7/12 16:20
  */
 public class CodeGeneratorConfig {
-    private JdbcConnectionConfig jdbcConnectionConfig;
 
-    private ScanningConfig scanningConfig = new ScanningConfig();
+    private final CodeStyleConfig codeStyleConfig;
+    private final FileOutputConfig fileOutputConfig;
 
-    public CodeGeneratorConfig(JdbcConnectionConfig jdbcConnectionConfig) {
-        this.jdbcConnectionConfig = jdbcConnectionConfig;
+    private CodeGeneratorConfig(CodeStyleConfig codeStyleConfig, FileOutputConfig fileOutputConfig) {
+        this.codeStyleConfig = codeStyleConfig;
+        this.fileOutputConfig = fileOutputConfig;
     }
 
-    public CodeGeneratorConfig(JdbcConnectionConfig jdbcConnectionConfig, ScanningConfig scanningConfig) {
-        this.jdbcConnectionConfig = jdbcConnectionConfig;
-        this.scanningConfig = scanningConfig;
+    public CodeStyleConfig getCodeStyleConfig() {
+        return codeStyleConfig;
     }
 
-    public JdbcConnectionConfig getJdbcConnectionConfig() {
-        return jdbcConnectionConfig;
+    public FileOutputConfig getFileOutputConfig() {
+        return fileOutputConfig;
     }
 
-    public void setJdbcConnectionConfig(JdbcConnectionConfig jdbcConnectionConfig) {
-        this.jdbcConnectionConfig = jdbcConnectionConfig;
+    public static CodeGeneratorConfigBuilder builder() {
+        return new CodeGeneratorConfigBuilder();
     }
 
-    public ScanningConfig getScanningConfig() {
-        return scanningConfig;
-    }
+    public static class CodeGeneratorConfigBuilder {
+        private CodeStyleConfig codeStyleConfig = CodeStyleConfig.builder().build();
+        private FileOutputConfig fileOutputConfig = FileOutputConfig.builder().build();
 
-    public void setScanningConfig(ScanningConfig scanningConfig) {
-        this.scanningConfig = scanningConfig;
+        public CodeGeneratorConfigBuilder codeStyleConfig(CodeStyleConfig codeStyleConfig) {
+            this.codeStyleConfig = codeStyleConfig;
+            return this;
+        }
+
+        public CodeGeneratorConfigBuilder fileOutputConfig(FileOutputConfig fileOutputConfig) {
+            this.fileOutputConfig = fileOutputConfig;
+            return this;
+        }
+
+        public CodeGeneratorConfig build() {
+            return new CodeGeneratorConfig(codeStyleConfig, fileOutputConfig);
+        }
     }
 }

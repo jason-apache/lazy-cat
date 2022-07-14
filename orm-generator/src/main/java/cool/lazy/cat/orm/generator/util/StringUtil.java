@@ -7,8 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author: mahao
- * @date: 2021/4/20 17:11
+ * @author mahao
+ * @date 2021/4/20 17:11
  */
 public final class StringUtil {
 
@@ -79,5 +79,9 @@ public final class StringUtil {
             sb.append(matcher.end() == str.length() ? "" : "_");
         }
         return sb.toString();
+    }
+
+    public static String lowerToUpperFirst(String word) {
+        return String.valueOf(word.charAt(0)).toUpperCase().concat(word.substring(1));
     }
 }

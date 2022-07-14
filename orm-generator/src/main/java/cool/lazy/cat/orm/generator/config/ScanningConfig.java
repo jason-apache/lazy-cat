@@ -14,23 +14,43 @@ import java.util.stream.Collectors;
  */
 public class ScanningConfig {
 
-    private TableScanningConfig tableScanningConfig = TableScanningConfig.builder().build();
-    private ColumnScanningConfig columnScanningConfig = ColumnScanningConfig.builder().build();
+    private final TableScanningConfig tableScanningConfig;
+    private final ColumnScanningConfig columnScanningConfig;
+
+    private ScanningConfig(TableScanningConfig tableScanningConfig, ColumnScanningConfig columnScanningConfig) {
+        this.tableScanningConfig = tableScanningConfig;
+        this.columnScanningConfig = columnScanningConfig;
+    }
 
     public TableScanningConfig getTableScanningConfig() {
         return tableScanningConfig;
-    }
-
-    public void setTableScanningConfig(TableScanningConfig tableScanningConfig) {
-        this.tableScanningConfig = tableScanningConfig;
     }
 
     public ColumnScanningConfig getColumnScanningConfig() {
         return columnScanningConfig;
     }
 
-    public void setColumnScanningConfig(ColumnScanningConfig columnScanningConfig) {
-        this.columnScanningConfig = columnScanningConfig;
+    public static ScanningConfigBuilder builder() {
+        return new ScanningConfigBuilder();
+    }
+
+    public static class ScanningConfigBuilder {
+        private TableScanningConfig tableScanningConfig = TableScanningConfig.builder().build();
+        private ColumnScanningConfig columnScanningConfig = ColumnScanningConfig.builder().build();
+
+        public ScanningConfigBuilder tableScanningConfig(TableScanningConfig tableScanningConfig) {
+            this.tableScanningConfig = tableScanningConfig;
+            return this;
+        }
+
+        public ScanningConfigBuilder columnScanningConfig(ColumnScanningConfig columnScanningConfig) {
+            this.columnScanningConfig = columnScanningConfig;
+            return this;
+        }
+
+        public ScanningConfig build() {
+            return new ScanningConfig(tableScanningConfig, columnScanningConfig);
+        }
     }
 
     public static class TableScanningConfig {
@@ -99,7 +119,7 @@ public class ScanningConfig {
         }
 
         public static class ColumnScanningConfigBuilder {
-            private List<ScanningStrategy> strategyList;;
+            private List<ScanningStrategy> strategyList;
 
             public ColumnScanningConfigBuilder scanningStrategy(ScanningStrategy... strategies) {
                 this.strategyList = new ArrayList<>(Arrays.asList(strategies));

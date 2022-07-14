@@ -3,6 +3,7 @@ package cool.lazy.cat.orm.generator.code.naming;
 import cool.lazy.cat.orm.generator.config.NamingConfig;
 import cool.lazy.cat.orm.generator.info.TableFieldInfo;
 import cool.lazy.cat.orm.generator.info.TableInfo;
+import cool.lazy.cat.orm.generator.info.TypeInfo;
 
 /**
  * @author : jason.ma
@@ -25,4 +26,18 @@ public interface NamingFactory {
      * @return 属性名
      */
     String namingField(TableFieldInfo tableFieldInfo, NamingConfig namingConfig);
+
+    /**
+     * @param fieldType 字段信息
+     * @param fieldName 字段名称
+     * @return setter方法名
+     */
+    String namingSetter(TypeInfo fieldType, String fieldName);
+
+    /**
+     * @param fieldType 字段信息
+     * @param fieldName 字段名称
+     * @return getter方法名
+     */
+    String namingGetter(TypeInfo fieldType, String fieldName);
 }
