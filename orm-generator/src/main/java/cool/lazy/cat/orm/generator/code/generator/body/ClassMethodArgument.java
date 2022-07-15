@@ -8,11 +8,11 @@ public class ClassMethodArgument extends AbstractCompoundElement<JavaCode> {
 
     @Override
     protected String empty() {
-        return this.startCharacter() + this.terminator() + this.end();
+        return this.startCharacter() + this.terminator() + this.spacer();
     }
 
     @Override
-    protected String end() {
+    public String spacer() {
         return " ";
     }
 

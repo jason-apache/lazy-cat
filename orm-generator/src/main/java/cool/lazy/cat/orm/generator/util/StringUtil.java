@@ -32,6 +32,18 @@ public final class StringUtil {
         return !isBlank(charSequence);
     }
 
+    public static boolean isAnyBlank(CharSequence... charSequences) {
+        if (CollectionUtil.isEmpty(charSequences)) {
+            return true;
+        }
+        for (CharSequence charSequence : charSequences) {
+            if (isBlank(charSequence)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 将以下划线区分单词的字符串转换为小驼峰命名规范的字符串
      * @param str 字符串

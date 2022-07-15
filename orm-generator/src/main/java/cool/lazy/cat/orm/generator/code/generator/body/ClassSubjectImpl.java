@@ -11,9 +11,32 @@ public class ClassSubjectImpl extends AbstractDecorativeElement<JavaCode>
         implements ClassSubject, CompoundElement<JavaCode>, JavaCode {
 
     protected final String className;
+    private ClassExtends classExtends;
+
+    private ClassImplements classImplements;
 
     public ClassSubjectImpl(String className) {
         this.className = className;
+    }
+
+    @Override
+    public ClassExtends classExtends() {
+        return classExtends;
+    }
+
+    @Override
+    public void classExtends(ClassExtends classExtends) {
+        this.classExtends = classExtends;
+    }
+
+    @Override
+    public ClassImplements classImplements() {
+        return classImplements;
+    }
+
+    @Override
+    public void classImplements(ClassImplements classImplements) {
+        this.classImplements = classImplements;
     }
 
     @Override
@@ -23,7 +46,14 @@ public class ClassSubjectImpl extends AbstractDecorativeElement<JavaCode>
 
     @Override
     protected String pre() {
-        return new Public().full() + new TheClass().full() + new JavaCodeImpl(className, " ").full();
+        String pre = new Public().full() + new TheClass().full() + new JavaCodeImpl(className, " ").full();
+        if (null != classExtends) {
+            pre += classExtends.full();
+        }
+        if (null != classImplements) {
+            pre += classImplements.full();
+        }
+        return pre;
     }
 
     @Override

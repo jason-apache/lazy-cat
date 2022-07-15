@@ -15,6 +15,11 @@ public interface Keyword extends JavaCode {
 
     @Override
     default String terminator() {
+        return "";
+    }
+
+    @Override
+    default String spacer() {
         return " ";
     }
 }

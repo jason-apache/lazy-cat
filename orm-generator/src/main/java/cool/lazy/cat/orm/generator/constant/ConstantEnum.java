@@ -7,6 +7,7 @@ package cool.lazy.cat.orm.generator.constant;
 public enum ConstantEnum {
     INDENT,
     LINE_SEPARATOR,
+    CODE_ELEMENT_SEPARATOR,
     BOOLEAN_GETTER_NAMING_PREFIX,
     ;
 }

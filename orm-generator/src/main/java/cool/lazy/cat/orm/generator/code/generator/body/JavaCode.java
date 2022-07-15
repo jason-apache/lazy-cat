@@ -23,6 +23,13 @@ public interface JavaCode {
     String terminator();
 
     /**
+     * @return 间隔符
+     */
+    default String spacer() {
+        return ConstantRegistry.getString(ConstantEnum.CODE_ELEMENT_SEPARATOR);
+    }
+
+    /**
      * @return 缩进
      */
     default int indent() {
@@ -39,6 +46,6 @@ public interface JavaCode {
     String code();
 
     default String full() {
-        return this.identStr() + this.startCharacter() + this.code() + this.terminator();
+        return this.identStr() + this.startCharacter() + this.code() + this.terminator() + this.spacer();
     }
 }

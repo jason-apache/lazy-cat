@@ -5,4 +5,6 @@ package cool.lazy.cat.orm.generator.code.generator.body;
  * @date : 2022/7/14 11:30
  */
 public interface ClassPackage extends JavaCode, Line {
+
+    String getPackage();
 }

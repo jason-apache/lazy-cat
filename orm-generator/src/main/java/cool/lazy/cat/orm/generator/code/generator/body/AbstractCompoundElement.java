@@ -30,10 +30,6 @@ public abstract class AbstractCompoundElement<E extends JavaCode> implements Com
         return "";
     }
 
-    protected String end() {
-        return "";
-    }
-
     protected String empty() {
         return "";
     }
@@ -69,7 +65,7 @@ public abstract class AbstractCompoundElement<E extends JavaCode> implements Com
             sb.delete(len - lineSeparator.length(), len);
         }
         sb.append(this.identStr()).append(this.terminator());
-        return sb.append(this.end()).toString();
+        return sb.append(this.spacer()).toString();
     }
 
     @Override

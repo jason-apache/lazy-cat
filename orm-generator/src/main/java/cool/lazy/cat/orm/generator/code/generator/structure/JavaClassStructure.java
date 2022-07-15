@@ -1,6 +1,9 @@
 package cool.lazy.cat.orm.generator.code.generator.structure;
 
+import cool.lazy.cat.orm.generator.code.generator.body.ClassExtends;
 import cool.lazy.cat.orm.generator.code.generator.body.ClassField;
+import cool.lazy.cat.orm.generator.code.generator.body.ClassImplements;
+import cool.lazy.cat.orm.generator.code.generator.body.ClassImports;
 import cool.lazy.cat.orm.generator.code.generator.body.ClassMethod;
 import cool.lazy.cat.orm.generator.code.generator.body.ClassPackage;
 import cool.lazy.cat.orm.generator.code.generator.body.ClassSubject;
@@ -15,13 +18,13 @@ public interface JavaClassStructure extends JavaCodeStructure {
 
     ClassPackage getPackage();
 
-    ClassImport getImport();
+    ClassImports getImports();
 
     ClassSubject getSubject();
 
-    ClassExtend getExtend();
+    ClassExtends getExtends();
 
-    ClassImplement getImplement();
+    ClassImplements getImplements();
 
     List<ClassField> getFields();
 

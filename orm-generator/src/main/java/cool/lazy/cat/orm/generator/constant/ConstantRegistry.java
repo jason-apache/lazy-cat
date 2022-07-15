@@ -17,6 +17,7 @@ public class ConstantRegistry {
     public static void initDefaultSetting() {
         MAP.put(ConstantEnum.INDENT, "    ");
         MAP.put(ConstantEnum.LINE_SEPARATOR, "\r\n");
+        MAP.put(ConstantEnum.CODE_ELEMENT_SEPARATOR, "\r\n");
         MAP.put(ConstantEnum.BOOLEAN_GETTER_NAMING_PREFIX, "is");
     }
 

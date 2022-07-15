@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class TypeCorrespondTable {
         registry(Types.LONGVARCHAR, String.class);
         registry(Types.DATE, Date.class);
         registry(Types.TIME, Time.class);
-        registry(Types.TIMESTAMP, Timestamp.class);
+        registry(Types.TIMESTAMP, Date.class);
         registry(Types.BINARY, byte[].class);
         registry(Types.VARBINARY, String.class);
         registry(Types.LONGVARBINARY, String.class);

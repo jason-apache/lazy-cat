@@ -1,6 +1,9 @@
 package cool.lazy.cat.orm.generator.code.generator.structure;
 
+import cool.lazy.cat.orm.generator.code.generator.body.ClassExtends;
 import cool.lazy.cat.orm.generator.code.generator.body.ClassField;
+import cool.lazy.cat.orm.generator.code.generator.body.ClassImplements;
+import cool.lazy.cat.orm.generator.code.generator.body.ClassImports;
 import cool.lazy.cat.orm.generator.code.generator.body.ClassMethod;
 import cool.lazy.cat.orm.generator.code.generator.body.ClassPackage;
 import cool.lazy.cat.orm.generator.code.generator.body.ClassSubject;
@@ -21,6 +24,11 @@ public class JavaClassStructureImpl implements JavaClassStructure {
 
     private List<ClassMethod> classMethods;
 
+    private ClassExtends classExtends;
+
+    private ClassImplements classImplements;
+    private ClassImports classImports;
+
     public void setClassPackage(ClassPackage classPackage) {
         this.classPackage = classPackage;
     }
@@ -30,9 +38,13 @@ public class JavaClassStructureImpl implements JavaClassStructure {
         return classPackage;
     }
 
+    public void setClassImports(ClassImports classImports) {
+        this.classImports = classImports;
+    }
+
     @Override
-    public ClassImport getImport() {
-        return null;
+    public ClassImports getImports() {
+        return classImports;
     }
 
     public void setClassSubject(ClassSubject classSubject) {
@@ -44,14 +56,22 @@ public class JavaClassStructureImpl implements JavaClassStructure {
         return classSubject;
     }
 
-    @Override
-    public ClassExtend getExtend() {
-        return null;
+    public void setClassExtends(ClassExtends classExtends) {
+        this.classExtends = classExtends;
     }
 
     @Override
-    public ClassImplement getImplement() {
-        return null;
+    public ClassExtends getExtends() {
+        return classExtends;
+    }
+
+    public void setClassImplements(ClassImplements classImplements) {
+        this.classImplements = classImplements;
+    }
+
+    @Override
+    public ClassImplements getImplements() {
+        return classImplements;
     }
 
     public void setClassFields(List<ClassField> classFields) {

@@ -13,6 +13,9 @@ public interface EventName {
         BEFORE_GENERATE(null),
         PACKAGE_DONE("生成class package信息已完成"),
         SUBJECT_INITIALIZED("class subject初始化"),
+        CLASS_EXTEND_DONE("class extends已生成"),
+        CLASS_IMPLEMENTS_DONE("class implements已生成"),
+        CLASS_IMPORTS_DONE("class imports已生成"),
         FIELDS_DONE("class field已生成"),
         SETTER_GETTER_DONE("class setter getter已生成"),
         ;
